@@ -107,6 +107,7 @@ export default function CaseStudy() {
   }
   const plate = plateBg[project.slug]
   const isPlate = Boolean(plate)
+  const plateFill = project.slug === 'citynest-services'
 
   const gallery = [...new Set(project.screenshots.filter(Boolean))].filter(
     (src) => src !== heroImage, )
