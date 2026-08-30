@@ -45,9 +45,12 @@ if new != conf:
     changed = True
     print("enabled http2 on :443")
 
-marker = r"location ~* \.(?:js|css|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$"
-if marker not in conf:
+marker = "CACHE_CONTROL_STATIC_ASSETS"
+# Do not inject a regex location with try_files — it can 500 the SPA / uploads.
+# Keep http2 only.
+if False and marker not in conf:
     snippet = """
+    # CACHE_CONTROL_STATIC_ASSETS
     location ~* \\.(?:js|css|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$ {
         expires 30d;
         add_header Cache-Control "public, max-age=2592000, immutable";
@@ -61,7 +64,7 @@ if marker not in conf:
     else:
         print("could not find location / { to insert cache block")
 else:
-    print("static cache already present")
+    print("skipping static cache location (use expires in location /assets/ instead)")
 
 if changed:
     p.write_text(conf)
