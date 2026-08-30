@@ -14,13 +14,16 @@ export default function ProductCard({ project }: ProductCardProps) {
   const imageSrc = project.screenshots[0] || getPlaceholderForType(project.type)
 
   const plateBg: Record<string, string> = {
+    'crown-ev-center': 'bg-black',
     'citynest-services': 'bg-[#01153d]',
+    'serve-and-lead-society': 'bg-black',
     'sheraz-traders-desktop': 'bg-[#133f2c]',
     'usman-mall-desktop': 'bg-white',
     'sufi-co-grain-market-desktop': 'bg-[#00153d]',
   }
   const plate = plateBg[project.slug]
   const isPlate = Boolean(plate)
+  const plateFill = project.slug === 'citynest-services'
 
   const card = (
     <>
@@ -28,7 +31,7 @@ export default function ProductCard({ project }: ProductCardProps) {
         <ImageReveal className="overflow-hidden">
           <div
             className={`flex aspect-[16/10] items-center justify-center overflow-hidden ${
-              isPlate ? `${plate} p-0` : 'bg-[#f3f6fb] p-5 sm:p-6'
+              isPlate ? `${plate} ${plateFill ? 'p-0' : 'p-5 sm:p-7'}` : 'bg-[#f3f6fb] p-5 sm:p-6'
             }`}
           >
             <img
@@ -38,7 +41,9 @@ export default function ProductCard({ project }: ProductCardProps) {
               decoding="async"
               className={
                 isPlate
-                  ? 'h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]'
+                  ? plateFill
+                    ? 'h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]'
+                    : 'max-h-full max-w-full object-contain transition duration-300 group-hover:scale-[1.02]'
                   : 'max-h-full max-w-full object-contain transition duration-300 group-hover:scale-[1.02]'
               }
             />

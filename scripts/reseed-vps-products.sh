@@ -38,7 +38,7 @@ const products = [
     industry: 'Automotive / E-Mobility', type: 'Web',
     description: "E-commerce and dealership platform for Pakistan's trusted Crown electric bike dealer.",
     tech: JSON.stringify([]), live_url: 'https://crownevcenter.com',
-    screenshot: pick('6b9ede95-5c88-402d-8e5c-749d3dcb444f.webp','6b9ede95-5c88-402d-8e5c-749d3dcb444f.png'),
+    screenshot: pick('crown-ev.webp','6b9ede95-5c88-402d-8e5c-749d3dcb444f.webp','6b9ede95-5c88-402d-8e5c-749d3dcb444f.png'),
     case_study: null,
   },
   {
@@ -54,7 +54,7 @@ const products = [
     industry: 'Non-Profit / Education', type: 'Web',
     description: 'A community platform for a student-led non-profit building leaders through service, career counseling, and internships.',
     tech: JSON.stringify([]), live_url: 'https://serveandlead.org',
-    screenshot: pick('085e3c1a-24b7-416d-be00-e41d6eaf21e1.webp','085e3c1a-24b7-416d-be00-e41d6eaf21e1.png'),
+    screenshot: pick('serve-and-lead.webp','085e3c1a-24b7-416d-be00-e41d6eaf21e1.webp','085e3c1a-24b7-416d-be00-e41d6eaf21e1.png'),
     case_study: null,
   },
   {

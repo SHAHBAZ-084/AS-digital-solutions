@@ -1,5 +1,7 @@
 ﻿import { getPlaceholderForType, type ProjectType } from '../lib/projectPlaceholders'
 import citynestServicesImg from '../assets/projects/citynest-services.webp'
+import crownEvImg from '../assets/projects/crown-ev.webp'
+import serveAndLeadImg from '../assets/projects/serve-and-lead.webp'
 import sherazTradersImg from '../assets/projects/sheraz-traders.webp'
 import usmanMallImg from '../assets/projects/usman-mall.webp'
 import sufiCoImg from '../assets/projects/sufi-co.webp'
@@ -34,7 +36,7 @@ export const projects: Project[] = [
       'A digital storefront and service hub for Crown EV Center, allowing customers to browse electric bikes and genuine parts online, book service appointments at their nearest branch, and find showroom locations in Chishtian and Bahawalnagar.', client: 'Crown EV Center', challenge:
       'Placeholder: describe the business problem before this went live (e.g. no online presence, manual service bookings, limited reach beyond physical showrooms).', solution:
       'Placeholder: describe what was actually built (e.g. product catalog, online parts ordering, service booking flow, showroom locator).', keyFeatures: [
-      'Online catalog for EV bikes and genuine parts', 'E-commerce shop with online ordering and order tracking', 'Service appointment booking by branch', 'Showroom locator (Chishtian & Bahawalnagar)', ], technology: [], screenshots: [getPlaceholderForType('Web')], results: [], liveUrl: 'https://crownevcenter.com', }, {
+      'Online catalog for EV bikes and genuine parts', 'E-commerce shop with online ordering and order tracking', 'Service appointment booking by branch', 'Showroom locator (Chishtian & Bahawalnagar)', ], technology: [], screenshots: [crownEvImg], results: [], liveUrl: 'https://crownevcenter.com', }, {
     slug: 'citynest-services', name: 'CityNestServices', industry: 'Real Estate / Property Management', type: 'Web', description:
       'Property rental and management platform serving landlords and investors across Brisbane and the Gold Coast.', overview:
       'A property management website connecting landlords and investors with rental, management, and maintenance services across Brisbane and the Gold Coast, Australia.', client: 'CityNestServices', challenge:
@@ -46,7 +48,7 @@ export const projects: Project[] = [
       'A website for Serve & Lead Society (SLS), a non-profit organization serving students from all colleges and universities across Punjab, Pakistan, focused on student welfare, career counseling, and internship opportunities.', client: 'Serve & Lead Society', challenge:
       'Placeholder: describe the need (e.g. no central platform for students to find programs, apply for internships, or learn about SLS initiatives).', solution:
       'Placeholder: describe what was built (e.g. program/initiative pages, internship listings, event or membership info, contact/application flow).', keyFeatures: [
-      'Career counseling and student welfare information', 'Internship opportunities for students', 'Serving students across Punjab, Pakistan', ], technology: [], screenshots: [getPlaceholderForType('Web')], results: [], liveUrl: 'https://serveandlead.org', }, {
+      'Career counseling and student welfare information', 'Internship opportunities for students', 'Serving students across Punjab, Pakistan', ], technology: [], screenshots: [serveAndLeadImg], results: [], liveUrl: 'https://serveandlead.org', }, {
     slug: 'sheraz-traders-desktop', name: 'Sheraz Traders', industry: 'Agriculture & Commodity Trading (Grain Market / Mandi)', type: 'Desktop', description:
       'A desktop accounting and inventory system built for a grain market trading business, handling double-entry bookkeeping, invoicing, and stock tracking fully offline.', overview:
       'Sheraz Traders is a Windows desktop application built for a grain market (mandi) trading business in Chishtian, Pakistan. It replaces manual ledger books with a full double-entry accounting system tailored to how grain traders actually work, including a specialized settlement workflow for buying raw grain from farmers (market fee, brokery, and commission deductions calculated automatically). Both the shop owner and clerk staff use it daily to record sales, purchases, and payments.', client: 'Sheraz Traders (Grain Market, Chishtian)', challenge:

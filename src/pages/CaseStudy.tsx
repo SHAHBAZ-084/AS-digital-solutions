@@ -98,7 +98,9 @@ export default function CaseStudy() {
   const show = (id: string) => !project.enabledBlocks || project.enabledBlocks.includes(id)
   const heroImage = project.screenshots[0] || getPlaceholderForType(project.type)
   const plateBg: Record<string, string> = {
+    'crown-ev-center': 'bg-black',
     'citynest-services': 'bg-[#01153d]',
+    'serve-and-lead-society': 'bg-black',
     'sheraz-traders-desktop': 'bg-[#133f2c]',
     'usman-mall-desktop': 'bg-white',
     'sufi-co-grain-market-desktop': 'bg-[#00153d]',
