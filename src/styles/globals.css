@@ -1,0 +1,223 @@
+﻿@import 'tailwindcss';
+
+:root {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f8fe;
+  --color-navy: #0a0e1a;
+  --color-navy-card: #121826;
+  --color-accent: #1e7fe8;
+  --color-accent-light: #1e7fe8;
+  --color-accent-tint: rgba(30, 127, 232, 0.08);
+  --color-whatsapp: #25d366;
+  --color-secondary: rgba(10, 14, 26, 0.7);
+  --color-text: #0a0e1a;
+  --color-text-muted: rgba(10, 14, 26, 0.68);
+  --color-border: rgba(10, 14, 26, 0.12);
+  --nav-height: 4.25rem;
+}
+
+@theme {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f8fe;
+  --color-navy: #0a0e1a;
+  --color-navy-card: #121826;
+  --color-accent: #1e7fe8;
+  --color-accent-light: #1e7fe8;
+  --color-accent-tint: rgba(30, 127, 232, 0.08);
+  --color-whatsapp: #25d366;
+  --color-secondary: rgba(10, 14, 26, 0.7);
+  --color-text: #0a0e1a;
+  --color-text-muted: rgba(10, 14, 26, 0.68);
+  --color-border: rgba(10, 14, 26, 0.12);
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.section-light {
+  --section-text: #0a0e1a;
+  --section-text-muted: rgba(10, 14, 26, 0.68);
+  --section-eyebrow: #1e7fe8;
+}
+
+.section-dark {
+  --section-text: #ffffff;
+  --section-text-muted: rgba(255, 255, 255, 0.72);
+  --section-eyebrow: #1e7fe8;
+  color: var(--section-text);
+}
+
+.text-section { color: var(--section-text); }
+.text-section-muted { color: var(--section-text-muted); }
+.text-section-eyebrow { color: var(--section-eyebrow); }
+
+.section-edge {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1.35rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(30, 127, 232, 0.16) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shine-sweep {
+  from {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(230%) skewX(-18deg);
+  }
+}
+
+@keyframes logo-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes icon-pulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  40% {
+    transform: scale(1.12) rotate(-8deg);
+  }
+  100% {
+    transform: scale(1.1) rotate(0deg);
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.65s ease forwards;
+}
+
+.animate-hero-item {
+  animation: hero-fade-up 0.7s ease forwards;
+}
+
+.animate-page-enter {
+  animation: page-enter 0.12s ease forwards;
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  transition: transform 0.2s ease;
+}
+
+.btn-shine:hover {
+  transform: scale(1.04);
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.btn-shine:hover::after {
+  animation: shine-sweep 0.75s ease;
+}
+
+.group:hover .icon-animate {
+  animation: icon-pulse 0.45s ease;
+}
+
+.icon-animate svg path {
+  transition: stroke 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .btn-shine:hover {
+    transform: none;
+  }
+
+  .btn-shine::after {
+    display: none;
+  }
+
+  .group:hover .icon-animate {
+    animation: none;
+  }
+}
