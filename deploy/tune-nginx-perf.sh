@@ -20,50 +20,54 @@ if [[ -z "$CONF" ]]; then
 fi
 
 echo "Patching $CONF"
+export NGINX_CONF_PATH="$CONF"
 
-python3 - <<PY
+python3 <<'PY'
 from pathlib import Path
-p = Path("$CONF")
+import os
+import re
+
+p = Path(os.environ["NGINX_CONF_PATH"])
 conf = p.read_text()
 changed = False
 
-# Prefer http2 on ssl listen lines
-import re
 def add_http2(m):
     line = m.group(0)
-    if 'http2' in line:
+    if "http2" in line:
         return line
-    return line.replace('ssl;', 'ssl http2;') if 'ssl;' in line else line.replace('ssl', 'ssl http2')
+    if "ssl;" in line:
+        return line.replace("ssl;", "ssl http2;")
+    return line.replace("ssl", "ssl http2")
 
-new = re.sub(r'listen\s+443[^;]*;', add_http2, conf)
+new = re.sub(r"listen\s+443[^;]*;", add_http2, conf)
 if new != conf:
     conf = new
     changed = True
-    print('enabled http2 on :443')
+    print("enabled http2 on :443")
 
-marker = 'location ~* \\.(?:js|css|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$'
+marker = r"location ~* \.(?:js|css|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$"
 if marker not in conf:
-    snippet = '''
+    snippet = """
     location ~* \\.(?:js|css|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$ {
         expires 30d;
         add_header Cache-Control "public, max-age=2592000, immutable";
         try_files $uri =404;
     }
-'''
-    if 'location / {' in conf:
-        conf = conf.replace('location / {', snippet + '\n    location / {', 1)
+"""
+    if "location / {" in conf:
+        conf = conf.replace("location / {", snippet + "\n    location / {", 1)
         changed = True
-        print('added static asset cache')
+        print("added static asset cache")
     else:
-        print('could not find location / { to insert cache block')
+        print("could not find location / { to insert cache block")
 else:
-    print('static cache already present')
+    print("static cache already present")
 
 if changed:
     p.write_text(conf)
-    print('wrote', p)
+    print("wrote", p)
 else:
-    print('no nginx changes needed')
+    print("no nginx changes needed")
 PY
 
 nginx -t && systemctl reload nginx
