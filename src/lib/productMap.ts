@@ -33,7 +33,10 @@ export function projectsToProductItems(source = projects): ProductItem[] {
 export function productToProject(product: ProductItem, fallback?: Project): Project {
   const cs = normalizeCaseStudy(product.case_study)
   const type = asProjectType(product.type)
+  // Prefer bundled Vite assets from static project data when present (reliable logos),
+  // then API/upload URLs.
   const screenshots = resolveProjectScreenshots(type, [
+    ...(fallback?.screenshots ?? []),
     ...cs.screenshot_urls,
     product.screenshot_url,
   ])
