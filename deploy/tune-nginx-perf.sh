@@ -4,6 +4,8 @@ set -euo pipefail
 
 CONF=""
 for candidate in \
+  /etc/nginx/sites-available/asdigitalsolution \
+  /etc/nginx/sites-enabled/asdigitalsolution \
   /etc/nginx/sites-available/asdigitalsolution.online \
   /etc/nginx/sites-enabled/asdigitalsolution.online \
   /etc/nginx/conf.d/asdigitalsolution.online.conf
