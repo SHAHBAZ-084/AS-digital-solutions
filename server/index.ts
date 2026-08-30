@@ -18,7 +18,8 @@ import { loadEnv } from './env.ts'
 const { PORT, SESSION_SECRET, COOKIE_SECURE } = loadEnv()
 const app = express()
 const root = path.dirname(fileURLToPath(import.meta.url))
-const uploadsDir = path.join(root, 'uploads')
+/** Project-root uploads/ (same folder tracked in git + used by deploy). */
+const uploadsDir = path.join(root, '..', 'uploads')
 fs.mkdirSync(uploadsDir, { recursive: true })
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
