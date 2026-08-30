@@ -8,18 +8,14 @@ interface SectionHeadingProps {
   eyebrowKey?: string
   titleKey?: string
   subtitleKey?: string
+  subtitleClassName?: string
 }
 
 export default function SectionHeading({
-  eyebrow,
-  title,
-  subtitle,
-  align = 'left',
-  eyebrowKey,
-  titleKey,
-  subtitleKey,
+  eyebrow, title, subtitle, align = 'left', eyebrowKey, titleKey, subtitleKey, subtitleClassName,
 }: SectionHeadingProps) {
   const isCenter = align === 'center'
+  const subtitleWidth = subtitleClassName ?? (isCenter ? 'mx-auto max-w-3xl' : 'max-w-3xl')
 
   return (
     <div className={`mb-10 ${isCenter ? 'text-center' : ''}`}>
@@ -57,14 +53,12 @@ export default function SectionHeading({
           <EditableText
             contentKey={subtitleKey}
             as="p"
-            className={`text-section-muted mt-4 ${isCenter ? 'mx-auto max-w-3xl' : 'max-w-3xl'}`}
+            className={`text-section-muted mt-4 ${subtitleWidth}`}
           >
             {subtitle}
           </EditableText>
         ) : (
-          <p
-            className={`text-section-muted mt-4 ${isCenter ? 'mx-auto max-w-3xl' : 'max-w-3xl'}`}
-          >
+          <p className={`text-section-muted mt-4 ${subtitleWidth}`}>
             {subtitle}
           </p>
         )

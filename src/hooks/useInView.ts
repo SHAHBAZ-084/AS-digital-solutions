@@ -7,9 +7,7 @@ interface UseInViewOptions {
 }
 
 export function useInView<T extends HTMLElement>({
-  once = true,
-  rootMargin = '80px 0px 80px 0px',
-  threshold = 0.01,
+  once = true, rootMargin = '80px 0px 80px 0px', threshold = 0.01,
 }: UseInViewOptions = {}) {
   const ref = useRef<T>(null)
   const [inView, setInView] = useState(false)
@@ -26,9 +24,7 @@ export function useInView<T extends HTMLElement>({
         } else if (!once) {
           setInView(false)
         }
-      },
-      { rootMargin, threshold },
-    )
+      }, { rootMargin, threshold }, )
 
     observer.observe(node)
     return () => observer.disconnect()

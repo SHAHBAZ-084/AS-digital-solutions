@@ -8,10 +8,7 @@ function apiUrl(path: string) {
 
 function fetchFast(path: string, init?: RequestInit, ms = 2000) {
   return fetch(apiUrl(path), {
-    ...init,
-    credentials: 'include',
-    signal: AbortSignal.timeout(ms),
-  })
+    ...init, credentials: 'include', signal: AbortSignal.timeout(ms), })
 }
 
 async function readJson<T>(path: string): Promise<T | null> {
@@ -33,14 +30,8 @@ export async function loginAdmin(username: string, password: string) {
   let response: Response
   try {
     response = await fetchFast(
-      '/api/admin/login',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      },
-      4000,
-    )
+      '/api/admin/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }), }, 4000, )
   } catch {
     throw new Error('unavailable')
   }
@@ -77,14 +68,8 @@ export async function fetchAdminMe() {
 
 async function sendWrite(path: string, method: string, body?: unknown) {
   const response = await fetchFast(
-    path,
-    {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    },
-    4000,
-  )
+    path, {
+      method, headers: { 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), }, 4000, )
   if (response.status === 401) throw new Error('unauthorized')
   if (!response.ok) throw new Error('save-failed')
   return response.json() as Promise<unknown>
@@ -99,14 +84,8 @@ export async function fetchSettings() {
 
 export async function changeAdminPassword(currentPassword: string, newPassword: string) {
   const response = await fetchFast(
-    '/api/admin/password',
-    {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentPassword, newPassword }),
-    },
-    4000,
-  )
+    '/api/admin/password', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ currentPassword, newPassword }), }, 4000, )
   if (response.status === 401) throw new Error('invalid')
   if (response.status === 400) throw new Error('invalid')
   if (!response.ok) throw new Error('save-failed')
@@ -116,13 +95,8 @@ export async function uploadImage(file: File) {
   const body = new FormData()
   body.append('file', file)
   const response = await fetchFast(
-    '/api/upload',
-    {
-      method: 'POST',
-      body,
-    },
-    8000,
-  )
+    '/api/upload', {
+      method: 'POST', body, }, 8000, )
   if (response.status === 401) throw new Error('unauthorized')
   if (!response.ok) {
     throw new Error(response.status === 413 ? 'too-large' : 'upload-failed')
@@ -133,15 +107,9 @@ export async function uploadImage(file: File) {
 }
 
 export const siteApi = {
-  create: (resource: string, body: unknown) => sendWrite(`/api/${resource}`, 'POST', body),
-  update: (resource: string, id: string, body: unknown) =>
-    sendWrite(`/api/${resource}/${encodeURIComponent(id)}`, 'PUT', body),
-  remove: (resource: string, id: string) =>
-    sendWrite(`/api/${resource}/${encodeURIComponent(id)}`, 'DELETE'),
-  updateContact: (body: unknown) => sendWrite('/api/contact', 'PUT', body),
-  updateFooter: (body: unknown) => sendWrite('/api/footer', 'PUT', body),
-  updateWhyUs: (body: unknown) => sendWrite('/api/why-us', 'PUT', body),
-  updateProcess: (body: unknown) => sendWrite('/api/process', 'PUT', body),
+  create: (resource: string, body: unknown) => sendWrite(`/api/${resource}`, 'POST', body), update: (resource: string, id: string, body: unknown) =>
+    sendWrite(`/api/${resource}/${encodeURIComponent(id)}`, 'PUT', body), remove: (resource: string, id: string) =>
+    sendWrite(`/api/${resource}/${encodeURIComponent(id)}`, 'DELETE'), updateContact: (body: unknown) => sendWrite('/api/contact', 'PUT', body), updateFooter: (body: unknown) => sendWrite('/api/footer', 'PUT', body), updateWhyUs: (body: unknown) => sendWrite('/api/why-us', 'PUT', body), updateProcess: (body: unknown) => sendWrite('/api/process', 'PUT', body),
 }
 
 export { defaultContact }

@@ -1,26 +1,30 @@
-﻿import Reveal from '../ui/Reveal'
+import { motion } from 'framer-motion'
+import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 import SectionShell from '../ui/SectionShell'
+import StaggerGrid from '../ui/StaggerGrid'
 import { useSiteData } from '../../context/SiteDataContext'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 export default function Team() {
   const { team } = useSiteData()
+  const reduced = useReducedMotion()
 
   return (
     <SectionShell id="team">
       <SectionHeading
         eyebrow="Team"
-        title="The section is ready for the people behind the work"
+        title="Our Team"
         subtitle="Profiles below are clearly marked placeholders so real team details can be dropped in later without rebuilding the layout."
         eyebrowKey="team.eyebrow"
         titleKey="team.title"
         subtitleKey="team.subtitle"
       />
 
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-12">
-        {team.map((member, index) => (
-          <Reveal key={member.id} delayMs={index * 70}>
-            <article className="flex flex-col items-start">
+      <StaggerGrid className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-12">
+        {team.map((member) => {
+          const article = (
+            <>
               {member.photo_url ? (
                 <img
                   src={member.photo_url}
@@ -56,10 +60,26 @@ export default function Team() {
                   Email
                 </a>
               </div>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+            </>
+          )
+
+          return (
+            <Reveal key={member.id} staggerChild>
+              {reduced ? (
+                <article className="flex flex-col items-start">{article}</article>
+              ) : (
+                <motion.article
+                  className="flex flex-col items-start"
+                  whileHover={{ y: -4 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 24 }}
+                >
+                  {article}
+                </motion.article>
+              )}
+            </Reveal>
+          )
+        })}
+      </StaggerGrid>
     </SectionShell>
   )
 }

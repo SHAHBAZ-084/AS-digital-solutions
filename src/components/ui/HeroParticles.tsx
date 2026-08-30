@@ -33,12 +33,7 @@ export default function HeroParticles() {
       canvas.width = parent.clientWidth
       canvas.height = parent.clientHeight
       particles = Array.from({ length: count }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: 2 + Math.random() * 4,
-        speed: 0.15 + Math.random() * 0.35,
-        opacity: 0.08 + Math.random() * 0.18,
-      }))
+        x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: 2 + Math.random() * 4, speed: 0.15 + Math.random() * 0.35, opacity: 0.08 + Math.random() * 0.18, }))
     }
 
     const draw = () => {

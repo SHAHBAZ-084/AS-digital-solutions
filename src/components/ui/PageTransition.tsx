@@ -1,21 +1,29 @@
-import type { ReactNode } from 'react'
-import { useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useLocation, useOutlet } from 'react-router-dom'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { pageVariants, shortTransition } from '../../lib/motion'
 
-interface PageTransitionProps {
-  children: ReactNode
-}
-
-export default function PageTransition({ children }: PageTransitionProps) {
+export default function PageTransition() {
   const location = useLocation()
+  const outlet = useOutlet()
   const reduced = useReducedMotion()
 
+  if (reduced) {
+    return <div key={location.pathname}>{outlet}</div>
+  }
+
   return (
-    <div
-      key={location.pathname}
-      className={reduced ? '' : 'animate-page-enter'}
-    >
-      {children}
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={shortTransition}
+      >
+        {outlet}
+      </motion.div>
+    </AnimatePresence>
   )
 }

@@ -32,9 +32,7 @@ function TypingTextAnimated({ text, speedMs, className }: TypingTextProps) {
 }
 
 export default function TypingText({
-  text,
-  speedMs = 70,
-  className = '',
+  text, speedMs = 70, className = '',
 }: TypingTextProps) {
   const reduced = useReducedMotion()
 

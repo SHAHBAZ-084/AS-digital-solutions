@@ -14,7 +14,7 @@ export function projectsToProductItems(source = projects): ProductItem[] {
     description: project.description,
     tech: project.technology,
     screenshot_url: project.screenshots[0] ?? '',
-    live_url: '',
+    live_url: project.liveUrl ?? '',
     sort_order: 0,
     case_study: {
       overview: project.overview,

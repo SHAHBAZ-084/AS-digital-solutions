@@ -1,7 +1,8 @@
-﻿import ServiceCard from '../cards/ServiceCard'
+import ServiceCard from '../cards/ServiceCard'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 import SectionShell from '../ui/SectionShell'
+import StaggerGrid from '../ui/StaggerGrid'
 import { useSiteData } from '../../context/SiteDataContext'
 import servicesOffice from '../../assets/brand/services-office.png'
 
@@ -19,13 +20,13 @@ export default function Services() {
         subtitleKey="services.subtitle"
       />
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {services.map((service, index) => (
-          <Reveal key={service.id} delayMs={index * 80} className="h-full">
+      <StaggerGrid className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {services.map((service) => (
+          <Reveal key={service.id} staggerChild className="h-full">
             <ServiceCard service={service} />
           </Reveal>
         ))}
-      </div>
+      </StaggerGrid>
     </SectionShell>
   )
 }

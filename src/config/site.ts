@@ -6,11 +6,11 @@ export const siteConfig = {
   eyebrow: 'Smart code. Modern design. Real results.',
   /** Empty in dev (Vite proxies /api) and production (nginx reverse-proxies /api). */
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
-  /** Display format — replace with the live number when ready */
+  /** Display format; replace with the live number when ready */
   whatsappNumber: '+92-XXX-XXXXXXX',
-  /** Digits only for wa.me links — keep in sync with whatsappNumber */
+  /** Digits only for wa.me links; keep in sync with whatsappNumber */
   whatsappDigits: '92XXXXXXXXXX',
-  email: 'hello@example.com',
+  email: 'contactasdigitalsolutions@gmail.com',
   phone: '+92-XXX-XXXXXXX',
   address: 'Placeholder address',
   social: {
@@ -38,7 +38,7 @@ export function toWhatsAppDigits(display?: string) {
 }
 
 export function getWhatsAppUrl(
-  text = 'Hi AS Digital Solutions — I would like to start a project.',
+  text = 'Hi AS Digital Solutions, I would like to start a project.',
   digits?: string,
 ) {
   const resolved = digits ?? siteConfig.whatsappDigits

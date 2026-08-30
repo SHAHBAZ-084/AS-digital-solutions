@@ -1,11 +1,5 @@
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
+  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
 import { defaultContact } from '../config/site'
 import { defaultFooter } from '../config/footer'
@@ -16,12 +10,7 @@ import { technologies as fallbackTechnologies } from '../data/technologies'
 import { fetchSiteContent } from '../lib/siteApi'
 import { productFromApi, projectsToProductItems } from '../lib/productMap'
 import type {
-  ContactInfo,
-  ProductItem,
-  Service,
-  SiteContent,
-  TeamMember,
-  Technology,
+  ContactInfo, ProductItem, Service, SiteContent, TeamMember, Technology,
 } from '../types/siteContent'
 
 const fallbackProducts = projectsToProductItems()
@@ -43,28 +32,12 @@ function normalizeProducts(value: ProductItem[] | undefined) {
 
 function applyPayload(next: Partial<SiteContent>): SiteContent {
   return {
-    services: pickList(next.services, fallbackServices),
-    products: normalizeProducts(next.products),
-    team: pickList(next.team, fallbackTeam),
-    technologies: pickList(next.technologies, fallbackTechnologies),
-    contact: next.contact ?? defaultContact,
-    footer: next.footer ?? defaultFooter,
-    why_us: next.why_us ?? defaultWhyUs,
-    process: next.process ?? defaultProcess,
-  }
+    services: pickList(next.services, fallbackServices), products: normalizeProducts(next.products), team: pickList(next.team, fallbackTeam), technologies: pickList(next.technologies, fallbackTechnologies), contact: next.contact ?? defaultContact, footer: next.footer ?? defaultFooter, why_us: next.why_us ?? defaultWhyUs, process: next.process ?? defaultProcess, }
 }
 
 export function SiteDataProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<SiteContent>({
-    services: fallbackServices,
-    products: fallbackProducts,
-    team: fallbackTeam,
-    technologies: fallbackTechnologies,
-    contact: defaultContact,
-    footer: defaultFooter,
-    why_us: defaultWhyUs,
-    process: defaultProcess,
-  })
+    services: fallbackServices, products: fallbackProducts, team: fallbackTeam, technologies: fallbackTechnologies, contact: defaultContact, footer: defaultFooter, why_us: defaultWhyUs, process: defaultProcess, })
 
   const refresh = useCallback(async () => {
     const next = await fetchSiteContent()
@@ -89,11 +62,7 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      ...data,
-      refresh,
-    }),
-    [data, refresh],
-  )
+      ...data, refresh, }), [data, refresh], )
 
   return <SiteDataContext.Provider value={value}>{children}</SiteDataContext.Provider>
 }

@@ -1,23 +1,20 @@
-﻿import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../../assets/brand/white-logo.png'
-import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../../config/site'
-import { useSiteData } from '../../context/SiteDataContext'
+import { siteConfig } from '../../config/site'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { easeOutExpo } from '../../lib/motion'
 import EditableText from '../ui/EditableText'
-import WhatsAppIcon from '../ui/WhatsAppIcon'
 
 const navLinks = [
-  { id: 'home', label: 'Home', href: '#hero' },
-  { id: 'services', label: 'Services', href: '#services' },
-  { id: 'projects', label: 'Projects', href: '#projects' },
-  { id: 'process', label: 'Process', href: '#process' },
-  { id: 'contact', label: 'Contact', href: '#contact' },
+  { id: 'home', label: 'Home', href: '#hero' }, { id: 'services', label: 'Services', href: '#services' }, { id: 'projects', label: 'Projects', href: '#projects' }, { id: 'process', label: 'Process', href: '#process' }, { id: 'contact', label: 'Contact', href: '#contact' },
 ]
 
 export default function Navbar() {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
-  const { contact } = useSiteData()
+  const reduced = useReducedMotion()
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -28,6 +25,24 @@ export default function Navbar() {
 
   const resolveHref = (hash: string) => (pathname === '/' ? hash : `/${hash}`)
   const closeMenu = () => setMenuOpen(false)
+
+  const mobileMenu = (
+    <div className="border-t border-white/10 bg-navy lg:hidden">
+      <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4">
+        {navLinks.map((link) => (
+          <li key={link.href}>
+            <a
+              href={resolveHref(link.href)}
+              className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
+              onClick={closeMenu}
+            >
+              <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 
   return (
     <header className="sticky top-0 z-50 bg-navy">
@@ -48,64 +63,55 @@ export default function Navbar() {
         <ul className="hidden items-center gap-7 text-[13px] font-medium tracking-wide text-white lg:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
+              <motion.a
                 href={resolveHref(link.href)}
-                className="uppercase tracking-[0.14em] transition-colors hover:text-accent"
+                className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent"
+                whileHover={reduced ? undefined : { y: -1 }}
+                transition={{ duration: 0.2, ease: easeOutExpo }}
               >
                 <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
-              </a>
+              </motion.a>
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
-          <a
-            href={getWhatsAppUrl(undefined, toWhatsAppDigits(contact.whatsapp_number))}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-shine inline-flex items-center gap-2 rounded-full bg-whatsapp px-3 py-2 text-sm font-semibold text-white sm:px-4"
-          >
-            <WhatsAppIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">WhatsApp</span>
-          </a>
-
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? (
-              <span className="text-xl leading-none">&times;</span>
-            ) : (
-              <span className="flex flex-col gap-1.5">
-                <span className="block h-0.5 w-4 bg-current" />
-                <span className="block h-0.5 w-4 bg-current" />
-                <span className="block h-0.5 w-4 bg-current" />
-              </span>
-            )}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? (
+            <span className="text-xl leading-none">&times;</span>
+          ) : (
+            <span className="flex flex-col gap-1.5">
+              <span className="block h-0.5 w-4 bg-current" />
+              <span className="block h-0.5 w-4 bg-current" />
+              <span className="block h-0.5 w-4 bg-current" />
+            </span>
+          )}
+        </button>
       </nav>
 
-      {menuOpen ? (
-        <div className="border-t border-white/10 bg-navy lg:hidden">
-          <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={resolveHref(link.href)}
-                  className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
-                  onClick={closeMenu}
-                >
-                  <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {reduced ? (
+        menuOpen ? mobileMenu : null
+      ) : (
+        <AnimatePresence initial={false}>
+          {menuOpen ? (
+            <motion.div
+              key="mobile-menu"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: easeOutExpo }}
+              className="overflow-hidden lg:hidden"
+            >
+              {mobileMenu}
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      )}
     </header>
   )
 }

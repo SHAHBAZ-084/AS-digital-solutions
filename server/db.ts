@@ -4,11 +4,7 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import bcrypt from 'bcrypt'
 import {
-  seedContact,
-  seedProducts,
-  seedServices,
-  seedTeam,
-  seedTechnologies,
+  seedContact, seedProducts, seedServices, seedTeam, seedTechnologies,
 } from './seed.ts'
 
 const require = createRequire(import.meta.url)
@@ -23,70 +19,31 @@ db.pragma('journal_mode = WAL')
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS services (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    icon TEXT NOT NULL DEFAULT '',
-    features TEXT NOT NULL DEFAULT '[]',
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    id TEXT PRIMARY KEY, title TEXT NOT NULL, description TEXT NOT NULL, icon TEXT NOT NULL DEFAULT '', features TEXT NOT NULL DEFAULT '[]', sort_order INTEGER NOT NULL DEFAULT 0, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
   CREATE TABLE IF NOT EXISTS products (
-    id TEXT PRIMARY KEY,
-    slug TEXT NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    industry TEXT NOT NULL DEFAULT '',
-    type TEXT NOT NULL DEFAULT '',
-    description TEXT NOT NULL DEFAULT '',
-    tech TEXT NOT NULL DEFAULT '[]',
-    screenshot_url TEXT NOT NULL DEFAULT '',
-    live_url TEXT NOT NULL DEFAULT '',
-    case_study TEXT NOT NULL DEFAULT '{}',
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    id TEXT PRIMARY KEY, slug TEXT NOT NULL UNIQUE, name TEXT NOT NULL, industry TEXT NOT NULL DEFAULT '', type TEXT NOT NULL DEFAULT '', description TEXT NOT NULL DEFAULT '', tech TEXT NOT NULL DEFAULT '[]', screenshot_url TEXT NOT NULL DEFAULT '', live_url TEXT NOT NULL DEFAULT '', case_study TEXT NOT NULL DEFAULT '{}', sort_order INTEGER NOT NULL DEFAULT 0, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
   CREATE TABLE IF NOT EXISTS team_members (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    role TEXT NOT NULL DEFAULT '',
-    bio TEXT NOT NULL DEFAULT '',
-    skills TEXT NOT NULL DEFAULT '[]',
-    links TEXT NOT NULL DEFAULT '{}',
-    photo_url TEXT NOT NULL DEFAULT '',
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    id TEXT PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL DEFAULT '', bio TEXT NOT NULL DEFAULT '', skills TEXT NOT NULL DEFAULT '[]', links TEXT NOT NULL DEFAULT '{}', photo_url TEXT NOT NULL DEFAULT '', sort_order INTEGER NOT NULL DEFAULT 0, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
   CREATE TABLE IF NOT EXISTS technologies (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    category TEXT NOT NULL DEFAULT '',
-    icon TEXT NOT NULL DEFAULT '',
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    id TEXT PRIMARY KEY, name TEXT NOT NULL, category TEXT NOT NULL DEFAULT '', icon TEXT NOT NULL DEFAULT '', sort_order INTEGER NOT NULL DEFAULT 0, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
   CREATE TABLE IF NOT EXISTS contact_info (
-    id INTEGER PRIMARY KEY CHECK (id = 1),
-    whatsapp_number TEXT NOT NULL DEFAULT '',
-    email TEXT NOT NULL DEFAULT '',
-    phone TEXT NOT NULL DEFAULT '',
-    address TEXT NOT NULL DEFAULT '',
-    socials TEXT NOT NULL DEFAULT '{}'
+    id INTEGER PRIMARY KEY CHECK (id = 1), whatsapp_number TEXT NOT NULL DEFAULT '', email TEXT NOT NULL DEFAULT '', phone TEXT NOT NULL DEFAULT '', address TEXT NOT NULL DEFAULT '', socials TEXT NOT NULL DEFAULT '{}'
   );
 
   CREATE TABLE IF NOT EXISTS settings (
-    key TEXT PRIMARY KEY,
-    value TEXT NOT NULL
+    key TEXT PRIMARY KEY, value TEXT NOT NULL
   );
 
   CREATE TABLE IF NOT EXISTS admin_users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE COLLATE NOCASE,
-    password_hash TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE COLLATE NOCASE, password_hash TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
 `)
 
@@ -122,9 +79,7 @@ function parseLinks(raw: string) {
     }
     const record = value as { linkedin?: unknown; email?: unknown }
     return {
-      linkedin: typeof record.linkedin === 'string' ? record.linkedin : '',
-      email: typeof record.email === 'string' ? record.email : '',
-    }
+      linkedin: typeof record.linkedin === 'string' ? record.linkedin : '', email: typeof record.email === 'string' ? record.email : '', }
   } catch {
     return { linkedin: '', email: '' }
   }
@@ -132,24 +87,8 @@ function parseLinks(raw: string) {
 
 function parseCaseStudy(raw: string) {
   const empty = {
-    overview: '',
-    client: '',
-    challenge: '',
-    solution: '',
-    key_features: [] as string[],
-    results: [] as string[],
-    screenshot_urls: [] as string[],
-    enabled_blocks: [
-      'overview',
-      'client',
-      'challenge',
-      'solution',
-      'key_features',
-      'results',
-      'screenshots',
-    ],
-    sections: [] as { id: string; title: string; body: string; bullets: string[] }[],
-  }
+    overview: '', client: '', challenge: '', solution: '', key_features: [] as string[], results: [] as string[], screenshot_urls: [] as string[], enabled_blocks: [
+      'overview', 'client', 'challenge', 'solution', 'key_features', 'results', 'screenshots', ], sections: [] as { id: string; title: string; body: string; bullets: string[] }[], }
   try {
     const value: unknown = JSON.parse(raw || '{}')
     if (!value || typeof value !== 'object' || Array.isArray(value)) return empty
@@ -170,32 +109,16 @@ function parseCaseStudy(raw: string) {
           .filter((item): item is { id: string; title: string; body: string; bullets: string[] } => item !== null)
       : []
     return {
-      overview: typeof record.overview === 'string' ? record.overview : empty.overview,
-      client: typeof record.client === 'string' ? record.client : empty.client,
-      challenge: typeof record.challenge === 'string' ? record.challenge : empty.challenge,
-      solution: typeof record.solution === 'string' ? record.solution : empty.solution,
-      key_features: Array.isArray(record.key_features)
+      overview: typeof record.overview === 'string' ? record.overview : empty.overview, client: typeof record.client === 'string' ? record.client : empty.client, challenge: typeof record.challenge === 'string' ? record.challenge : empty.challenge, solution: typeof record.solution === 'string' ? record.solution : empty.solution, key_features: Array.isArray(record.key_features)
         ? record.key_features.filter((item): item is string => typeof item === 'string')
-        : empty.key_features,
-      results: Array.isArray(record.results)
+        : empty.key_features, results: Array.isArray(record.results)
         ? record.results.filter((item): item is string => typeof item === 'string')
-        : empty.results,
-      screenshot_urls: Array.isArray(record.screenshot_urls)
+        : empty.results, screenshot_urls: Array.isArray(record.screenshot_urls)
         ? record.screenshot_urls.filter((item): item is string => typeof item === 'string')
-        : empty.screenshot_urls,
-      enabled_blocks: Array.isArray(record.enabled_blocks)
+        : empty.screenshot_urls, enabled_blocks: Array.isArray(record.enabled_blocks)
         ? record.enabled_blocks.filter((item): item is string => typeof item === 'string')
         : [
-            'overview',
-            'client',
-            'challenge',
-            'solution',
-            'key_features',
-            'results',
-            'screenshots',
-          ],
-      sections,
-    }
+            'overview', 'client', 'challenge', 'solution', 'key_features', 'results', 'screenshots', ], sections, }
   } catch {
     return empty
   }
@@ -209,10 +132,7 @@ function parseSocials(raw: string) {
     }
     const record = value as { linkedin?: unknown; facebook?: unknown; instagram?: unknown }
     return {
-      linkedin: typeof record.linkedin === 'string' ? record.linkedin : '',
-      facebook: typeof record.facebook === 'string' ? record.facebook : '',
-      instagram: typeof record.instagram === 'string' ? record.instagram : '',
-    }
+      linkedin: typeof record.linkedin === 'string' ? record.linkedin : '', facebook: typeof record.facebook === 'string' ? record.facebook : '', instagram: typeof record.instagram === 'string' ? record.instagram : '', }
   } catch {
     return { linkedin: '', facebook: '', instagram: '' }
   }
@@ -311,42 +231,24 @@ const seedIfEmpty = db.transaction(() => {
   if ((countServices.get() as { count: number }).count === 0) {
     seedServices.forEach((item, index) =>
       insertService.run({
-        ...item,
-        features: JSON.stringify(item.features),
-        sort_order: index,
-      }),
-    )
+        ...item, features: JSON.stringify(item.features), sort_order: index, }), )
   }
   if ((countProducts.get() as { count: number }).count === 0) {
     seedProducts.forEach((item, index) =>
       insertProduct.run({
-        ...item,
-        tech: JSON.stringify(item.tech),
-        live_url: item.live_url ?? '',
-        case_study: JSON.stringify(item.case_study ?? {}),
-        sort_order: index,
-      }),
-    )
+        ...item, tech: JSON.stringify(item.tech), live_url: item.live_url ?? '', case_study: JSON.stringify(item.case_study ?? {}), sort_order: index, }), )
   }
   if ((countTeam.get() as { count: number }).count === 0) {
     seedTeam.forEach((item, index) =>
       insertTeam.run({
-        ...item,
-        skills: JSON.stringify(item.skills),
-        links: JSON.stringify(item.links),
-        photo_url: '',
-        sort_order: index,
-      }),
-    )
+        ...item, skills: JSON.stringify(item.skills), links: JSON.stringify(item.links), photo_url: '', sort_order: index, }), )
   }
   if ((countTech.get() as { count: number }).count === 0) {
     seedTechnologies.forEach((item, index) => insertTech.run({ ...item, sort_order: index }))
   }
   if ((countContact.get() as { count: number }).count === 0) {
     insertContact.run({
-      ...seedContact,
-      socials: JSON.stringify(seedContact.socials),
-    })
+      ...seedContact, socials: JSON.stringify(seedContact.socials), })
   }
 })
 
@@ -396,21 +298,11 @@ function mapService(row: ServiceRecord): ServiceRow {
 }
 function mapProduct(row: ProductRecord): ProductRow {
   return {
-    ...row,
-    tech: parseStringArray(row.tech),
-    live_url: row.live_url ?? '',
-    sort_order: row.sort_order ?? 0,
-    case_study: parseCaseStudy(row.case_study ?? '{}'),
-  }
+    ...row, tech: parseStringArray(row.tech), live_url: row.live_url ?? '', sort_order: row.sort_order ?? 0, case_study: parseCaseStudy(row.case_study ?? '{}'), }
 }
 function mapTeam(row: TeamRecord): TeamRow {
   return {
-    ...row,
-    skills: parseStringArray(row.skills),
-    links: parseLinks(row.links),
-    photo_url: row.photo_url ?? '',
-    sort_order: row.sort_order ?? 0,
-  }
+    ...row, skills: parseStringArray(row.skills), links: parseLinks(row.links), photo_url: row.photo_url ?? '', sort_order: row.sort_order ?? 0, }
 }
 function mapContact(row: ContactRecord): ContactRow {
   return { ...row, socials: parseSocials(row.socials) }
@@ -441,59 +333,29 @@ const upsertServiceSql = db.prepare(`
   INSERT INTO services (id, title, description, icon, features, sort_order, updated_at)
   VALUES (@id, @title, @description, @icon, @features, @sort_order, CURRENT_TIMESTAMP)
   ON CONFLICT(id) DO UPDATE SET
-    title = excluded.title,
-    description = excluded.description,
-    icon = excluded.icon,
-    features = excluded.features,
-    sort_order = excluded.sort_order,
-    updated_at = CURRENT_TIMESTAMP
+    title = excluded.title, description = excluded.description, icon = excluded.icon, features = excluded.features, sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
 `)
 const upsertProductSql = db.prepare(`
   INSERT INTO products (id, slug, name, industry, type, description, tech, screenshot_url, live_url, case_study, sort_order, updated_at)
   VALUES (@id, @slug, @name, @industry, @type, @description, @tech, @screenshot_url, @live_url, @case_study, @sort_order, CURRENT_TIMESTAMP)
   ON CONFLICT(id) DO UPDATE SET
-    slug = excluded.slug,
-    name = excluded.name,
-    industry = excluded.industry,
-    type = excluded.type,
-    description = excluded.description,
-    tech = excluded.tech,
-    screenshot_url = excluded.screenshot_url,
-    live_url = excluded.live_url,
-    case_study = excluded.case_study,
-    sort_order = excluded.sort_order,
-    updated_at = CURRENT_TIMESTAMP
+    slug = excluded.slug, name = excluded.name, industry = excluded.industry, type = excluded.type, description = excluded.description, tech = excluded.tech, screenshot_url = excluded.screenshot_url, live_url = excluded.live_url, case_study = excluded.case_study, sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
 `)
 const upsertTeamSql = db.prepare(`
   INSERT INTO team_members (id, name, role, bio, skills, links, photo_url, sort_order, updated_at)
   VALUES (@id, @name, @role, @bio, @skills, @links, @photo_url, @sort_order, CURRENT_TIMESTAMP)
   ON CONFLICT(id) DO UPDATE SET
-    name = excluded.name,
-    role = excluded.role,
-    bio = excluded.bio,
-    skills = excluded.skills,
-    links = excluded.links,
-    photo_url = excluded.photo_url,
-    sort_order = excluded.sort_order,
-    updated_at = CURRENT_TIMESTAMP
+    name = excluded.name, role = excluded.role, bio = excluded.bio, skills = excluded.skills, links = excluded.links, photo_url = excluded.photo_url, sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
 `)
 const upsertTechSql = db.prepare(`
   INSERT INTO technologies (id, name, category, icon, sort_order, updated_at)
   VALUES (@id, @name, @category, @icon, @sort_order, CURRENT_TIMESTAMP)
   ON CONFLICT(id) DO UPDATE SET
-    name = excluded.name,
-    category = excluded.category,
-    icon = excluded.icon,
-    sort_order = excluded.sort_order,
-    updated_at = CURRENT_TIMESTAMP
+    name = excluded.name, category = excluded.category, icon = excluded.icon, sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
 `)
 const updateContactSql = db.prepare(`
   UPDATE contact_info
-  SET whatsapp_number = @whatsapp_number,
-      email = @email,
-      phone = @phone,
-      address = @address,
-      socials = @socials
+  SET whatsapp_number = @whatsapp_number, email = @email, phone = @phone, address = @address, socials = @socials
   WHERE id = 1
 `)
 
@@ -504,15 +366,7 @@ const deleteTechSql = db.prepare('DELETE FROM technologies WHERE id = ?')
 
 export function listSite() {
   return {
-    services: listServices(),
-    products: listProducts(),
-    team: listTeam(),
-    technologies: listTechnologies(),
-    contact: getContact(),
-    footer: getFooter(),
-    why_us: getWhyUs(),
-    process: getProcess(),
-  }
+    services: listServices(), products: listProducts(), team: listTeam(), technologies: listTechnologies(), contact: getContact(), footer: getFooter(), why_us: getWhyUs(), process: getProcess(), }
 }
 
 export function listServices(): ServiceRow[] {
@@ -532,12 +386,7 @@ export function getContact(): ContactRow {
   return row
     ? mapContact(row)
     : {
-        whatsapp_number: '',
-        email: '',
-        phone: '',
-        address: '',
-        socials: { linkedin: '', facebook: '', instagram: '' },
-      }
+        whatsapp_number: '', email: '', phone: '', address: '', socials: { linkedin: '', facebook: '', instagram: '' }, }
 }
 
 export function serviceExists(id: string) {
@@ -555,40 +404,23 @@ export function technologyExists(id: string) {
 
 export function upsertService(item: ServiceRow & { sort_order?: number }) {
   upsertServiceSql.run({
-    ...item,
-    features: JSON.stringify(item.features),
-    sort_order: item.sort_order ?? 0,
-  })
+    ...item, features: JSON.stringify(item.features), sort_order: item.sort_order ?? 0, })
 }
 export function upsertProduct(item: ProductRow & { sort_order?: number }) {
   upsertProductSql.run({
-    ...item,
-    tech: JSON.stringify(item.tech),
-    live_url: item.live_url ?? '',
-    case_study: JSON.stringify(item.case_study ?? {}),
-    sort_order: item.sort_order ?? 0,
-  })
+    ...item, tech: JSON.stringify(item.tech), live_url: item.live_url ?? '', case_study: JSON.stringify(item.case_study ?? {}), sort_order: item.sort_order ?? 0, })
 }
 export function upsertTeam(item: TeamRow & { sort_order?: number }) {
   upsertTeamSql.run({
-    ...item,
-    skills: JSON.stringify(item.skills),
-    links: JSON.stringify(item.links),
-    photo_url: item.photo_url ?? '',
-    sort_order: item.sort_order ?? 0,
-  })
+    ...item, skills: JSON.stringify(item.skills), links: JSON.stringify(item.links), photo_url: item.photo_url ?? '', sort_order: item.sort_order ?? 0, })
 }
 export function upsertTechnology(item: TechnologyRow & { sort_order?: number }) {
   upsertTechSql.run({
-    ...item,
-    sort_order: item.sort_order ?? 0,
-  })
+    ...item, sort_order: item.sort_order ?? 0, })
 }
 export function upsertContact(item: ContactRow) {
   updateContactSql.run({
-    ...item,
-    socials: JSON.stringify(item.socials),
-  })
+    ...item, socials: JSON.stringify(item.socials), })
 }
 
 export function deleteService(id: string) {
@@ -650,9 +482,7 @@ function seedAdminUser() {
   if (count > 0) return
   const legacy = getSetting('passphrase', 'CUIVHR') || 'CUIVHR'
   insertAdmin.run({
-    username: 'admin',
-    password_hash: bcrypt.hashSync(legacy, 12),
-  })
+    username: 'admin', password_hash: bcrypt.hashSync(legacy, 12), })
 }
 
 seedAdminUser()
@@ -667,47 +497,16 @@ export interface FooterPayload {
 
 const defaultFooter: FooterPayload = {
   blurb:
-    'AS Digital Solutions builds practical digital projects, business software, and long-term solutions designed around real workflows.',
-  copyright: 'All rights reserved.',
-  privacy_label: 'Privacy Policy',
-  terms_label: 'Terms',
-  columns: [
+    'AS Digital Solutions builds practical digital projects, business software, and long-term solutions designed around real workflows.', copyright: 'All rights reserved.', privacy_label: 'Privacy Policy', terms_label: 'Terms', columns: [
     {
-      id: 'services',
-      title: 'Services',
-      links: [
-        { id: 'web', label: 'Web Development', href: '#services' },
-        { id: 'business', label: 'Business Software', href: '#business-software' },
-        { id: 'ai', label: 'AI & ML Solutions', href: '#services' },
-        { id: 'consultancy', label: 'Consultancy', href: '#contact' },
-      ],
-    },
-    {
-      id: 'projects',
-      title: 'Projects',
-      links: [
-        { id: 'portfolio', label: 'Portfolio', href: '#projects' },
-        { id: 'case-study', label: 'Case Study', href: '/case-study/project-name-retail-web' },
-      ],
-    },
-    {
-      id: 'company',
-      title: 'Company',
-      links: [
-        { id: 'why-us', label: 'Why Us', href: '#why-us' },
-        { id: 'process', label: 'Process', href: '#process' },
-        { id: 'team', label: 'Team', href: '#team' },
-      ],
-    },
-    {
-      id: 'contact',
-      title: 'Contact',
-      links: [
-        { id: 'faq', label: 'FAQ', href: '#faq' },
-        { id: 'form', label: 'Contact Form', href: '#contact' },
-      ],
-    },
-  ],
+      id: 'services', title: 'Services', links: [
+        { id: 'web', label: 'Web Development', href: '#services' }, { id: 'business', label: 'Business Software', href: '#business-software' }, { id: 'ai', label: 'AI & ML Solutions', href: '#services' }, { id: 'consultancy', label: 'Consultancy', href: '#contact' }, ], }, {
+      id: 'projects', title: 'Projects', links: [
+        { id: 'portfolio', label: 'Portfolio', href: '#projects' }, { id: 'case-study', label: 'Case Study', href: '/case-study/crown-ev-center' }, ], }, {
+      id: 'company', title: 'Company', links: [
+        { id: 'why-us', label: 'Why Us', href: '#why-us' }, { id: 'process', label: 'Process', href: '#process' }, { id: 'team', label: 'Team', href: '#team' }, ], }, {
+      id: 'contact', title: 'Contact', links: [
+        { id: 'faq', label: 'FAQ', href: '#faq' }, { id: 'form', label: 'Contact Form', href: '#contact' }, ], }, ],
 }
 
 db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('footer', ?)`).run(JSON.stringify(defaultFooter))
@@ -728,28 +527,17 @@ export function getFooter(): FooterPayload {
                     if (!link || typeof link !== 'object' || Array.isArray(link)) return null
                     const row = link as Record<string, unknown>
                     return {
-                      id: typeof row.id === 'string' ? row.id : `${Date.now()}`,
-                      label: typeof row.label === 'string' ? row.label : '',
-                      href: typeof row.href === 'string' ? row.href : '',
-                    }
+                      id: typeof row.id === 'string' ? row.id : `${Date.now()}`, label: typeof row.label === 'string' ? row.label : '', href: typeof row.href === 'string' ? row.href : '', }
                   })
                   .filter((link): link is { id: string; label: string; href: string } => link !== null)
               : []
             return {
-              id: typeof column.id === 'string' ? column.id : `${Date.now()}`,
-              title: typeof column.title === 'string' ? column.title : 'Column',
-              links,
-            }
+              id: typeof column.id === 'string' ? column.id : `${Date.now()}`, title: typeof column.title === 'string' ? column.title : 'Column', links, }
           })
           .filter((item): item is FooterPayload['columns'][number] => item !== null)
       : defaultFooter.columns
     return {
-      blurb: typeof record.blurb === 'string' ? record.blurb : defaultFooter.blurb,
-      copyright: typeof record.copyright === 'string' ? record.copyright : defaultFooter.copyright,
-      privacy_label: typeof record.privacy_label === 'string' ? record.privacy_label : defaultFooter.privacy_label,
-      terms_label: typeof record.terms_label === 'string' ? record.terms_label : defaultFooter.terms_label,
-      columns,
-    }
+      blurb: typeof record.blurb === 'string' ? record.blurb : defaultFooter.blurb, copyright: typeof record.copyright === 'string' ? record.copyright : defaultFooter.copyright, privacy_label: typeof record.privacy_label === 'string' ? record.privacy_label : defaultFooter.privacy_label, terms_label: typeof record.terms_label === 'string' ? record.terms_label : defaultFooter.terms_label, columns, }
   } catch {
     return defaultFooter
   }
@@ -774,34 +562,14 @@ export interface ProcessPayload {
 }
 
 const defaultWhyUs: WhyUsPayload = {
-  eyebrow: 'Why Us',
-  title: 'Built for practical business value',
-  subtitle:
-    'The approach focuses on reliability, fit, and long-term usefulness instead of one-size-fits-all software.',
-  items: [
-    { id: 'business-focused', title: 'Business-Focused Development', description: 'Solutions are shaped around actual workflows, not generic templates.' },
-    { id: 'custom-solutions', title: 'Custom Solutions', description: 'Every build can be tailored to the way a business operates and grows.' },
-    { id: 'online-offline', title: 'Online & Offline Capability', description: 'Systems can be planned for connectivity gaps and real operating conditions.' },
-    { id: 'scalable', title: 'Scalable Architecture', description: 'Clean structure helps the project evolve without starting over later.' },
-    { id: 'modern-tech', title: 'Modern Technology', description: 'Current frameworks and tools support performance, maintainability, and speed.' },
-    { id: 'long-term-support', title: 'Long-Term Support', description: 'Ongoing fixes, improvements, and iteration can continue after launch.' },
-    { id: 'ai-ready', title: 'AI-Ready', description: 'Systems can be planned with room for useful automation and ML features.' },
-  ],
+  eyebrow: 'Why Us', title: 'Built for practical business value', subtitle:
+    'The approach focuses on reliability, fit, and long-term usefulness instead of one-size-fits-all software.', items: [
+    { id: 'business-focused', title: 'Business-Focused Development', description: 'Solutions are shaped around actual workflows, not generic templates.' }, { id: 'custom-solutions', title: 'Custom Solutions', description: 'Every build can be tailored to the way a business operates and grows.' }, { id: 'online-offline', title: 'Online & Offline Capability', description: 'Systems can be planned for connectivity gaps and real operating conditions.' }, { id: 'scalable', title: 'Scalable Architecture', description: 'Clean structure helps the project evolve without starting over later.' }, { id: 'modern-tech', title: 'Modern Technology', description: 'Current frameworks and tools support performance, maintainability, and speed.' }, { id: 'long-term-support', title: 'Long-Term Support', description: 'Ongoing fixes, improvements, and iteration can continue after launch.' }, { id: 'ai-ready', title: 'AI-Ready', description: 'Systems can be planned with room for useful automation and ML features.' }, ],
 }
 
 const defaultProcess: ProcessPayload = {
-  eyebrow: 'Process',
-  title: 'A clear path from idea to working solution',
-  subtitle: 'Each step keeps the project aligned with business needs while making delivery easier to track.',
-  steps: [
-    { id: '01', number: '01', title: 'Discover', description: 'Understand goals, workflows, constraints, and business priorities.' },
-    { id: '02', number: '02', title: 'Plan', description: 'Define the right scope, architecture, and delivery direction.' },
-    { id: '03', number: '03', title: 'Design', description: 'Shape screens, flows, and user interactions around real use.' },
-    { id: '04', number: '04', title: 'Develop', description: 'Build the project using clean, maintainable implementation.' },
-    { id: '05', number: '05', title: 'Test', description: 'Check reliability, usability, and operational readiness before launch.' },
-    { id: '06', number: '06', title: 'Deploy', description: 'Prepare the environment and release the working solution.' },
-    { id: '07', number: '07', title: 'Support', description: 'Continue with updates, fixes, and improvement planning after delivery.' },
-  ],
+  eyebrow: 'Process', title: 'A clear path from idea to working solution', subtitle: 'Each step keeps the project aligned with business needs while making delivery easier to track.', steps: [
+    { id: '01', number: '01', title: 'Discover', description: 'Understand goals, workflows, constraints, and business priorities.' }, { id: '02', number: '02', title: 'Plan', description: 'Define the right scope, architecture, and delivery direction.' }, { id: '03', number: '03', title: 'Design', description: 'Shape screens, flows, and user interactions around real use.' }, { id: '04', number: '04', title: 'Develop', description: 'Build the project using clean, maintainable implementation.' }, { id: '05', number: '05', title: 'Test', description: 'Check reliability, usability, and operational readiness before launch.' }, { id: '06', number: '06', title: 'Deploy', description: 'Prepare the environment and release the working solution.' }, { id: '07', number: '07', title: 'Support', description: 'Continue with updates, fixes, and improvement planning after delivery.' }, ],
 }
 
 db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('why_us', ?)`).run(JSON.stringify(defaultWhyUs))
@@ -814,10 +582,7 @@ function parseTextItems(raw: unknown, fallback: WhyUsPayload['items']) {
       if (!item || typeof item !== 'object' || Array.isArray(item)) return null
       const row = item as Record<string, unknown>
       return {
-        id: typeof row.id === 'string' ? row.id : `${Date.now()}`,
-        title: typeof row.title === 'string' ? row.title : '',
-        description: typeof row.description === 'string' ? row.description : '',
-      }
+        id: typeof row.id === 'string' ? row.id : `${Date.now()}`, title: typeof row.title === 'string' ? row.title : '', description: typeof row.description === 'string' ? row.description : '', }
     })
     .filter((item): item is WhyUsPayload['items'][number] => item !== null)
   return items.length > 0 ? items : fallback
@@ -829,11 +594,7 @@ export function getWhyUs(): WhyUsPayload {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return defaultWhyUs
     const record = value as Record<string, unknown>
     return {
-      eyebrow: typeof record.eyebrow === 'string' ? record.eyebrow : defaultWhyUs.eyebrow,
-      title: typeof record.title === 'string' ? record.title : defaultWhyUs.title,
-      subtitle: typeof record.subtitle === 'string' ? record.subtitle : defaultWhyUs.subtitle,
-      items: parseTextItems(record.items, defaultWhyUs.items),
-    }
+      eyebrow: typeof record.eyebrow === 'string' ? record.eyebrow : defaultWhyUs.eyebrow, title: typeof record.title === 'string' ? record.title : defaultWhyUs.title, subtitle: typeof record.subtitle === 'string' ? record.subtitle : defaultWhyUs.subtitle, items: parseTextItems(record.items, defaultWhyUs.items), }
   } catch {
     return defaultWhyUs
   }
@@ -856,20 +617,12 @@ export function getProcess(): ProcessPayload {
             const number =
               typeof row.number === 'string' ? row.number : String(index + 1).padStart(2, '0')
             return {
-              id: typeof row.id === 'string' ? row.id : number,
-              number,
-              title: typeof row.title === 'string' ? row.title : '',
-              description: typeof row.description === 'string' ? row.description : '',
-            }
+              id: typeof row.id === 'string' ? row.id : number, number, title: typeof row.title === 'string' ? row.title : '', description: typeof row.description === 'string' ? row.description : '', }
           })
           .filter((item): item is ProcessPayload['steps'][number] => item !== null)
       : defaultProcess.steps
     return {
-      eyebrow: typeof record.eyebrow === 'string' ? record.eyebrow : defaultProcess.eyebrow,
-      title: typeof record.title === 'string' ? record.title : defaultProcess.title,
-      subtitle: typeof record.subtitle === 'string' ? record.subtitle : defaultProcess.subtitle,
-      steps: steps.length > 0 ? steps : defaultProcess.steps,
-    }
+      eyebrow: typeof record.eyebrow === 'string' ? record.eyebrow : defaultProcess.eyebrow, title: typeof record.title === 'string' ? record.title : defaultProcess.title, subtitle: typeof record.subtitle === 'string' ? record.subtitle : defaultProcess.subtitle, steps: steps.length > 0 ? steps : defaultProcess.steps, }
   } catch {
     return defaultProcess
   }

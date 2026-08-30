@@ -49,8 +49,7 @@ export default function AdminLoginPage() {
           ? 'Incorrect username or password.'
           : err instanceof Error && err.message === 'locked'
             ? 'Too many failed attempts. Try again in 15 minutes.'
-            : 'Could not reach the server. Make sure the API is running.',
-      )
+            : 'Could not reach the server. Make sure the API is running.', )
     } finally {
       setBusy(false)
     }

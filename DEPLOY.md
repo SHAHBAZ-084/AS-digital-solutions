@@ -35,8 +35,8 @@ Do not expose the SQLite file or `SESSION_SECRET` publicly.
 
 Copy examples, then set real values on the VPS:
 
-- `server/.env` — `PORT`, `SESSION_SECRET` (long random string), `COOKIE_SECURE=true` behind HTTPS
-- `.env` used at **build time** for Vite — `VITE_API_BASE_URL` (leave empty so the browser calls same-origin `/api`)
+- `server/.env`: `PORT`, `SESSION_SECRET` (long random string), `COOKIE_SECURE=true` behind HTTPS
+- `.env` used at **build time** for Vite: `VITE_API_BASE_URL` (leave empty so the browser calls same-origin `/api`)
 
 Admin auth uses httpOnly session cookies (no write-secret in the frontend). Default login after migrate: username `admin`, password = previous passphrase (or `CUIVHR` on a fresh DB). Change it in Admin → Settings after first login.
 
@@ -69,7 +69,7 @@ SQLite lives at `server/data/content.db`. Keep that path writable by the PM2 use
 
 ## nginx (what to configure)
 
-Not applied here — set this up on the VPS (or ask for a follow-up):
+Not applied here: set this up on the VPS (or ask for a follow-up):
 
 - `root` pointing at the project `dist/` folder
 - `try_files` for the SPA (`/index.html` fallback)

@@ -8,44 +8,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  clearLoginFailures,
-  clearSessionCookie,
-  createSessionToken,
-  isLoginLocked,
-  lockoutRemainingMs,
-  readSession,
-  recordLoginFailure,
-  SESSION_COOKIE,
-  sessionCookieOptions,
+  clearLoginFailures, clearSessionCookie, createSessionToken, isLoginLocked, lockoutRemainingMs, readSession, recordLoginFailure, SESSION_COOKIE, sessionCookieOptions,
 } from './auth.ts'
 import {
-  deleteProduct,
-  deleteService,
-  deleteTeam,
-  deleteTechnology,
-  findAdminByUsername,
-  getContact,
-  getFooter,
-  getProcess,
-  getWhyUs,
-  listProducts,
-  listServices,
-  listSite,
-  listTeam,
-  listTechnologies,
-  productExists,
-  serviceExists,
-  setFooter,
-  setProcess,
-  setWhyUs,
-  teamExists,
-  technologyExists,
-  updateAdminPasswordHash,
-  upsertContact,
-  upsertProduct,
-  upsertService,
-  upsertTeam,
-  upsertTechnology,
+  deleteProduct, deleteService, deleteTeam, deleteTechnology, findAdminByUsername, getContact, getFooter, getProcess, getWhyUs, listProducts, listServices, listSite, listTeam, listTechnologies, productExists, serviceExists, setFooter, setProcess, setWhyUs, teamExists, technologyExists, updateAdminPasswordHash, upsertContact, upsertProduct, upsertService, upsertTeam, upsertTechnology,
 } from './db.ts'
 import { loadEnv } from './env.ts'
 
@@ -60,14 +26,10 @@ const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif'])
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, uploadsDir),
-    filename: (_req, file, cb) => {
+    destination: (_req, _file, cb) => cb(null, uploadsDir), filename: (_req, file, cb) => {
       const ext = path.extname(file.originalname).toLowerCase()
       cb(null, `${randomUUID()}${ALLOWED_EXT.has(ext) ? ext : '.png'}`)
-    },
-  }),
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
+    }, }), limits: { fileSize: 5 * 1024 * 1024 }, fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase()
     if (!ALLOWED_TYPES.has(file.mimetype) || !ALLOWED_EXT.has(ext)) {
       cb(new Error('invalid-type'))
@@ -143,24 +105,8 @@ function asInt(value: unknown, fallback = 0) {
 function asCaseStudy(value: unknown) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return {
-      overview: '',
-      client: '',
-      challenge: '',
-      solution: '',
-      key_features: [] as string[],
-      results: [] as string[],
-      screenshot_urls: [] as string[],
-      enabled_blocks: [
-        'overview',
-        'client',
-        'challenge',
-        'solution',
-        'key_features',
-        'results',
-        'screenshots',
-      ],
-      sections: [] as { id: string; title: string; body: string; bullets: string[] }[],
-    }
+      overview: '', client: '', challenge: '', solution: '', key_features: [] as string[], results: [] as string[], screenshot_urls: [] as string[], enabled_blocks: [
+        'overview', 'client', 'challenge', 'solution', 'key_features', 'results', 'screenshots', ], sections: [] as { id: string; title: string; body: string; bullets: string[] }[], }
   }
   const record = value as Record<string, unknown>
   const sections = Array.isArray(record.sections)
@@ -169,37 +115,17 @@ function asCaseStudy(value: unknown) {
           if (!item || typeof item !== 'object' || Array.isArray(item)) return null
           const section = item as Record<string, unknown>
           return {
-            id: typeof section.id === 'string' ? section.id : randomUUID(),
-            title: typeof section.title === 'string' ? section.title : 'Section',
-            body: typeof section.body === 'string' ? section.body : '',
-            bullets: Array.isArray(section.bullets)
+            id: typeof section.id === 'string' ? section.id : randomUUID(), title: typeof section.title === 'string' ? section.title : 'Section', body: typeof section.body === 'string' ? section.body : '', bullets: Array.isArray(section.bullets)
               ? section.bullets.filter((b): b is string => typeof b === 'string')
-              : [],
-          }
+              : [], }
         })
         .filter((item): item is { id: string; title: string; body: string; bullets: string[] } => item !== null)
     : []
   return {
-    overview: asString(record.overview),
-    client: asString(record.client),
-    challenge: asString(record.challenge),
-    solution: asString(record.solution),
-    key_features: asStringArray(record.key_features),
-    results: asStringArray(record.results),
-    screenshot_urls: asStringArray(record.screenshot_urls),
-    enabled_blocks: asStringArray(record.enabled_blocks).length
+    overview: asString(record.overview), client: asString(record.client), challenge: asString(record.challenge), solution: asString(record.solution), key_features: asStringArray(record.key_features), results: asStringArray(record.results), screenshot_urls: asStringArray(record.screenshot_urls), enabled_blocks: asStringArray(record.enabled_blocks).length
       ? asStringArray(record.enabled_blocks)
       : [
-          'overview',
-          'client',
-          'challenge',
-          'solution',
-          'key_features',
-          'results',
-          'screenshots',
-        ],
-    sections,
-  }
+          'overview', 'client', 'challenge', 'solution', 'key_features', 'results', 'screenshots', ], sections, }
 }
 
 function productPayload(body: unknown, id: string) {
@@ -213,18 +139,7 @@ function productPayload(body: unknown, id: string) {
         : []
   const screenshot_url = screenshotUrls[0] ?? asString(record.screenshot_url)
   return {
-    id,
-    slug: asString(record.slug) || id,
-    name: asString(record.name),
-    industry: asString(record.industry),
-    type: asString(record.type),
-    description: asString(record.description),
-    tech: asStringArray(record.tech),
-    screenshot_url,
-    live_url: asString(record.live_url),
-    sort_order: asInt(record.sort_order, 0),
-    case_study: { ...caseStudy, screenshot_urls: screenshotUrls },
-  }
+    id, slug: asString(record.slug) || id, name: asString(record.name), industry: asString(record.industry), type: asString(record.type), description: asString(record.description), tech: asStringArray(record.tech), screenshot_url, live_url: asString(record.live_url), sort_order: asInt(record.sort_order, 0), case_study: { ...caseStudy, screenshot_urls: screenshotUrls }, }
 }
 
 function asId(value: unknown) {
@@ -246,25 +161,13 @@ app.post('/api/services', requireWrite, (req, res) => {
     return
   }
   upsertService({
-    id,
-    title: asString(req.body?.title),
-    description: asString(req.body?.description),
-    icon: asString(req.body?.icon),
-    features: asStringArray(req.body?.features),
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, title: asString(req.body?.title), description: asString(req.body?.description), icon: asString(req.body?.icon), features: asStringArray(req.body?.features), sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.put('/api/services/:id', requireWrite, (req, res) => {
   const id = req.params.id
   upsertService({
-    id,
-    title: asString(req.body?.title),
-    description: asString(req.body?.description),
-    icon: asString(req.body?.icon),
-    features: asStringArray(req.body?.features),
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, title: asString(req.body?.title), description: asString(req.body?.description), icon: asString(req.body?.icon), features: asStringArray(req.body?.features), sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.delete('/api/services/:id', requireWrite, (req, res) => {
@@ -310,35 +213,15 @@ app.post('/api/team', requireWrite, (req, res) => {
     return
   }
   upsertTeam({
-    id,
-    name: asString(req.body?.name),
-    role: asString(req.body?.role),
-    bio: asString(req.body?.bio),
-    skills: asStringArray(req.body?.skills),
-    photo_url: asString(req.body?.photo_url),
-    links: {
-      linkedin: asString(req.body?.links?.linkedin ?? req.body?.linkedin),
-      email: asString(req.body?.links?.email ?? req.body?.email),
-    },
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, name: asString(req.body?.name), role: asString(req.body?.role), bio: asString(req.body?.bio), skills: asStringArray(req.body?.skills), photo_url: asString(req.body?.photo_url), links: {
+      linkedin: asString(req.body?.links?.linkedin ?? req.body?.linkedin), email: asString(req.body?.links?.email ?? req.body?.email), }, sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.put('/api/team/:id', requireWrite, (req, res) => {
   const id = req.params.id
   upsertTeam({
-    id,
-    name: asString(req.body?.name),
-    role: asString(req.body?.role),
-    bio: asString(req.body?.bio),
-    skills: asStringArray(req.body?.skills),
-    photo_url: asString(req.body?.photo_url),
-    links: {
-      linkedin: asString(req.body?.links?.linkedin ?? req.body?.linkedin),
-      email: asString(req.body?.links?.email ?? req.body?.email),
-    },
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, name: asString(req.body?.name), role: asString(req.body?.role), bio: asString(req.body?.bio), skills: asStringArray(req.body?.skills), photo_url: asString(req.body?.photo_url), links: {
+      linkedin: asString(req.body?.links?.linkedin ?? req.body?.linkedin), email: asString(req.body?.links?.email ?? req.body?.email), }, sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.delete('/api/team/:id', requireWrite, (req, res) => {
@@ -359,23 +242,13 @@ app.post('/api/technologies', requireWrite, (req, res) => {
     return
   }
   upsertTechnology({
-    id,
-    name: asString(req.body?.name),
-    category: asString(req.body?.category),
-    icon: asString(req.body?.icon),
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, name: asString(req.body?.name), category: asString(req.body?.category), icon: asString(req.body?.icon), sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.put('/api/technologies/:id', requireWrite, (req, res) => {
   const id = req.params.id
   upsertTechnology({
-    id,
-    name: asString(req.body?.name),
-    category: asString(req.body?.category),
-    icon: asString(req.body?.icon),
-    sort_order: asInt(req.body?.sort_order, 0),
-  })
+    id, name: asString(req.body?.name), category: asString(req.body?.category), icon: asString(req.body?.icon), sort_order: asInt(req.body?.sort_order, 0), })
   res.json({ ok: true, id })
 })
 app.delete('/api/technologies/:id', requireWrite, (req, res) => {
@@ -391,16 +264,8 @@ app.get('/api/contact', (_req, res) => {
 })
 app.put('/api/contact', requireWrite, (req, res) => {
   upsertContact({
-    whatsapp_number: asString(req.body?.whatsapp_number),
-    email: asString(req.body?.email),
-    phone: asString(req.body?.phone),
-    address: asString(req.body?.address),
-    socials: {
-      linkedin: asString(req.body?.socials?.linkedin ?? req.body?.linkedin),
-      facebook: asString(req.body?.socials?.facebook ?? req.body?.facebook),
-      instagram: asString(req.body?.socials?.instagram ?? req.body?.instagram),
-    },
-  })
+    whatsapp_number: asString(req.body?.whatsapp_number), email: asString(req.body?.email), phone: asString(req.body?.phone), address: asString(req.body?.address), socials: {
+      linkedin: asString(req.body?.socials?.linkedin ?? req.body?.linkedin), facebook: asString(req.body?.socials?.facebook ?? req.body?.facebook), instagram: asString(req.body?.socials?.instagram ?? req.body?.instagram), }, })
   res.json({ ok: true })
 })
 
@@ -418,28 +283,17 @@ app.put('/api/footer', requireWrite, (req, res) => {
                   if (!link || typeof link !== 'object' || Array.isArray(link)) return null
                   const row = link as Record<string, unknown>
                   return {
-                    id: asString(row.id) || randomUUID(),
-                    label: asString(row.label),
-                    href: asString(row.href),
-                  }
+                    id: asString(row.id) || randomUUID(), label: asString(row.label), href: asString(row.href), }
                 })
                 .filter((link): link is { id: string; label: string; href: string } => link !== null)
             : []
           return {
-            id: asString(column.id) || randomUUID(),
-            title: asString(column.title) || 'Column',
-            links,
-          }
+            id: asString(column.id) || randomUUID(), title: asString(column.title) || 'Column', links, }
         })
         .filter((item): item is { id: string; title: string; links: { id: string; label: string; href: string }[] } => item !== null)
     : current.columns
   setFooter({
-    blurb: asString(body.blurb, current.blurb),
-    copyright: asString(body.copyright, current.copyright),
-    privacy_label: asString(body.privacy_label, current.privacy_label),
-    terms_label: asString(body.terms_label, current.terms_label),
-    columns,
-  })
+    blurb: asString(body.blurb, current.blurb), copyright: asString(body.copyright, current.copyright), privacy_label: asString(body.privacy_label, current.privacy_label), terms_label: asString(body.terms_label, current.terms_label), columns, })
   res.json({ ok: true })
 })
 
@@ -452,19 +306,12 @@ app.put('/api/why-us', requireWrite, (req, res) => {
           if (!item || typeof item !== 'object' || Array.isArray(item)) return null
           const row = item as Record<string, unknown>
           return {
-            id: asString(row.id) || randomUUID(),
-            title: asString(row.title),
-            description: asString(row.description),
-          }
+            id: asString(row.id) || randomUUID(), title: asString(row.title), description: asString(row.description), }
         })
         .filter((item): item is { id: string; title: string; description: string } => item !== null)
     : current.items
   setWhyUs({
-    eyebrow: asString(body.eyebrow, current.eyebrow),
-    title: asString(body.title, current.title),
-    subtitle: asString(body.subtitle, current.subtitle),
-    items,
-  })
+    eyebrow: asString(body.eyebrow, current.eyebrow), title: asString(body.title, current.title), subtitle: asString(body.subtitle, current.subtitle), items, })
   res.json({ ok: true })
 })
 
@@ -478,20 +325,12 @@ app.put('/api/process', requireWrite, (req, res) => {
           const row = item as Record<string, unknown>
           const number = asString(row.number) || String(index + 1).padStart(2, '0')
           return {
-            id: asString(row.id) || number,
-            number,
-            title: asString(row.title),
-            description: asString(row.description),
-          }
+            id: asString(row.id) || number, number, title: asString(row.title), description: asString(row.description), }
         })
         .filter((item): item is { id: string; number: string; title: string; description: string } => item !== null)
     : current.steps
   setProcess({
-    eyebrow: asString(body.eyebrow, current.eyebrow),
-    title: asString(body.title, current.title),
-    subtitle: asString(body.subtitle, current.subtitle),
-    steps,
-  })
+    eyebrow: asString(body.eyebrow, current.eyebrow), title: asString(body.title, current.title), subtitle: asString(body.subtitle, current.subtitle), steps, })
   res.json({ ok: true })
 })
 
@@ -519,9 +358,7 @@ app.post('/api/admin/login', async (req, res) => {
   const ip = clientIp(req)
   if (isLoginLocked(ip)) {
     res.status(429).json({
-      error: 'locked',
-      retryAfterMs: lockoutRemainingMs(ip),
-    })
+      error: 'locked', retryAfterMs: lockoutRemainingMs(ip), })
     return
   }
   if (rateLimited(ip)) {
@@ -542,9 +379,7 @@ app.post('/api/admin/login', async (req, res) => {
     recordLoginFailure(ip)
     if (isLoginLocked(ip)) {
       res.status(429).json({
-        error: 'locked',
-        retryAfterMs: lockoutRemainingMs(ip),
-      })
+        error: 'locked', retryAfterMs: lockoutRemainingMs(ip), })
       return
     }
     res.status(401).json({ error: 'unauthorized' })

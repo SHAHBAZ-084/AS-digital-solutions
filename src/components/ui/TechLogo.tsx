@@ -8,10 +8,7 @@ interface TechLogoProps {
 const base = 'h-7 w-7 shrink-0'
 
 function Svg({
-  children,
-  viewBox = '0 0 24 24',
-  className = base,
-  style,
+  children, viewBox = '0 0 24 24', className = base, style,
 }: {
   children: ReactNode
   viewBox?: string

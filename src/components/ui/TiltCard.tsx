@@ -1,8 +1,5 @@
 import {
-  useEffect,
-  useRef,
-  type MouseEvent,
-  type ReactNode,
+  useEffect, useRef, type MouseEvent, type ReactNode,
 } from 'react'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 

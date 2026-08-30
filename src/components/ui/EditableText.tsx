@@ -11,10 +11,7 @@ interface EditableTextProps {
 }
 
 export default function EditableText({
-  as: Tag = 'span',
-  className = '',
-  style,
-  children,
+  as: Tag = 'span', className = '', style, children,
 }: EditableTextProps) {
   return (
     <Tag className={className} style={style}>

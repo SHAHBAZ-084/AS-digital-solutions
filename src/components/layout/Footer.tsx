@@ -1,6 +1,6 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/brand/white-logo.png'
-import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../../config/site'
+import { siteConfig } from '../../config/site'
 import { useSiteData } from '../../context/SiteDataContext'
 
 function SocialIcon({ label }: { label: string }) {
@@ -9,6 +9,11 @@ function SocialIcon({ label }: { label: string }) {
       {label}
     </span>
   )
+}
+
+function isWhatsAppLink(id: string, label: string) {
+  const haystack = `${id} ${label}`.toLowerCase()
+  return haystack.includes('whatsapp')
 }
 
 export default function Footer() {
@@ -40,36 +45,39 @@ export default function Footer() {
             </div>
           </div>
 
-          {footer.columns.map((column) => (
-            <div key={column.id}>
-              <h3 className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">{column.title}</h3>
-              <ul className="mt-3 space-y-2 text-sm text-white/65">
-                {column.links.map((link) => (
-                  <li key={link.id}>
-                    {link.href.startsWith('/') ? (
-                      <Link to={link.href} className="transition hover:text-accent">
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <a
-                        href={
-                          link.id === 'whatsapp'
-                            ? getWhatsAppUrl(undefined, toWhatsAppDigits(contact.whatsapp_number))
-                            : link.href
-                        }
-                        className="transition hover:text-accent"
-                        {...(link.href.startsWith('http')
-                          ? { target: '_blank', rel: 'noopener noreferrer' }
-                          : {})}
-                      >
-                        {link.label}
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {footer.columns.map((column) => {
+            const links = column.links.filter((link) => !isWhatsAppLink(link.id, link.label))
+            if (links.length === 0) return null
+
+            return (
+              <div key={column.id}>
+                <h3 className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">
+                  {column.title}
+                </h3>
+                <ul className="mt-3 space-y-2 text-sm text-white/65">
+                  {links.map((link) => (
+                    <li key={link.id}>
+                      {link.href.startsWith('/') ? (
+                        <Link to={link.href} className="transition hover:text-accent">
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={link.href}
+                          className="transition hover:text-accent"
+                          {...(link.href.startsWith('http')
+                            ? { target: '_blank', rel: 'noopener noreferrer' }
+                            : {})}
+                        >
+                          {link.label}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
         </div>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs leading-5 text-white/55 sm:flex-row sm:items-center sm:justify-between">

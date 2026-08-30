@@ -1,5 +1,7 @@
-﻿import { Link } from 'react-router-dom'
+﻿import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import type { Project } from '../../data/projects'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { getPlaceholderForType } from '../../lib/projectPlaceholders'
 import ImageReveal from '../ui/ImageReveal'
 
@@ -8,17 +10,35 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ project }: ProductCardProps) {
+  const reduced = useReducedMotion()
   const imageSrc = project.screenshots[0] || getPlaceholderForType(project.type)
 
-  return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(10,14,26,0.08)] bg-white/92 shadow-[0_10px_30px_rgba(10,14,26,0.08)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-accent/25 hover:shadow-[0_16px_36px_rgba(30,127,232,0.14)]">
+  const plateBg: Record<string, string> = {
+    'citynest-services': 'bg-[#01153d]',
+    'sheraz-traders-desktop': 'bg-[#133f2c]',
+    'usman-mall-desktop': 'bg-white',
+    'sufi-co-grain-market-desktop': 'bg-[#00153d]',
+  }
+  const plate = plateBg[project.slug]
+  const isPlate = Boolean(plate)
+
+  const card = (
+    <>
       <Link to={`/case-study/${project.slug}`} className="flex min-h-0 flex-1 flex-col">
         <ImageReveal className="overflow-hidden">
-          <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+          <div
+            className={`flex aspect-[16/10] items-center justify-center overflow-hidden ${
+              isPlate ? `${plate} p-0` : 'bg-[#f3f6fb] p-5 sm:p-6'
+            }`}
+          >
             <img
               src={imageSrc}
               alt={project.name}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+              className={
+                isPlate
+                  ? 'h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]'
+                  : 'max-h-full max-w-full object-contain transition duration-300 group-hover:scale-[1.02]'
+              }
             />
           </div>
         </ImageReveal>
@@ -57,6 +77,23 @@ export default function ProductCard({ project }: ProductCardProps) {
           View Case Study
         </Link>
       </div>
-    </article>
+    </>
+  )
+
+  const surface =
+    'group flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(10,14,26,0.08)] bg-white/92 shadow-[0_10px_30px_rgba(10,14,26,0.08)] backdrop-blur-sm transition duration-300 hover:border-accent/25 hover:shadow-[0_16px_36px_rgba(30,127,232,0.14)]'
+
+  if (reduced) {
+    return <article className={`${surface} hover:-translate-y-1`}>{card}</article>
+  }
+
+  return (
+    <motion.article
+      className={surface}
+      whileHover={{ y: -4 }}
+      transition={{ type: 'spring', stiffness: 380, damping: 24 }}
+    >
+      {card}
+    </motion.article>
   )
 }

@@ -1,30 +1,43 @@
+import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
-import { useInView } from '../../hooks/useInView'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { fadeUp, motionTransition, viewportOnce } from '../../lib/motion'
 
 interface RevealProps {
   children: ReactNode
   className?: string
   delayMs?: number
+  /** When true, only animate via parent stagger variants (no own whileInView) */
+  staggerChild?: boolean
 }
 
-export default function Reveal({ children, className = '', delayMs: _delayMs = 0 }: RevealProps) {
-  void _delayMs
+export default function Reveal({
+  children, className = '', delayMs = 0, staggerChild = false,
+}: RevealProps) {
   const reduced = useReducedMotion()
-  const { ref, inView } = useInView<HTMLDivElement>()
 
   if (reduced) {
     return <div className={className}>{children}</div>
   }
 
+  if (staggerChild) {
+    return (
+      <motion.div className={className} variants={fadeUp} transition={motionTransition}>
+        {children}
+      </motion.div>
+    )
+  }
+
   return (
-    <div
-      ref={ref}
-      className={`transition-[opacity,transform] duration-200 ease-out ${
-        inView ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-80'
-      } ${className}`}
+    <motion.div
+      className={className}
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="show"
+      viewport={viewportOnce}
+      transition={{ ...motionTransition, delay: delayMs / 1000 }}
     >
       {children}
-    </div>
+    </motion.div>
   )
 }

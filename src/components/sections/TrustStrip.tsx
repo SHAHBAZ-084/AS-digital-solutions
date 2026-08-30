@@ -51,10 +51,7 @@ function SupportIcon() {
 }
 
 const items = [
-  { id: 'real-projects', label: 'Real Projects', Icon: ProjectIcon },
-  { id: 'custom-software', label: 'Custom-Built Software', Icon: SoftwareIcon },
-  { id: 'offline-online', label: 'Offline & Online Capable', Icon: SignalIcon },
-  { id: 'long-term-support', label: 'Long-Term Support', Icon: SupportIcon },
+  { id: 'real-projects', label: 'Real Projects', Icon: ProjectIcon }, { id: 'custom-software', label: 'Custom-Built Software', Icon: SoftwareIcon }, { id: 'offline-online', label: 'Offline & Online Capable', Icon: SignalIcon }, { id: 'long-term-support', label: 'Long-Term Support', Icon: SupportIcon },
 ] as const
 
 export default function TrustStrip() {

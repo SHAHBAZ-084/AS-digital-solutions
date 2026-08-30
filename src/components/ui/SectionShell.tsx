@@ -12,13 +12,7 @@ interface SectionShellProps {
 }
 
 export default function SectionShell({
-  id,
-  className = '',
-  innerClassName = '',
-  children,
-  texture,
-  textureOpacity = 0.62,
-  showEdge = true,
+  id, className = '', innerClassName = '', children, texture, textureOpacity = 0.62, showEdge = true,
 }: SectionShellProps) {
   return (
     <section

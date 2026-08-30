@@ -55,10 +55,7 @@ export default function Process() {
                       key={step.id}
                       className="absolute"
                       style={{
-                        left: `${x}%`,
-                        top: `${y}%`,
-                        transform: 'translate(-50%, -50%)',
-                      }}
+                        left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)', }}
                     >
                       <div className="rounded-full bg-white px-3.5 py-2.5 text-center shadow-[0_8px_22px_rgba(10,14,26,0.1)] ring-1 ring-accent/20 sm:px-4">
                         <p className="text-section text-xs font-semibold whitespace-nowrap sm:text-sm">

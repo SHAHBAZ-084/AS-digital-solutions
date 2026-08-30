@@ -5,17 +5,7 @@ import { changeAdminPassword, fetchSettings, logoutAdmin, siteApi, uploadImage }
 import { BLOCK_LABELS, emptyProduct, newSection, syncProductImages } from '../lib/productCaseStudy'
 import { productFromApi } from '../lib/productMap'
 import type {
-  CaseStudyBlockId,
-  CaseStudySection,
-  ContactInfo,
-  FooterContent,
-  FooterLink,
-  ProcessContent,
-  ProductItem,
-  Service,
-  TeamMember,
-  Technology,
-  WhyUsContent,
+  CaseStudyBlockId, CaseStudySection, ContactInfo, FooterContent, FooterLink, ProcessContent, ProductItem, Service, TeamMember, Technology, WhyUsContent,
 } from '../types/siteContent'
 
 type Tab = 'services' | 'products' | 'team' | 'technologies' | 'contact' | 'why-us' | 'process' | 'footer' | 'settings'
@@ -41,9 +31,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function OrderControls({
-  index,
-  total,
-  onMove,
+  index, total, onMove,
 }: {
   index: number
   total: number
@@ -62,11 +50,7 @@ function OrderControls({
 }
 
 async function swapOrder<T extends { id: string; sort_order?: number }>(
-  resource: string,
-  items: T[],
-  index: number,
-  direction: -1 | 1,
-  refresh: () => Promise<void>,
+  resource: string, items: T[], index: number, direction: -1 | 1, refresh: () => Promise<void>,
 ) {
   const other = index + direction
   const current = items[index]
@@ -80,9 +64,7 @@ async function swapOrder<T extends { id: string; sort_order?: number }>(
 }
 
 function MultiImageField({
-  label,
-  urls,
-  onChange,
+  label, urls, onChange,
 }: {
   label: string
   urls: string[]
@@ -139,9 +121,7 @@ function MultiImageField({
 }
 
 function ImageField({
-  label,
-  value,
-  onChange,
+  label, value, onChange,
 }: {
   label: string
   value: string
@@ -251,10 +231,7 @@ function ServicesPanel() {
     setBusy(true)
     try {
       const payload = {
-        ...draft,
-        id: draft.id || draft.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-        sort_order: editing ? (draft.sort_order ?? 0) : services.length,
-      }
+        ...draft, id: draft.id || draft.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'), sort_order: editing ? (draft.sort_order ?? 0) : services.length, }
       if (editing) await siteApi.update('services', payload.id, payload)
       else await siteApi.create('services', payload)
       setDraft(empty)
@@ -399,14 +376,11 @@ function ProductsPanel() {
   const updateSection = (id: string, patch: Partial<CaseStudySection>) =>
     setCase({
       sections: draft.case_study.sections.map((section) =>
-        section.id === id ? { ...section, ...patch } : section,
-      ),
-    })
+        section.id === id ? { ...section, ...patch } : section, ), })
 
   const enabled = draft.case_study.enabled_blocks
   const missingBlocks = (Object.keys(BLOCK_LABELS) as CaseStudyBlockId[]).filter(
-    (id) => !enabled.includes(id),
-  )
+    (id) => !enabled.includes(id), )
 
   const save = async (event: FormEvent) => {
     event.preventDefault()
@@ -415,11 +389,7 @@ function ProductsPanel() {
     try {
       const id = draft.id || draft.slug || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       const payload = syncProductImages({
-        ...draft,
-        id,
-        slug: draft.slug || id,
-        sort_order: editing ? draft.sort_order : products.length,
-      })
+        ...draft, id, slug: draft.slug || id, sort_order: editing ? draft.sort_order : products.length, })
       if (editing) await siteApi.update('products', payload.id, payload)
       else await siteApi.create('products', payload)
       setDraft(empty)
@@ -748,12 +718,10 @@ function ProductsPanel() {
                   value={draft.tech.join('\n')}
                   onChange={(event) =>
                     setDraft({
-                      ...draft,
-                      tech: event.target.value
+                      ...draft, tech: event.target.value
                         .split(/\r?\n|,/)
                         .map((item) => item.trim())
-                        .filter(Boolean),
-                    })
+                        .filter(Boolean), })
                   }
                 />
               </div>
@@ -798,8 +766,7 @@ function ProductsPanel() {
                     className={btnDanger}
                     onClick={() =>
                       setCase({
-                        sections: draft.case_study.sections.filter((item) => item.id !== section.id),
-                      })
+                        sections: draft.case_study.sections.filter((item) => item.id !== section.id), })
                     }
                   >
                     Remove box
@@ -818,8 +785,7 @@ function ProductsPanel() {
                   value={section.bullets.join('\n')}
                   onChange={(event) =>
                     updateSection(section.id, {
-                      bullets: event.target.value.split(/\r?\n/).filter(Boolean),
-                    })
+                      bullets: event.target.value.split(/\r?\n/).filter(Boolean), })
                   }
                   placeholder="Optional bullet points (one per line)"
                 />
@@ -853,15 +819,7 @@ function ProductsPanel() {
 function TeamPanel() {
   const { team, refresh } = useSiteData()
   const empty: TeamMember = {
-    id: '',
-    name: '',
-    role: '',
-    bio: '',
-    skills: [],
-    links: { linkedin: '', email: '' },
-    photo_url: '',
-    sort_order: 0,
-  }
+    id: '', name: '', role: '', bio: '', skills: [], links: { linkedin: '', email: '' }, photo_url: '', sort_order: 0, }
   const [draft, setDraft] = useState<TeamMember>(empty)
   const [editing, setEditing] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -871,10 +829,7 @@ function TeamPanel() {
     setBusy(true)
     try {
       const payload = {
-        ...draft,
-        id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-        sort_order: editing ? (draft.sort_order ?? 0) : team.length,
-      }
+        ...draft, id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), sort_order: editing ? (draft.sort_order ?? 0) : team.length, }
       if (editing) await siteApi.update('team', payload.id, payload)
       else await siteApi.create('team', payload)
       setDraft(empty)
@@ -1025,10 +980,7 @@ function TechnologiesPanel() {
     setBusy(true)
     try {
       const payload = {
-        ...draft,
-        id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-        sort_order: editing ? (draft.sort_order ?? 0) : technologies.length,
-      }
+        ...draft, id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), sort_order: editing ? (draft.sort_order ?? 0) : technologies.length, }
       if (editing) await siteApi.update('technologies', payload.id, payload)
       else await siteApi.create('technologies', payload)
       setDraft(empty)
@@ -1144,16 +1096,8 @@ function ContactPanel() {
     event.preventDefault()
     const form = event.currentTarget
     const draft: ContactInfo = {
-      whatsapp_number: (form.elements.namedItem('whatsapp_number') as HTMLInputElement).value,
-      email: (form.elements.namedItem('email') as HTMLInputElement).value,
-      phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
-      address: (form.elements.namedItem('address') as HTMLInputElement).value,
-      socials: {
-        linkedin: (form.elements.namedItem('linkedin') as HTMLInputElement).value,
-        facebook: (form.elements.namedItem('facebook') as HTMLInputElement).value,
-        instagram: (form.elements.namedItem('instagram') as HTMLInputElement).value,
-      },
-    }
+      whatsapp_number: (form.elements.namedItem('whatsapp_number') as HTMLInputElement).value, email: (form.elements.namedItem('email') as HTMLInputElement).value, phone: (form.elements.namedItem('phone') as HTMLInputElement).value, address: (form.elements.namedItem('address') as HTMLInputElement).value, socials: {
+        linkedin: (form.elements.namedItem('linkedin') as HTMLInputElement).value, facebook: (form.elements.namedItem('facebook') as HTMLInputElement).value, instagram: (form.elements.namedItem('instagram') as HTMLInputElement).value, }, }
     setBusy(true)
     try {
       await siteApi.updateContact(draft)
@@ -1199,8 +1143,7 @@ function FooterPanel() {
 }
 
 function FooterEditor({
-  footer,
-  refresh,
+  footer, refresh,
 }: {
   footer: FooterContent
   refresh: () => Promise<void>
@@ -1312,9 +1255,7 @@ function FooterEditor({
                   onClick={() => {
                     const columns = [...draft.columns]
                     columns[columnIndex] = {
-                      ...column,
-                      links: column.links.filter((item) => item.id !== link.id),
-                    }
+                      ...column, links: column.links.filter((item) => item.id !== link.id), }
                     setDraft({ ...draft, columns })
                   }}
                 >
@@ -1328,10 +1269,7 @@ function FooterEditor({
               onClick={() => {
                 const columns = [...draft.columns]
                 const link: FooterLink = {
-                  id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-                  label: 'New link',
-                  href: '#',
-                }
+                  id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, label: 'New link', href: '#', }
                 columns[columnIndex] = { ...column, links: [...column.links, link] }
                 setDraft({ ...draft, columns })
               }}
@@ -1347,16 +1285,9 @@ function FooterEditor({
         className={btnGhost}
         onClick={() =>
           setDraft({
-            ...draft,
-            columns: [
-              ...draft.columns,
-              {
-                id: `${Date.now()}`,
-                title: 'New column',
-                links: [],
-              },
-            ],
-          })
+            ...draft, columns: [
+              ...draft.columns, {
+                id: `${Date.now()}`, title: 'New column', links: [], }, ], })
         }
       >
         Add column
@@ -1378,8 +1309,7 @@ function WhyUsPanel() {
 }
 
 function WhyUsEditor({
-  data,
-  refresh,
+  data, refresh,
 }: {
   data: WhyUsContent
   refresh: () => Promise<void>
@@ -1450,12 +1380,8 @@ function WhyUsEditor({
         className={btnGhost}
         onClick={() =>
           setDraft({
-            ...draft,
-            items: [
-              ...draft.items,
-              { id: `${Date.now()}`, title: 'New point', description: '' },
-            ],
-          })
+            ...draft, items: [
+              ...draft.items, { id: `${Date.now()}`, title: 'New point', description: '' }, ], })
         }
       >
         Add card
@@ -1476,8 +1402,7 @@ function ProcessPanel() {
 }
 
 function ProcessEditor({
-  data,
-  refresh,
+  data, refresh,
 }: {
   data: ProcessContent
   refresh: () => Promise<void>
@@ -1557,17 +1482,9 @@ function ProcessEditor({
         className={btnGhost}
         onClick={() =>
           setDraft({
-            ...draft,
-            steps: [
-              ...draft.steps,
-              {
-                id: `${Date.now()}`,
-                number: String(draft.steps.length + 1).padStart(2, '0'),
-                title: 'New step',
-                description: '',
-              },
-            ],
-          })
+            ...draft, steps: [
+              ...draft.steps, {
+                id: `${Date.now()}`, number: String(draft.steps.length + 1).padStart(2, '0'), title: 'New step', description: '', }, ], })
         }
       >
         Add step
@@ -1632,8 +1549,7 @@ function SettingsPanel() {
       setError(
         err instanceof Error && err.message === 'invalid'
           ? 'Current password is incorrect, or the new password is invalid.'
-          : 'Could not update password.',
-      )
+          : 'Could not update password.', )
     } finally {
       setBusy(false)
     }
@@ -1710,15 +1626,7 @@ function SettingsPanel() {
 }
 
 const tabs: { id: Tab; label: string; icon: ReactNode }[] = [
-  { id: 'services', label: 'Services', icon: <IconServices /> },
-  { id: 'products', label: 'Projects', icon: <IconProducts /> },
-  { id: 'team', label: 'Team', icon: <IconTeam /> },
-  { id: 'technologies', label: 'Technology', icon: <IconTech /> },
-  { id: 'contact', label: 'Contact Info', icon: <IconContact /> },
-  { id: 'why-us', label: 'Why Us', icon: <IconTeam /> },
-  { id: 'process', label: 'Process', icon: <IconServices /> },
-  { id: 'footer', label: 'Footer', icon: <IconFooter /> },
-  { id: 'settings', label: 'Settings', icon: <IconSettings /> },
+  { id: 'services', label: 'Services', icon: <IconServices /> }, { id: 'products', label: 'Projects', icon: <IconProducts /> }, { id: 'team', label: 'Team', icon: <IconTeam /> }, { id: 'technologies', label: 'Technology', icon: <IconTech /> }, { id: 'contact', label: 'Contact Info', icon: <IconContact /> }, { id: 'why-us', label: 'Why Us', icon: <IconTeam /> }, { id: 'process', label: 'Process', icon: <IconServices /> }, { id: 'footer', label: 'Footer', icon: <IconFooter /> }, { id: 'settings', label: 'Settings', icon: <IconSettings /> },
 ]
 
 export default function AdminPage() {
@@ -1773,7 +1681,7 @@ export default function AdminPage() {
       <div className="md:pl-60">
         <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-slate-200/80 bg-white/90 px-4 backdrop-blur sm:px-8">
           <p className="text-sm font-semibold tracking-tight text-navy">
-            AS Digital Solutions — Command Center
+            AS Digital Solutions Command Center
           </p>
           <button
             type="button"

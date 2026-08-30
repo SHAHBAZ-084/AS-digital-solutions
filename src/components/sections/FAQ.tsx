@@ -45,7 +45,7 @@ export default function FAQ() {
                         isOpen ? 'bg-accent text-white' : 'bg-accent/10 text-accent'
                       }`}
                     >
-                      {isOpen ? '−' : '+'}
+                      {isOpen ? '-' : '+'}
                     </span>
                   </button>
                   {isOpen ? (

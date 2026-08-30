@@ -6,10 +6,7 @@ import placeholderAi from '../assets/projects/placeholder-ai.jpg'
 export type ProjectType = 'Web' | 'Desktop' | 'Business Software' | 'AI-ML'
 
 const placeholders: Record<ProjectType, string> = {
-  Web: placeholderWeb,
-  Desktop: placeholderDesktop,
-  'Business Software': placeholderBusiness,
-  'AI-ML': placeholderAi,
+  Web: placeholderWeb, Desktop: placeholderDesktop, 'Business Software': placeholderBusiness, 'AI-ML': placeholderAi,
 }
 
 const projectTypes: ProjectType[] = ['Web', 'Desktop', 'Business Software', 'AI-ML']
@@ -25,8 +22,7 @@ export function getPlaceholderForType(type: string | undefined | null): string {
 
 /** Prefer real screenshots; otherwise fall back to the type placeholder. */
 export function resolveProjectScreenshots(
-  type: string | undefined | null,
-  urls: Array<string | undefined | null> | undefined,
+  type: string | undefined | null, urls: Array<string | undefined | null> | undefined,
 ): string[] {
   const cleaned = (urls ?? []).map((url) => (typeof url === 'string' ? url.trim() : '')).filter(Boolean)
   return cleaned.length > 0 ? cleaned : [getPlaceholderForType(type)]

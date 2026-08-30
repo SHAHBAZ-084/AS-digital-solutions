@@ -44,21 +44,12 @@ export function verifySessionToken(token: string, secret: string): SessionPayloa
 
 export function sessionCookieOptions(secure: boolean): CookieOptions {
   return {
-    httpOnly: true,
-    secure,
-    sameSite: 'lax',
-    path: '/',
-    maxAge: SESSION_TTL_MS,
-  }
+    httpOnly: true, secure, sameSite: 'lax', path: '/', maxAge: SESSION_TTL_MS, }
 }
 
 export function clearSessionCookie(res: Response, secure: boolean) {
   res.clearCookie(SESSION_COOKIE, {
-    httpOnly: true,
-    secure,
-    sameSite: 'lax',
-    path: '/',
-  })
+    httpOnly: true, secure, sameSite: 'lax', path: '/', })
 }
 
 export function readSession(req: Request, secret: string): SessionPayload | null {

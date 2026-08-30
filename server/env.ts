@@ -36,8 +36,8 @@ export function loadEnv() {
   if (!sessionSecret) {
     sessionSecret = randomBytes(32).toString('hex')
     console.warn(
-      '[auth] SESSION_SECRET is not set — using an ephemeral secret. Sessions will reset on restart. Set SESSION_SECRET in server/.env for production.',
-    )
+      '[auth] SESSION_SECRET is not set; using an ephemeral secret. Sessions will reset on restart. Set SESSION_SECRET in server/.env for production.',
+)
   }
 
   const cookieSecure =
@@ -45,8 +45,5 @@ export function loadEnv() {
     process.env.NODE_ENV === 'production'
 
   return {
-    PORT: Number(process.env.PORT || 8787),
-    SESSION_SECRET: sessionSecret,
-    COOKIE_SECURE: cookieSecure,
-  }
+    PORT: Number(process.env.PORT || 8787), SESSION_SECRET: sessionSecret, COOKIE_SECURE: cookieSecure, }
 }

@@ -1,6 +1,8 @@
-﻿import type { ReactNode } from 'react'
+import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 import type { Service } from '../../data/services'
 import { useSectionTone } from '../../context/SectionToneContext'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cardSurfaceClass } from '../../lib/cardStyles'
 import AnimatedIcon from '../ui/AnimatedIcon'
 import EditableText from '../ui/EditableText'
@@ -30,10 +32,7 @@ function CheckIcon() {
 
 function ServiceSvg({ icon }: { icon: Service['icon'] }) {
   const common = {
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    className: 'h-5 w-5',
-  }
+    viewBox: '0 0 24 24', fill: 'none', className: 'h-5 w-5', }
 
   switch (icon) {
     case 'web':
@@ -95,48 +94,67 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ service }: ServiceCardProps) {
   const tone = useSectionTone()
+  const reduced = useReducedMotion()
+
+  const body = (
+    <>
+      <div className="flex items-center gap-3 bg-accent px-6 py-5">
+        <CardIcon>
+          <ServiceSvg icon={service.icon} />
+        </CardIcon>
+        <EditableText
+          contentKey={`services.${service.id}.title`}
+          as="h3"
+          className="text-lg leading-snug font-bold text-white"
+        >
+          {service.title}
+        </EditableText>
+      </div>
+      <div className="p-6">
+        <EditableText
+          contentKey={`services.${service.id}.description`}
+          as="p"
+          className="text-section-muted text-sm leading-relaxed"
+        >
+          {service.description}
+        </EditableText>
+        <ul className="mt-4 space-y-2.5">
+          {service.features.filter(Boolean).map((feature, index) => (
+            <li key={`${service.id}-${index}`} className="flex items-start gap-2.5">
+              <CheckIcon />
+              <EditableText
+                contentKey={`services.${service.id}.features.${index}`}
+                className="text-section-muted text-sm"
+              >
+                {feature}
+              </EditableText>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  )
+
+  if (reduced) {
+    return (
+      <TiltCard className="h-full">
+        <article className={`h-full ${cardSurfaceClass(tone)}`} data-interactive="true">
+          {body}
+        </article>
+      </TiltCard>
+    )
+  }
 
   return (
     <TiltCard className="h-full">
-      <article
-        className={`h-full ${cardSurfaceClass(tone)} transition-transform duration-300 hover:scale-[1.015]`}
+      <motion.article
+        className={`h-full ${cardSurfaceClass(tone)}`}
         data-interactive="true"
+        whileHover={{ y: -4 }}
+        transition={{ type: 'spring', stiffness: 380, damping: 24 }}
       >
-        <div className="flex items-center gap-3 bg-accent px-6 py-5">
-          <CardIcon>
-            <ServiceSvg icon={service.icon} />
-          </CardIcon>
-          <EditableText
-            contentKey={`services.${service.id}.title`}
-            as="h3"
-            className="text-lg leading-snug font-bold text-white"
-          >
-            {service.title}
-          </EditableText>
-        </div>
-        <div className="p-6">
-          <EditableText
-            contentKey={`services.${service.id}.description`}
-            as="p"
-            className="text-section-muted text-sm leading-relaxed"
-          >
-            {service.description}
-          </EditableText>
-          <ul className="mt-4 space-y-2.5">
-            {service.features.filter(Boolean).map((feature, index) => (
-              <li key={`${service.id}-${index}`} className="flex items-start gap-2.5">
-                <CheckIcon />
-                <EditableText
-                  contentKey={`services.${service.id}.features.${index}`}
-                  className="text-section-muted text-sm"
-                >
-                  {feature}
-                </EditableText>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </article>
+        {body}
+      </motion.article>
     </TiltCard>
   )
 }

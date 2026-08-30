@@ -13,22 +13,10 @@ export default function App() {
     <SiteDataProvider>
       <ScrollToTop />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path="/case-study/:slug"
-          element={
-            <Layout>
-              <CaseStudy />
-            </Layout>
-          }
-        />
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="case-study/:slug" element={<CaseStudy />} />
+        </Route>
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route
           path="/admin"
