@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import logo from '../../assets/brand/white-logo.png'
+import logo from '../../assets/brand/white-logo.webp'
 import { siteConfig } from '../../config/site'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { easeOutExpo } from '../../lib/motion'

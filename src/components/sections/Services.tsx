@@ -4,7 +4,7 @@ import SectionHeading from '../ui/SectionHeading'
 import SectionShell from '../ui/SectionShell'
 import StaggerGrid from '../ui/StaggerGrid'
 import { useSiteData } from '../../context/SiteDataContext'
-import servicesOffice from '../../assets/brand/services-office.png'
+import servicesOffice from '../../assets/brand/services-office.webp'
 
 export default function Services() {
   const { services } = useSiteData()

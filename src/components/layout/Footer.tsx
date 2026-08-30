@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import logo from '../../assets/brand/white-logo.png'
+﻿import { Link } from 'react-router-dom'
+import logo from '../../assets/brand/white-logo.webp'
 import { siteConfig } from '../../config/site'
 import { useSiteData } from '../../context/SiteDataContext'
 

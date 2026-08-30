@@ -1,0 +1,21 @@
+# Push to main → VPS poll-deploy cron applies changes within ~1 minute (no GitHub SSH).
+# Manual SSH deploy: Actions → "Deploy Production (Manual SSH)" → Run workflow
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to asdigitalsolution.online
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Poll-deploy on VPS applies this push
+        run: |
+          echo "Pushed to main: ${GITHUB_SHA}"
+          echo "The VPS runs poll-deploy every minute and deploys automatically."
+          echo "Live site: https://asdigitalsolution.online"
+          echo "No GitHub SSH is used on push (Hostinger often blocks runner IPs on :22)."

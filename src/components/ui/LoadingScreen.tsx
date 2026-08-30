@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import logo from '../../assets/brand/white-logo.png'
+import logo from '../../assets/brand/white-logo.webp'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 const SESSION_KEY = 'as-ds-loaded'

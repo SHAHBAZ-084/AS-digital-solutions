@@ -34,6 +34,8 @@ export default function ProductCard({ project }: ProductCardProps) {
             <img
               src={imageSrc}
               alt={project.name}
+              loading="lazy"
+              decoding="async"
               className={
                 isPlate
                   ? 'h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]'

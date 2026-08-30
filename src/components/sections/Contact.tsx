@@ -4,7 +4,7 @@ import CTAButton from '../ui/CTAButton'
 import EditableText from '../ui/EditableText'
 import Reveal from '../ui/Reveal'
 import { SectionToneContext } from '../../context/SectionToneContext'
-import contactHumanAi from '../../assets/brand/contact-human-ai.png'
+import contactHumanAi from '../../assets/brand/contact-human-ai.webp'
 
 interface ContactFormData {
   name: string
@@ -69,6 +69,8 @@ export default function Contact() {
               <img
                 src={contactHumanAi}
                 alt="Human and AI collaboration"
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
               <div

@@ -1,7 +1,7 @@
-import placeholderWeb from '../assets/projects/placeholder-web.jpg'
-import placeholderDesktop from '../assets/projects/placeholder-desktop.jpg'
-import placeholderBusiness from '../assets/projects/placeholder-business.jpg'
-import placeholderAi from '../assets/projects/placeholder-ai.jpg'
+import placeholderWeb from '../assets/projects/placeholder-web.webp'
+import placeholderDesktop from '../assets/projects/placeholder-desktop.webp'
+import placeholderBusiness from '../assets/projects/placeholder-business.webp'
+import placeholderAi from '../assets/projects/placeholder-ai.webp'
 
 export type ProjectType = 'Web' | 'Desktop' | 'Business Software' | 'AI-ML'
 

@@ -1,7 +1,7 @@
 ﻿import SectionHeading from '../ui/SectionHeading'
 import { SectionToneContext } from '../../context/SectionToneContext'
 import { useSiteData } from '../../context/SiteDataContext'
-import processLightbulb from '../../assets/brand/process-lightbulb.png'
+import processLightbulb from '../../assets/brand/process-lightbulb.webp'
 
 export default function Process() {
   const { process } = useSiteData()
@@ -74,6 +74,8 @@ export default function Process() {
                 <img
                   src={processLightbulb}
                   alt="Creative process lightbulb illustration"
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover object-[center_12%]"
                 />
               </div>

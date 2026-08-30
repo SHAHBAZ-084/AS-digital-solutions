@@ -2,7 +2,7 @@ import EditableText from '../ui/EditableText'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 import { SectionToneContext } from '../../context/SectionToneContext'
-import industriesPresent from '../../assets/brand/industries-present.png'
+import industriesPresent from '../../assets/brand/industries-present.webp'
 
 const industries = [
   'Retail', 'Education', 'Organizations', 'Startups', 'Small Businesses', 'Professional Services', 'Construction', 'E-commerce', 'Institutions',
@@ -48,6 +48,8 @@ export default function Industries() {
               <img
                 src={industriesPresent}
                 alt="Professional presenting industries we serve"
+                loading="lazy"
+                decoding="async"
                 className="mx-auto block h-auto w-full max-h-[30rem] object-contain object-bottom lg:max-h-[34rem]"
               />
             </Reveal>

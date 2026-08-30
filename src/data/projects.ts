@@ -1,8 +1,8 @@
 ﻿import { getPlaceholderForType, type ProjectType } from '../lib/projectPlaceholders'
-import citynestServicesImg from '../assets/projects/citynest-services.png'
-import sherazTradersImg from '../assets/projects/sheraz-traders.png'
-import usmanMallImg from '../assets/projects/usman-mall.png'
-import sufiCoImg from '../assets/projects/sufi-co.png'
+import citynestServicesImg from '../assets/projects/citynest-services.webp'
+import sherazTradersImg from '../assets/projects/sheraz-traders.webp'
+import usmanMallImg from '../assets/projects/usman-mall.webp'
+import sufiCoImg from '../assets/projects/sufi-co.webp'
 
 export type { ProjectType }
 

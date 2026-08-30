@@ -24,6 +24,8 @@ export default function SectionShell({
           <img
             src={texture}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover object-center"
             style={{ opacity: textureOpacity }}
           />

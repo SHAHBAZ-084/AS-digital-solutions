@@ -5,7 +5,7 @@ import SectionShell from '../ui/SectionShell'
 import StaggerGrid from '../ui/StaggerGrid'
 import { useSiteData } from '../../context/SiteDataContext'
 import { findProjectFallback, productToProject } from '../../lib/productMap'
-import projectsBg from '../../assets/brand/projects-bg.png'
+import projectsBg from '../../assets/brand/projects-bg.webp'
 
 export default function Products() {
   const { products } = useSiteData()

@@ -86,8 +86,34 @@ location /api/ {
 }
 ```
 
+## Auto-deploy (git push → VPS)
+
+Same pattern as Crown EV: the VPS polls GitHub every minute and deploys when `main` moves.
+
+### One-time on the VPS
+
+```bash
+bash /var/www/as-digital-solutions/deploy/setup-cicd.sh
+```
+
+That:
+- attaches the GitHub repo
+- installs a cron job (`poll-deploy.sh`)
+- adds the Crown EV GitHub Actions public key for optional manual SSH deploys
+- runs the first deploy (keeps `server/.env`, SQLite DB, and `uploads/`)
+
+### After that
+
+1. `git push origin main`
+2. Within ~1 minute the VPS pulls, builds, and restarts `as-content-api`
+3. Crown EV is untouched
+
+Logs: `/var/log/as-digital-poll-deploy.log`
+
+Optional: copy secret `VPS_SSH_KEY` from the CROWNEV GitHub repo into this repo for **Actions → Deploy Production (Manual SSH)**.
+
 ## Notes
 
-- `GET /api/content` is public so saved copy is live for every visitor without a rebuild.
-- `POST /api/content` requires the `x-write-secret` header and is rate-limited.
+- `GET /api/site` is public so saved copy is live for every visitor without a rebuild.
+- Admin writes require a logged-in session cookie.
 - If the API is down, the site still renders hardcoded defaults.

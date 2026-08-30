@@ -7,7 +7,7 @@ import EditableText from '../ui/EditableText'
 import HeroParallaxBg, { useHeroParallaxBind } from '../ui/HeroParallaxBg'
 import HeroParticles from '../ui/HeroParticles'
 import TypingText from '../ui/TypingText'
-import heroSkyline from '../../assets/brand/hero-skyline.png'
+import heroSkyline from '../../assets/brand/hero-skyline.webp'
 
 const accentDefault = 'Digital Solutions'
 
