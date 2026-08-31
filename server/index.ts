@@ -88,11 +88,18 @@ function asString(value: unknown, fallback = '') {
 }
 
 function asStringArray(value: unknown) {
-  if (Array.isArray(value)) return value.filter((item) => typeof item === 'string').map((item) => item.trim())
+  const clean = (item: string) =>
+    item.replace(/^[\s•·\-–—*\u2022\u2023\u25E6\u2043\u00B7]+/u, '').trim()
+  if (Array.isArray(value)) {
+    return value
+      .filter((item) => typeof item === 'string')
+      .map((item) => clean(item))
+      .filter(Boolean)
+  }
   if (typeof value === 'string') {
     return value
       .split(/\r?\n|,/)
-      .map((item) => item.trim())
+      .map((item) => clean(item))
       .filter(Boolean)
   }
   return []

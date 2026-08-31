@@ -65,7 +65,11 @@ db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('passphrase', 'C
 function parseStringArray(raw: string): string[] {
   try {
     const value: unknown = JSON.parse(raw)
-    return Array.isArray(value) ? value.filter((item) => typeof item === 'string') : []
+    if (!Array.isArray(value)) return []
+    return value
+      .filter((item) => typeof item === 'string')
+      .map((item) => item.replace(/^[\s•·\-–—*\u2022\u2023\u25E6\u2043\u00B7]+/u, '').trim())
+      .filter(Boolean)
   } catch {
     return []
   }

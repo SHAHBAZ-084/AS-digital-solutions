@@ -11,9 +11,9 @@ function fetchFast(path: string, init?: RequestInit, ms = 2000) {
     ...init, credentials: 'include', signal: AbortSignal.timeout(ms), })
 }
 
-async function readJson<T>(path: string): Promise<T | null> {
+async function readJson<T>(path: string, ms = 2000): Promise<T | null> {
   try {
-    const response = await fetchFast(path)
+    const response = await fetchFast(path, undefined, ms)
     if (!response.ok) return null
     return (await response.json()) as T
   } catch {
@@ -22,7 +22,7 @@ async function readJson<T>(path: string): Promise<T | null> {
 }
 
 export async function fetchSiteContent(): Promise<Partial<SiteContent>> {
-  const data = await readJson<Partial<SiteContent>>('/api/site')
+  const data = await readJson<Partial<SiteContent>>('/api/site', 8000)
   return data ?? {}
 }
 

@@ -11,7 +11,7 @@ export const shortTransition: Transition = {
   duration: 0.35, ease: easeOutExpo,
 }
 
-export const viewportOnce = { once: true, amount: 0.2 } as const
+export const viewportOnce = { once: true, amount: 0.05, margin: '0px 0px -80px 0px' } as const
 
 export const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 },

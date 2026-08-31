@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSiteData } from '../context/SiteDataContext'
+import { cleanListItem, normalizeStringList } from '../lib/listLines'
 import { changeAdminPassword, fetchSettings, logoutAdmin, siteApi, uploadImage } from '../lib/siteApi'
 import { BLOCK_LABELS, emptyProduct, newSection, syncProductImages } from '../lib/productCaseStudy'
 import { productFromApi } from '../lib/productMap'
@@ -829,7 +830,11 @@ function TeamPanel() {
     setBusy(true)
     try {
       const payload = {
-        ...draft, id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), sort_order: editing ? (draft.sort_order ?? 0) : team.length, }
+        ...draft,
+        id: draft.id || draft.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        skills: normalizeStringList(draft.skills),
+        sort_order: editing ? (draft.sort_order ?? 0) : team.length,
+      }
       if (editing) await siteApi.update('team', payload.id, payload)
       else await siteApi.create('team', payload)
       setDraft(empty)
@@ -918,9 +923,16 @@ function TeamPanel() {
         <Field label="Skills (one per line)">
           <textarea
             className={inputClass}
-            rows={3}
+            rows={5}
             value={draft.skills.join('\n')}
-            onChange={(event) => setDraft({ ...draft, skills: event.target.value.split(/\r?\n/) })}
+            onChange={(event) =>
+              setDraft({
+                ...draft,
+                skills: event.target.value.split(/\r?\n/).map((line) =>
+                  line.trim() === '' ? '' : cleanListItem(line),
+                ),
+              })
+            }
           />
         </Field>
         <Field label="LinkedIn URL">

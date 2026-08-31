@@ -23,6 +23,7 @@ export default function Team() {
 
       <StaggerGrid className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-12">
         {team.map((member) => {
+          const skills = Array.isArray(member.skills) ? member.skills.filter(Boolean) : []
           const article = (
             <>
               {member.photo_url ? (
@@ -39,24 +40,23 @@ export default function Team() {
               <h3 className="text-section mt-4 text-xl font-bold">{member.name}</h3>
               <p className="mt-1 text-sm font-medium text-accent">{member.role}</p>
               <p className="text-section-muted mt-3 text-sm leading-relaxed">{member.bio}</p>
-              <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium tracking-wide text-secondary uppercase">
-                {member.skills.filter(Boolean).map((skill, skillIndex) => (
-                  <span key={`${member.id}-${skill}`}>
-                    {skillIndex > 0 ? <span className="mr-3 text-accent/40">·</span> : null}
-                    {skill}
-                  </span>
-                ))}
-              </div>
+              {skills.length > 0 ? (
+                <ul className="mt-4 list-disc space-y-1.5 pl-4 text-xs font-medium tracking-wide text-secondary uppercase">
+                  {skills.map((skill, skillIndex) => (
+                    <li key={`${member.id}-${skillIndex}-${skill}`}>{skill}</li>
+                  ))}
+                </ul>
+              ) : null}
               <div className="mt-5 flex gap-4 text-sm">
                 <a
-                  href={member.links.linkedin || 'https://www.linkedin.com'}
+                  href={member.links?.linkedin || 'https://www.linkedin.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent hover:underline"
                 >
                   LinkedIn
                 </a>
-                <a href={`mailto:${member.links.email}`} className="text-accent hover:underline">
+                <a href={`mailto:${member.links?.email || ''}`} className="text-accent hover:underline">
                   Email
                 </a>
               </div>
