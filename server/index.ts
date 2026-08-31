@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  clearLoginFailures, clearSessionCookie, createSessionToken, isLoginLocked, lockoutRemainingMs, readSession, recordLoginFailure, SESSION_COOKIE, sessionCookieOptions,
+  clearLoginFailures, clearSessionCookie, createSessionToken, isLoginLocked, lockoutRemainingMs, readSession, recordLoginFailure, SESSION_COOKIE, sessionCookieOptions, touchSession,
 } from './auth.ts'
 import {
   deleteProduct, deleteService, deleteTeam, deleteTechnology, findAdminByUsername, getContact, getFooter, getProcess, getWhyUs, listProducts, listServices, listSite, listTeam, listTechnologies, productExists, serviceExists, setFooter, setProcess, setWhyUs, teamExists, technologyExists, updateAdminPasswordHash, upsertContact, upsertProduct, upsertService, upsertTeam, upsertTechnology,
@@ -79,6 +79,7 @@ function requireWrite(req: express.Request, res: express.Response, next: express
     res.status(429).json({ error: 'too many requests' })
     return
   }
+  touchSession(res, session.username, SESSION_SECRET, COOKIE_SECURE)
   ;(req as express.Request & { adminUsername?: string }).adminUsername = session.username
   next()
 }
@@ -411,6 +412,7 @@ app.get('/api/admin/me', (req, res) => {
     res.status(401).json({ error: 'unauthorized' })
     return
   }
+  touchSession(res, session.username, SESSION_SECRET, COOKIE_SECURE)
   res.json({ username: session.username })
 })
 

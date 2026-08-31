@@ -1629,8 +1629,8 @@ function SettingsPanel() {
       <div className={`space-y-3 p-5 ${panelCard}`}>
         <h2 className="text-sm font-semibold text-slate-900">Session security</h2>
         <p className="text-sm text-slate-500">
-          Admin access uses an httpOnly session cookie issued by the API. There is no write-secret in the frontend
-          bundle. Open <span className="font-medium text-slate-800">/admin/login</span> to sign in.
+          Admin access uses an httpOnly session cookie. You are signed out automatically after 15 minutes of
+          inactivity. Open <span className="font-medium text-slate-800">/admin/login</span> to sign in.
         </p>
       </div>
     </div>

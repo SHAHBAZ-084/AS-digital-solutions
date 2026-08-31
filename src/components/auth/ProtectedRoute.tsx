@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
+import { useAdminIdleLogout } from '../../hooks/useAdminIdleLogout'
 import { fetchAdminMe } from '../../lib/siteApi'
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -16,6 +17,8 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
       active = false
     }
   }, [location.pathname])
+
+  useAdminIdleLogout(state === 'ok')
 
   if (state === 'loading') {
     return (

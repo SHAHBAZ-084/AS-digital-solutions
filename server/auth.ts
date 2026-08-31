@@ -2,7 +2,8 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 import type { CookieOptions, Request, Response } from 'express'
 
 export const SESSION_COOKIE = 'as_admin_session'
-const SESSION_TTL_MS = 12 * 60 * 60 * 1000
+/** Idle / sliding session lifetime */
+export const SESSION_TTL_MS = 15 * 60 * 1000
 
 export interface SessionPayload {
   username: string
@@ -50,6 +51,12 @@ export function sessionCookieOptions(secure: boolean): CookieOptions {
 export function clearSessionCookie(res: Response, secure: boolean) {
   res.clearCookie(SESSION_COOKIE, {
     httpOnly: true, secure, sameSite: 'lax', path: '/', })
+}
+
+/** Extend the session cookie (sliding expiry on activity). */
+export function touchSession(res: Response, username: string, secret: string, secure: boolean) {
+  const token = createSessionToken(username, secret)
+  res.cookie(SESSION_COOKIE, token, sessionCookieOptions(secure))
 }
 
 export function readSession(req: Request, secret: string): SessionPayload | null {

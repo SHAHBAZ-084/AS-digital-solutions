@@ -1,11 +1,13 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { fetchAdminMe, loginAdmin } from '../lib/siteApi'
 
 export default function AdminLoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const idleExpired = (location.state as { reason?: string } | null)?.reason === 'idle'
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(idleExpired ? 'Signed out after 15 minutes of inactivity.' : '')
   const [checking, setChecking] = useState(true)
   const [alreadyIn, setAlreadyIn] = useState(false)
 
