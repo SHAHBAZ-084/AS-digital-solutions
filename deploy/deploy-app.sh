@@ -28,6 +28,10 @@ if [[ ! -f server/.env ]]; then
   exit 1
 fi
 
+if ! grep -qE '^SMTP_PASS=.+' server/.env; then
+  echo "WARN: SMTP_PASS missing in server/.env — contact form email will not send until Gmail SMTP is configured."
+fi
+
 echo "==> npm ci"
 npm ci
 
