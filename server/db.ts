@@ -62,6 +62,12 @@ if (!teamColumns.some((column) => column.name === 'photo_url')) {
 
 db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('passphrase', 'CUIVHR')`).run()
 
+db.prepare(
+  `UPDATE contact_info
+   SET phone = '03220726006'
+   WHERE id = 1 AND (phone = '' OR phone = '+92-XXX-XXXXXXX')`,
+).run()
+
 function parseStringArray(raw: string): string[] {
   try {
     const value: unknown = JSON.parse(raw)
