@@ -14,9 +14,9 @@ export const siteConfig = {
   phone: '03220726006',
   address: 'Placeholder address',
   social: {
-    linkedin: '',
-    facebook: '',
-    instagram: '',
+    linkedin: 'https://www.linkedin.com/in/muhammad-shahbaz-171563400',
+    facebook: 'https://www.facebook.com/share/1QcWxrrhpV/',
+    instagram: 'https://www.instagram.com/digital_solutions_pk',
   },
 } as const
 

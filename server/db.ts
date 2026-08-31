@@ -68,6 +68,26 @@ db.prepare(
    WHERE id = 1 AND (phone = '' OR phone = '+92-XXX-XXXXXXX')`,
 ).run()
 
+{
+  const socialsJson = JSON.stringify({
+    linkedin: 'https://www.linkedin.com/in/muhammad-shahbaz-171563400',
+    facebook: 'https://www.facebook.com/share/1QcWxrrhpV/',
+    instagram: 'https://www.instagram.com/digital_solutions_pk',
+  })
+  db.prepare(
+    `UPDATE contact_info
+     SET socials = ?
+     WHERE id = 1 AND (
+       socials IS NULL
+       OR socials = ''
+       OR socials = '{}'
+       OR socials LIKE '%"linkedin":""%'
+       OR socials LIKE '%"facebook":""%'
+       OR socials LIKE '%"instagram":""%'
+     )`,
+  ).run(socialsJson)
+}
+
 function parseStringArray(raw: string): string[] {
   try {
     const value: unknown = JSON.parse(raw)
