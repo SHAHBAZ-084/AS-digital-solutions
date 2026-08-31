@@ -14,8 +14,30 @@ import {
   deleteProduct, deleteService, deleteTeam, deleteTechnology, findAdminByUsername, getContact, getFooter, getProcess, getWhyUs, listProducts, listServices, listSite, listTeam, listTechnologies, productExists, serviceExists, setFooter, setProcess, setWhyUs, teamExists, technologyExists, updateAdminPasswordHash, upsertContact, upsertProduct, upsertService, upsertTeam, upsertTechnology,
 } from './db.ts'
 import { loadEnv } from './env.ts'
+import { isMailConfigured, sendContactMessage } from './mail.ts'
 
-const { PORT, SESSION_SECRET, COOKIE_SECURE } = loadEnv()
+const {
+  PORT,
+  SESSION_SECRET,
+  COOKIE_SECURE,
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_SECURE,
+  SMTP_USER,
+  SMTP_PASS,
+  CONTACT_TO,
+  CONTACT_FROM,
+} = loadEnv()
+
+const mailConfig = {
+  host: SMTP_HOST,
+  port: SMTP_PORT,
+  secure: SMTP_SECURE,
+  user: SMTP_USER,
+  pass: SMTP_PASS,
+  to: CONTACT_TO,
+  from: CONTACT_FROM || SMTP_USER,
+}
 const app = express()
 const root = path.dirname(fileURLToPath(import.meta.url))
 /** Project-root uploads/ (same folder tracked in git + used by deploy). */
@@ -276,6 +298,61 @@ app.put('/api/contact', requireWrite, (req, res) => {
     whatsapp_number: asString(req.body?.whatsapp_number), email: asString(req.body?.email), phone: asString(req.body?.phone), address: asString(req.body?.address), socials: {
       linkedin: asString(req.body?.socials?.linkedin ?? req.body?.linkedin), facebook: asString(req.body?.socials?.facebook ?? req.body?.facebook), instagram: asString(req.body?.socials?.instagram ?? req.body?.instagram), }, })
   res.json({ ok: true })
+})
+
+app.post('/api/contact-messages', async (req, res) => {
+  const ip = clientIp(req)
+  if (rateLimited(ip)) {
+    res.status(429).json({ error: 'too many requests' })
+    return
+  }
+  if (!isMailConfigured(mailConfig)) {
+    res.status(503).json({ error: 'mail-not-configured' })
+    return
+  }
+
+  const name = asString(req.body?.name)
+  const email = asString(req.body?.email)
+  const phone = asString(req.body?.phone)
+  const description = asString(req.body?.description)
+  const business = asString(req.body?.business)
+  const projectType = asString(req.body?.projectType, 'Web Development')
+  const budget = asString(req.body?.budget)
+  const preferredContact = asString(req.body?.preferredContact, 'Email')
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  if (!name || !emailOk || !phone || !description) {
+    res.status(400).json({ error: 'invalid' })
+    return
+  }
+  if (
+    name.length > 120 ||
+    email.length > 200 ||
+    phone.length > 40 ||
+    business.length > 160 ||
+    description.length > 5000 ||
+    budget.length > 120
+  ) {
+    res.status(400).json({ error: 'invalid' })
+    return
+  }
+
+  try {
+    await sendContactMessage(mailConfig, {
+      name,
+      business,
+      phone,
+      email,
+      projectType,
+      description,
+      budget,
+      preferredContact,
+    })
+    res.json({ ok: true })
+  } catch (error) {
+    console.error('[contact-mail]', error)
+    res.status(502).json({ error: 'send-failed' })
+  }
 })
 
 app.put('/api/footer', requireWrite, (req, res) => {

@@ -106,6 +106,35 @@ export async function uploadImage(file: File) {
   return data.url
 }
 
+export async function submitContactMessage(body: {
+  name: string
+  business: string
+  phone: string
+  email: string
+  projectType: string
+  description: string
+  budget: string
+  preferredContact: string
+}) {
+  let response: Response
+  try {
+    response = await fetchFast(
+      '/api/contact-messages',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      12000,
+    )
+  } catch {
+    throw new Error('unavailable')
+  }
+  if (response.status === 429) throw new Error('rate-limited')
+  if (response.status === 503) throw new Error('mail-not-configured')
+  if (!response.ok) throw new Error('send-failed')
+}
+
 export const siteApi = {
   create: (resource: string, body: unknown) => sendWrite(`/api/${resource}`, 'POST', body), update: (resource: string, id: string, body: unknown) =>
     sendWrite(`/api/${resource}/${encodeURIComponent(id)}`, 'PUT', body), remove: (resource: string, id: string) =>

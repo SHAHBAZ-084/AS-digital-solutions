@@ -45,5 +45,15 @@ export function loadEnv() {
     process.env.NODE_ENV === 'production'
 
   return {
-    PORT: Number(process.env.PORT || 8787), SESSION_SECRET: sessionSecret, COOKIE_SECURE: cookieSecure, }
+    PORT: Number(process.env.PORT || 8787),
+    SESSION_SECRET: sessionSecret,
+    COOKIE_SECURE: cookieSecure,
+    SMTP_HOST: process.env.SMTP_HOST || 'smtp.gmail.com',
+    SMTP_PORT: Number(process.env.SMTP_PORT || 465),
+    SMTP_SECURE: process.env.SMTP_SECURE !== 'false',
+    SMTP_USER: process.env.SMTP_USER || '',
+    SMTP_PASS: (process.env.SMTP_PASS || '').replace(/\s+/g, ''),
+    CONTACT_TO: process.env.CONTACT_TO || process.env.SMTP_USER || '',
+    CONTACT_FROM: process.env.CONTACT_FROM || process.env.SMTP_USER || '',
+  }
 }

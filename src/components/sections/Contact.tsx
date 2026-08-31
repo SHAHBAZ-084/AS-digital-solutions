@@ -1,5 +1,6 @@
 ﻿import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { useSiteData } from '../../context/SiteDataContext'
+import { submitContactMessage } from '../../lib/siteApi'
 import CTAButton from '../ui/CTAButton'
 import EditableText from '../ui/EditableText'
 import Reveal from '../ui/Reveal'
@@ -46,6 +47,9 @@ function fieldClassName() {
 
 export default function Contact() {
   const [formData, setFormData] = useState<ContactFormData>(initialState)
+  const [busy, setBusy] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'sent' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
   const { contact } = useSiteData()
 
   const handleChange = (
@@ -53,11 +57,31 @@ export default function Contact() {
   ) => {
     const { name, value } = event.target
     setFormData((current) => ({ ...current, [name]: value }))
+    if (status !== 'idle') {
+      setStatus('idle')
+      setErrorMessage('')
+    }
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('Contact form submission', formData)
+    setBusy(true)
+    setStatus('idle')
+    setErrorMessage('')
+    try {
+      await submitContactMessage(formData)
+      setFormData(initialState)
+      setStatus('sent')
+    } catch (error) {
+      setStatus('error')
+      setErrorMessage(
+        error instanceof Error && error.message === 'rate-limited'
+          ? 'Too many messages. Please wait a few minutes and try again.'
+          : 'Could not send your message. Please email us directly or try again.',
+      )
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
@@ -128,7 +152,11 @@ export default function Contact() {
             </Reveal>
 
             <Reveal delayMs={80} className="bg-white p-7 sm:p-9 lg:p-10">
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(event) => {
+                  void handleSubmit(event)
+                }}
+              >
                 <p className="text-[11px] font-semibold tracking-[0.2em] text-accent uppercase">
                   Project brief
                 </p>
@@ -142,6 +170,7 @@ export default function Contact() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     />
                   </div>
@@ -151,6 +180,7 @@ export default function Contact() {
                       name="business"
                       value={formData.business}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     />
                   </div>
@@ -161,6 +191,7 @@ export default function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     />
                   </div>
@@ -172,6 +203,7 @@ export default function Contact() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     />
                   </div>
@@ -181,6 +213,7 @@ export default function Contact() {
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     >
                       <option>Web Development</option>
@@ -199,6 +232,7 @@ export default function Contact() {
                       name="preferredContact"
                       value={formData.preferredContact}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     >
                       <option>Phone</option>
@@ -214,6 +248,7 @@ export default function Contact() {
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
+                      disabled={busy}
                       rows={3}
                       className={fieldClassName()}
                     />
@@ -224,17 +259,30 @@ export default function Contact() {
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
+                      disabled={busy}
                       className={fieldClassName()}
                     />
                   </div>
                 </div>
 
+                {status === 'sent' ? (
+                  <p className="mt-4 text-sm font-medium text-emerald-600">
+                    Message sent. We&apos;ll get back to you soon.
+                  </p>
+                ) : null}
+                {status === 'error' ? (
+                  <p className="mt-4 text-sm font-medium text-red-600">{errorMessage}</p>
+                ) : null}
+
                 <button
                   type="submit"
-                  className="btn-shine mt-6 inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                  disabled={busy}
+                  className="btn-shine mt-6 inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-60"
                   data-interactive="true"
                 >
-                  <EditableText contentKey="contact.form.submit">Send Project Brief</EditableText>
+                  <EditableText contentKey="contact.form.submit">
+                    {busy ? 'Sending…' : 'Send Project Brief'}
+                  </EditableText>
                 </button>
               </form>
             </Reveal>
