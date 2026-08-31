@@ -47,7 +47,7 @@ export const seedTechnologies = [
 export const seedContact = {
   whatsapp_number: '+92-XXX-XXXXXXX',
   email: 'contactasdigitalsolutions@gmail.com',
-  phone: '+92-XXX-XXXXXXX',
+  phone: '03220726006',
   address: 'Placeholder address',
   socials: { linkedin: '', facebook: '', instagram: '' },
 }

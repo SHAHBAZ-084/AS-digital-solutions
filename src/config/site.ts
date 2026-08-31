@@ -11,7 +11,7 @@ export const siteConfig = {
   /** Digits only for wa.me links; keep in sync with whatsappNumber */
   whatsappDigits: '92XXXXXXXXXX',
   email: 'contactasdigitalsolutions@gmail.com',
-  phone: '+92-XXX-XXXXXXX',
+  phone: '03220726006',
   address: 'Placeholder address',
   social: {
     linkedin: '',
