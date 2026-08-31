@@ -1,8 +1,11 @@
 import type { FooterContent } from '../types/siteContent'
 
 export const defaultFooter: FooterContent = {
-  blurb:
-    'AS Digital Solutions builds practical digital projects, business software, and long-term solutions designed around real workflows.', copyright: 'All rights reserved.', privacy_label: 'Privacy Policy', terms_label: 'Terms', columns: [
+  blurb: 'Practical digital projects and business software built around real workflows.',
+  copyright: 'All rights reserved.',
+  privacy_label: 'Privacy Policy',
+  terms_label: 'Terms',
+  columns: [
     {
       id: 'services', title: 'Services', links: [
         { id: 'web', label: 'Web Development', href: '#services' }, { id: 'business', label: 'Business Software', href: '#business-software' }, { id: 'ai', label: 'AI & ML Solutions', href: '#services' }, { id: 'consultancy', label: 'Consultancy', href: '#contact' }, ], }, {
