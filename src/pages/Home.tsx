@@ -47,8 +47,8 @@ export default function Home() {
         <WhyUs />
         <Technology />
         <Process />
-        <Team />
         <FAQ />
+        <Team />
         <Contact />
       </DeferredSections>
     </>
