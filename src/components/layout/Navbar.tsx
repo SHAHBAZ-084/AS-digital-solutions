@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../assets/brand/white-logo.webp'
 import { siteConfig } from '../../config/site'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
@@ -8,13 +8,40 @@ import { easeOutExpo } from '../../lib/motion'
 import EditableText from '../ui/EditableText'
 
 const navLinks = [
-  { id: 'home', label: 'Home', href: '#hero' }, { id: 'services', label: 'Services', href: '#services' }, { id: 'projects', label: 'Projects', href: '#projects' }, { id: 'process', label: 'Process', href: '#process' }, { id: 'contact', label: 'Contact', href: '#contact' },
+  { id: 'home', label: 'Home', href: '#hero' },
+  { id: 'services', label: 'Services', href: '#services' },
+  { id: 'projects', label: 'Projects', href: '#projects' },
+  { id: 'process', label: 'Process', href: '#process' },
+  { id: 'contact', label: 'Contact', href: '#contact' },
 ]
+
+const MENU_EXIT_MS = 380
+
+function navOffsetPx() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--nav-height').trim()
+  const root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+  if (raw.endsWith('rem')) return parseFloat(raw) * root
+  if (raw.endsWith('px')) return parseFloat(raw)
+  return 4.25 * root
+}
+
+function scrollToHash(hash: string) {
+  const id = hash.replace(/^#/, '')
+  const el = document.getElementById(id)
+  if (!el) return false
+  const top = el.getBoundingClientRect().top + window.scrollY - navOffsetPx()
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+  history.replaceState(null, '', `#${id}`)
+  return true
+}
 
 export default function Navbar() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const reduced = useReducedMotion()
+  const pendingHash = useRef<string | null>(null)
+  const exitTimer = useRef<number | null>(null)
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -23,7 +50,52 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
+  useEffect(() => {
+    return () => {
+      if (exitTimer.current !== null) window.clearTimeout(exitTimer.current)
+    }
+  }, [])
+
   const resolveHref = (hash: string) => (pathname === '/' ? hash : `/${hash}`)
+
+  const runPendingScroll = () => {
+    const hash = pendingHash.current
+    if (!hash) return
+    pendingHash.current = null
+    // Sections under DeferredSections may mount a tick later after route change.
+    window.requestAnimationFrame(() => {
+      if (!scrollToHash(hash)) {
+        window.setTimeout(() => scrollToHash(hash), 120)
+      }
+    })
+  }
+
+  const handleMobileNavClick = (event: MouseEvent<HTMLAnchorElement>, hash: string) => {
+    event.preventDefault()
+    pendingHash.current = hash
+
+    if (exitTimer.current !== null) {
+      window.clearTimeout(exitTimer.current)
+      exitTimer.current = null
+    }
+
+    setMenuOpen(false)
+
+    if (pathname !== '/') {
+      navigate(`/${hash}`)
+      exitTimer.current = window.setTimeout(runPendingScroll, reduced ? 50 : MENU_EXIT_MS)
+      return
+    }
+
+    if (reduced) {
+      exitTimer.current = window.setTimeout(runPendingScroll, 50)
+      return
+    }
+
+    // Animated menu: prefer onExitComplete; timeout as fallback if exit is skipped.
+    exitTimer.current = window.setTimeout(runPendingScroll, MENU_EXIT_MS)
+  }
+
   const closeMenu = () => setMenuOpen(false)
 
   const mobileMenu = (
@@ -34,7 +106,7 @@ export default function Navbar() {
             <a
               href={resolveHref(link.href)}
               className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
-              onClick={closeMenu}
+              onClick={(event) => handleMobileNavClick(event, link.href)}
             >
               <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
             </a>
@@ -97,7 +169,16 @@ export default function Navbar() {
       {reduced ? (
         menuOpen ? mobileMenu : null
       ) : (
-        <AnimatePresence initial={false}>
+        <AnimatePresence
+          initial={false}
+          onExitComplete={() => {
+            if (exitTimer.current !== null) {
+              window.clearTimeout(exitTimer.current)
+              exitTimer.current = null
+            }
+            runPendingScroll()
+          }}
+        >
           {menuOpen ? (
             <motion.div
               key="mobile-menu"
