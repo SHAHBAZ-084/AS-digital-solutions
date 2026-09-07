@@ -62,7 +62,7 @@ export default function Footer() {
   const { contact, footer } = useSiteData()
 
   return (
-    <footer className="border-t border-navy bg-navy text-white">
+    <footer id="site-footer" className="border-t border-navy bg-navy text-white">
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.1fr_repeat(4,minmax(0,1fr))] lg:gap-6">
           <div>

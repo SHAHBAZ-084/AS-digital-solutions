@@ -2,6 +2,7 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import FloatingWhatsApp from '../ui/FloatingWhatsApp'
 import PageTransition from '../ui/PageTransition'
+import ScrollToTopButton from '../ui/ScrollToTopButton'
 
 export default function Layout() {
   return (
@@ -11,6 +12,7 @@ export default function Layout() {
         <PageTransition />
       </main>
       <Footer />
+      <ScrollToTopButton />
       <FloatingWhatsApp />
     </div>
   )
