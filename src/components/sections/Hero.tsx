@@ -1,25 +1,20 @@
-import { motion } from 'framer-motion'
 import { siteConfig } from '../../config/site'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { heroItem, heroStagger, motionTransition } from '../../lib/motion'
 import CTAButton from '../ui/CTAButton'
 import EditableText from '../ui/EditableText'
-import HeroParallaxBg, { useHeroParallaxBind } from '../ui/HeroParallaxBg'
+import HeroParallaxBg from '../ui/HeroParallaxBg'
 import HeroParticles from '../ui/HeroParticles'
-import TypingText from '../ui/TypingText'
-import heroSkyline from '../../assets/brand/hero-skyline.webp'
 
 const accentDefault = 'Digital Solutions'
+/** Public URL: preloaded in index.html for LCP (stable path, not hashed). */
+const heroSkyline = '/hero-lcp.webp'
 
 export default function Hero() {
-  const reduced = useReducedMotion()
-  const { springX, springY, bindSection, reduced: tiltReduced } = useHeroParallaxBind()
-
   const eyebrow = (
     <EditableText
       contentKey="hero.eyebrow"
       as="p"
-      className="text-section-eyebrow text-xs font-semibold tracking-[0.28em] uppercase"
+      className="text-section-eyebrow animate-hero-item text-xs font-semibold tracking-[0.28em] uppercase"
+      style={{ animationDelay: '40ms' }}
     >
       {siteConfig.eyebrow}
     </EditableText>
@@ -28,9 +23,7 @@ export default function Hero() {
   const headline = (
     <>
       <EditableText contentKey="hero.headline.lead">We Build</EditableText>{' '}
-      <span className="text-accent">
-        <TypingText text={accentDefault} />
-      </span>{' '}
+      <span className="text-accent">{accentDefault}</span>{' '}
       <EditableText contentKey="hero.headline.tail">That Grow Businesses</EditableText>
     </>
   )
@@ -39,7 +32,8 @@ export default function Hero() {
     <EditableText
       contentKey="hero.subhead"
       as="p"
-      className="text-section-muted mt-5 max-w-lg text-base leading-relaxed sm:text-lg"
+      className="text-section-muted animate-hero-item mt-5 max-w-lg text-base leading-relaxed sm:text-lg"
+      style={{ animationDelay: '160ms' }}
     >
       Empowering startups, businesses, and entrepreneurs with technology that delivers real results:
       websites, products, and software built to look modern and perform in the market.
@@ -47,7 +41,7 @@ export default function Hero() {
   )
 
   const actions = (
-    <div className="mt-8 flex flex-wrap items-center gap-3">
+    <div className="animate-hero-item mt-8 flex flex-wrap items-center gap-3" style={{ animationDelay: '220ms' }}>
       <CTAButton label="Start Your Project" href="#contact" />
       <CTAButton label="Explore Our Work" href="#projects" variant="secondary" />
     </div>
@@ -57,14 +51,8 @@ export default function Hero() {
     <section
       id="hero"
       className="section-light relative flex min-h-[calc(100svh-5.5rem)] flex-col justify-center overflow-hidden bg-bg-primary"
-      {...bindSection}
     >
-      <HeroParallaxBg
-        src={heroSkyline}
-        springX={springX}
-        springY={springY}
-        reduced={tiltReduced}
-      />
+      <HeroParallaxBg src={heroSkyline} width={1280} height={536} />
       <HeroParticles />
 
       <div
@@ -73,35 +61,15 @@ export default function Hero() {
       />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 py-16 lg:py-20">
-        {reduced ? (
-          <>
-            {eyebrow}
-            <h1 className="text-section mt-4 max-w-xl text-4xl leading-[1.08] font-extrabold tracking-tight sm:text-5xl lg:text-[3.35rem]">
-              {headline}
-            </h1>
-            {subhead}
-            {actions}
-          </>
-        ) : (
-          <motion.div variants={heroStagger} initial="hidden" animate="show">
-            <motion.div variants={heroItem} transition={motionTransition}>
-              {eyebrow}
-            </motion.div>
-            <motion.h1
-              className="text-section mt-4 max-w-xl text-4xl leading-[1.08] font-extrabold tracking-tight sm:text-5xl lg:text-[3.35rem]"
-              variants={heroItem}
-              transition={motionTransition}
-            >
-              {headline}
-            </motion.h1>
-            <motion.div variants={heroItem} transition={motionTransition}>
-              {subhead}
-            </motion.div>
-            <motion.div variants={heroItem} transition={motionTransition}>
-              {actions}
-            </motion.div>
-          </motion.div>
-        )}
+        {eyebrow}
+        <h1
+          className="text-section animate-hero-item mt-4 max-w-xl text-4xl leading-[1.08] font-extrabold tracking-tight sm:text-5xl lg:text-[3.35rem]"
+          style={{ animationDelay: '100ms' }}
+        >
+          {headline}
+        </h1>
+        {subhead}
+        {actions}
       </div>
     </section>
   )

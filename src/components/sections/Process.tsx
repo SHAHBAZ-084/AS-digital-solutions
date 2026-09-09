@@ -74,6 +74,8 @@ export default function Process() {
                 <img
                   src={processLightbulb}
                   alt="Creative process lightbulb illustration"
+                  width={480}
+                  height={640}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover object-[center_12%]"

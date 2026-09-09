@@ -37,6 +37,8 @@ export default function ProductCard({ project }: ProductCardProps) {
             <img
               src={imageSrc}
               alt={project.name}
+              width={640}
+              height={400}
               loading="lazy"
               decoding="async"
               className={

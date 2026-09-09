@@ -93,6 +93,8 @@ export default function Contact() {
               <img
                 src={contactHumanAi}
                 alt="Human and AI collaboration"
+                width={900}
+                height={1200}
                 loading="lazy"
                 decoding="async"
                 className="absolute inset-0 h-full w-full object-cover object-center"

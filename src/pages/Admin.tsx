@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Seo from '../components/seo/Seo'
 import { useSiteData } from '../context/SiteDataContext'
 import { cleanListItem, normalizeStringList } from '../lib/listLines'
 import { changeAdminPassword, fetchSettings, logoutAdmin, siteApi, uploadImage } from '../lib/siteApi'
@@ -1654,6 +1655,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F7FB] text-slate-900">
+      <Seo title="Admin | AS Digital Solutions" path="/admin" noindex />
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col bg-navy text-white md:flex">
         <div className="border-b border-white/10 px-5 py-5">
           <p className="text-[11px] font-semibold tracking-[0.22em] text-white/50 uppercase">AS Digital</p>

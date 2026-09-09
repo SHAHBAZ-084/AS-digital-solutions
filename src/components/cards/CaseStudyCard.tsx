@@ -15,6 +15,10 @@ export default function CaseStudyCard({ project }: CaseStudyCardProps) {
         <img
           src={imageSrc}
           alt={project.name}
+          width={640}
+          height={400}
+          loading="lazy"
+          decoding="async"
           className="max-h-full max-w-full object-contain"
         />
       </div>

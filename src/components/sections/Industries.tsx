@@ -48,6 +48,8 @@ export default function Industries() {
               <img
                 src={industriesPresent}
                 alt="Professional presenting industries we serve"
+                width={720}
+                height={900}
                 loading="lazy"
                 decoding="async"
                 className="mx-auto block h-auto w-full max-h-[30rem] object-contain object-bottom lg:max-h-[34rem]"

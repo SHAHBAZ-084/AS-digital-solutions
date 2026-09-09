@@ -79,10 +79,22 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
         setData(applyPayload(next))
       })
     }
-    load()
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+      cancelIdleCallback?: (id: number) => void
+    }
+    let idleId: number | undefined
+    let timeoutId: number | undefined
+    if (typeof w.requestIdleCallback === 'function') {
+      idleId = w.requestIdleCallback(load, { timeout: 2500 })
+    } else {
+      timeoutId = window.setTimeout(load, 400)
+    }
     window.addEventListener('focus', load)
     return () => {
       active = false
+      if (idleId !== undefined) w.cancelIdleCallback?.(idleId)
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId)
       window.removeEventListener('focus', load)
     }
   }, [])

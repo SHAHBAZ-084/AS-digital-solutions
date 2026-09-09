@@ -24,6 +24,8 @@ export default function SectionShell({
           <img
             src={texture}
             alt=""
+            width={1920}
+            height={1080}
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover object-center"

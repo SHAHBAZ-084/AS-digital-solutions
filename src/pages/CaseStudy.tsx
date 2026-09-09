@@ -6,6 +6,7 @@ import { getPlaceholderForType } from '../lib/projectPlaceholders'
 import CTAButton from '../components/ui/CTAButton'
 import EditableText from '../components/ui/EditableText'
 import ImageReveal from '../components/ui/ImageReveal'
+import Seo, { SITE } from '../components/seo/Seo'
 
 function SectionLabel({
   title, titleKey,
@@ -63,6 +64,12 @@ export default function CaseStudy() {
   if (!project) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-20 text-center">
+        <Seo
+          title="Case Study Not Found | AS Digital Solutions"
+          description="The requested case study does not match a project entry yet."
+          path={`/case-study/${slug ?? ''}`}
+          noindex
+        />
         <EditableText
           contentKey="caseStudy.missing.eyebrow"
           as="p"
@@ -126,8 +133,37 @@ export default function CaseStudy() {
   const tech =
     show('technology') && project.technology.length > 0 ? project.technology : []
 
+  const path = `/case-study/${project.slug}`
+  const seoTitle = `${project.name} Case Study | AS Digital Solutions`
+  const seoDesc = (project.description || project.overview || '').slice(0, 160)
+  const imageForOg = heroImage.startsWith('http')
+    ? heroImage
+    : heroImage.startsWith('/')
+      ? `${SITE}${heroImage}`
+      : `${SITE}/og-image.png`
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.name,
+    description: seoDesc,
+    url: `${SITE}${path}`,
+    about: project.industry,
+    author: {
+      '@type': 'Organization',
+      name: 'AS Digital Solutions',
+      url: SITE,
+    },
+  }
+
   return (
     <article className="bg-bg-primary">
+      <Seo
+        title={seoTitle}
+        description={seoDesc || undefined}
+        path={path}
+        image={imageForOg}
+        jsonLd={jsonLd}
+      />
       <section className="mx-auto max-w-6xl px-4 pt-12 pb-10 sm:pt-16 sm:pb-14">
         <Link
           to="/#projects"
@@ -197,6 +233,9 @@ export default function CaseStudy() {
               <img
                 src={heroImage}
                 alt={project.name}
+                width={1280}
+                height={800}
+                decoding="async"
                 className={
                   isPlate && plateFill
                     ? 'h-full w-full object-cover'

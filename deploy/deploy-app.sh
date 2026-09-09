@@ -21,7 +21,7 @@ fi
 echo "==> Pull latest (${DEPLOY_BRANCH})"
 git fetch origin "${DEPLOY_BRANCH}"
 git reset --hard "origin/${DEPLOY_BRANCH}"
-chmod +x deploy/deploy-app.sh deploy/poll-deploy.sh deploy/setup-cicd.sh 2>/dev/null || true
+chmod +x deploy/deploy-app.sh deploy/poll-deploy.sh deploy/setup-cicd.sh deploy/tune-nginx-perf.sh deploy/fix-seo-nginx.sh 2>/dev/null || true
 
 if [[ ! -f server/.env ]]; then
   echo "ERROR: server/.env missing. Create it before deploy (PORT, SESSION_SECRET, COOKIE_SECURE)."
@@ -53,6 +53,8 @@ pm2 startOrReload "${APP_DIR}/deploy/ecosystem.config.cjs" --update-env
 pm2 save
 
 if command -v nginx >/dev/null 2>&1; then
+  bash "${APP_DIR}/deploy/tune-nginx-perf.sh" || true
+  bash "${APP_DIR}/deploy/fix-seo-nginx.sh" || true
   nginx -t && systemctl reload nginx || true
 fi
 

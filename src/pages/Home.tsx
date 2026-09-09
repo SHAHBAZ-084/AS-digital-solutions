@@ -1,8 +1,9 @@
 ﻿import { lazy, Suspense, useEffect, useState } from 'react'
+import Seo from '../components/seo/Seo'
 import Hero from '../components/sections/Hero'
 import TrustStrip from '../components/sections/TrustStrip'
-import Services from '../components/sections/Services'
 
+const Services = lazy(() => import('../components/sections/Services'))
 const BusinessSoftware = lazy(() => import('../components/sections/BusinessSoftware'))
 const Products = lazy(() => import('../components/sections/Products'))
 const Industries = lazy(() => import('../components/sections/Industries'))
@@ -37,10 +38,11 @@ function DeferredSections({ children }: { children: React.ReactNode }) {
 export default function Home() {
   return (
     <>
+      <Seo path="/" />
       <Hero />
       <TrustStrip />
-      <Services />
       <DeferredSections>
+        <Services />
         <BusinessSoftware />
         <Products />
         <Industries />

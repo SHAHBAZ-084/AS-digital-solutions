@@ -8,12 +8,21 @@ export default defineConfig({
   build: {
     target: 'es2022',
     cssCodeSplit: true,
-    modulePreload: { polyfill: false },
+    cssMinify: true,
+    minify: 'esbuild',
+    modulePreload: {
+      polyfill: false,
+      resolveDependencies(_filename, deps) {
+        // Keep framer-motion off the critical path — only load when a deferred section needs it.
+        return deps.filter((dep) => !dep.includes('motion'))
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return
           if (id.includes('framer-motion')) return 'motion'
+          if (id.includes('@fontsource')) return 'fonts'
           if (id.includes('react-router')) return 'router'
           if (id.includes('react-dom') || id.includes('/react/')) return 'react'
         },

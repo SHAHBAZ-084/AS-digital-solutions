@@ -70,6 +70,10 @@ export default function Footer() {
               <img
                 src={logo}
                 alt={siteConfig.companyName}
+                width={280}
+                height={96}
+                loading="lazy"
+                decoding="async"
                 className="h-20 w-auto max-w-[280px] object-contain object-left sm:h-24"
               />
             </Link>

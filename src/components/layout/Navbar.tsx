@@ -1,10 +1,8 @@
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../assets/brand/white-logo.webp'
 import { siteConfig } from '../../config/site'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { easeOutExpo } from '../../lib/motion'
 import EditableText from '../ui/EditableText'
 
 const navLinks = [
@@ -15,7 +13,7 @@ const navLinks = [
   { id: 'contact', label: 'Contact', href: '#contact' },
 ]
 
-const MENU_EXIT_MS = 380
+const MENU_EXIT_MS = 220
 
 function navOffsetPx() {
   const raw = getComputedStyle(document.documentElement).getPropertyValue('--nav-height').trim()
@@ -62,7 +60,6 @@ export default function Navbar() {
     const hash = pendingHash.current
     if (!hash) return
     pendingHash.current = null
-    // Sections under DeferredSections may mount a tick later after route change.
     window.requestAnimationFrame(() => {
       if (!scrollToHash(hash)) {
         window.setTimeout(() => scrollToHash(hash), 120)
@@ -87,13 +84,7 @@ export default function Navbar() {
       return
     }
 
-    if (reduced) {
-      exitTimer.current = window.setTimeout(runPendingScroll, 50)
-      return
-    }
-
-    // Animated menu: prefer onExitComplete; timeout as fallback if exit is skipped.
-    exitTimer.current = window.setTimeout(runPendingScroll, MENU_EXIT_MS)
+    exitTimer.current = window.setTimeout(runPendingScroll, reduced ? 50 : MENU_EXIT_MS)
   }
 
   const closeMenu = () => setMenuOpen(false)
@@ -128,6 +119,9 @@ export default function Navbar() {
           <img
             src={logo}
             alt={siteConfig.companyName}
+            width={220}
+            height={68}
+            decoding="async"
             className="h-16 w-auto max-h-16 object-contain sm:h-[4.25rem] sm:max-h-[4.25rem]"
           />
         </Link>
@@ -135,14 +129,12 @@ export default function Navbar() {
         <ul className="hidden items-center gap-7 text-[13px] font-medium tracking-wide text-white lg:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <motion.a
+              <a
                 href={resolveHref(link.href)}
-                className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent"
-                whileHover={reduced ? undefined : { y: -1 }}
-                transition={{ duration: 0.2, ease: easeOutExpo }}
+                className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
               >
                 <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
-              </motion.a>
+              </a>
             </li>
           ))}
         </ul>
@@ -166,33 +158,13 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {reduced ? (
-        menuOpen ? mobileMenu : null
-      ) : (
-        <AnimatePresence
-          initial={false}
-          onExitComplete={() => {
-            if (exitTimer.current !== null) {
-              window.clearTimeout(exitTimer.current)
-              exitTimer.current = null
-            }
-            runPendingScroll()
-          }}
-        >
-          {menuOpen ? (
-            <motion.div
-              key="mobile-menu"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.35, ease: easeOutExpo }}
-              className="overflow-hidden lg:hidden"
-            >
-              {mobileMenu}
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      )}
+      <div
+        className={`overflow-hidden lg:hidden transition-[max-height,opacity] duration-200 ease-out ${
+          menuOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        }`}
+      >
+        {mobileMenu}
+      </div>
     </header>
   )
 }

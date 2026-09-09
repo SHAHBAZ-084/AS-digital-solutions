@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import Seo from '../components/seo/Seo'
 import { fetchAdminMe, loginAdmin } from '../lib/siteApi'
 
 export default function AdminLoginPage() {
@@ -59,6 +60,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F7FB] px-4">
+      <Seo title="Admin Login | AS Digital Solutions" path="/admin/login" noindex />
       <form
         onSubmit={(event) => {
           void onSubmit(event)

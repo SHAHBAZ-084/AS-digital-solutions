@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
+# Private CMS — intentionally not indexed (expected Search Console "Blocked by robots.txt")
 Disallow: /admin
-Disallow: /admin/
 
 Sitemap: https://asdigitalsolution.online/sitemap.xml

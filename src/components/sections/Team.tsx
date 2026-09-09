@@ -30,6 +30,10 @@ export default function Team() {
                 <img
                   src={member.photo_url}
                   alt={member.name}
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                  decoding="async"
                   className="h-20 w-20 rounded-full object-cover ring-4 ring-accent/15"
                 />
               ) : (
