@@ -1,7 +1,8 @@
 import type { FooterContent } from '../types/siteContent'
 
 export const defaultFooter: FooterContent = {
-  blurb: 'Practical digital projects and business software built around real workflows.',
+  blurb:
+    'AS Digital Solutions in Chishtian builds practical websites and business software around real workflows for clients across Punjab and Pakistan.',
   copyright: 'All rights reserved.',
   privacy_label: 'Privacy Policy',
   terms_label: 'Terms',

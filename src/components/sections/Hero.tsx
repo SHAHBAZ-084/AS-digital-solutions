@@ -35,8 +35,9 @@ export default function Hero() {
       className="text-section-muted animate-hero-item mt-5 max-w-lg text-base leading-relaxed sm:text-lg"
       style={{ animationDelay: '160ms' }}
     >
-      Empowering startups, businesses, and entrepreneurs with technology that delivers real results:
-      websites, products, and software built to look modern and perform in the market.
+      Empowering startups, businesses, and entrepreneurs from Chishtian and across Pakistan with
+      technology that delivers real results: websites, products, and software built to look modern
+      and perform in the market.
     </EditableText>
   )
 

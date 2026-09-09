@@ -12,7 +12,7 @@ export const siteConfig = {
   whatsappDigits: '92XXXXXXXXXX',
   email: 'contactasdigitalsolutions@gmail.com',
   phone: '03220726006',
-  address: 'Placeholder address',
+  address: 'Chishtian, Punjab, Pakistan',
   social: {
     linkedin: 'https://www.linkedin.com/in/muhammad-shahbaz-171563400',
     facebook: 'https://www.facebook.com/share/1QcWxrrhpV/',

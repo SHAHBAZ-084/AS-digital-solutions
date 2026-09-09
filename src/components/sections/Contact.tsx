@@ -125,8 +125,8 @@ export default function Contact() {
                   as="p"
                   className="mt-4 max-w-sm text-sm leading-relaxed text-white/75"
                 >
-                  Share the idea, the bottleneck, or the workflow you want improved. We&apos;ll reply
-                  with a clear next step.
+                  Share the idea, the bottleneck, or the workflow you want improved. Based in
+                  Chishtian, we&apos;ll reply with a clear next step.
                 </EditableText>
 
                 <div className="mt-7 space-y-3 text-sm text-white/90">
@@ -140,6 +140,13 @@ export default function Contact() {
                     <span className="mx-2 text-sky-300/40">·</span>
                     {contact.phone}
                   </p>
+                  {contact.address?.trim() ? (
+                    <p>
+                      <span className="font-semibold text-sky-300">Location</span>
+                      <span className="mx-2 text-sky-300/40">·</span>
+                      {contact.address}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-2.5">

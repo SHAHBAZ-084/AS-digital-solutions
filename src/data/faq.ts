@@ -15,7 +15,13 @@ export const faqItems: FAQItem[] = [
     id: 'where-based',
     question: 'Where is AS Digital Solutions based?',
     answer:
-      'AS Digital Solutions is based in Pakistan and works with local and remote clients. You can reach us by email at contactasdigitalsolutions@gmail.com or by phone at 03220726006.',
+      'AS Digital Solutions is based in Chishtian, Punjab, Pakistan, and works with local businesses in Chishtian and Bahawalnagar as well as remote clients across Pakistan. Reach us at contactasdigitalsolutions@gmail.com or 03220726006.',
+  },
+  {
+    id: 'chishtian-services',
+    question: 'Do you build websites and software for businesses in Chishtian?',
+    answer:
+      'Yes. AS Digital Solutions Chishtian builds websites, business software, desktop apps, and digital products for shops, traders, startups, and organizations in Chishtian and nearby cities, with support for remote clients as well.',
   },
   {
     id: 'how-to-get-quote',

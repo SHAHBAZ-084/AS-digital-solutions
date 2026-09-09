@@ -48,7 +48,7 @@ export const seedContact = {
   whatsapp_number: '+92-XXX-XXXXXXX',
   email: 'contactasdigitalsolutions@gmail.com',
   phone: '03220726006',
-  address: 'Placeholder address',
+  address: 'Chishtian, Punjab, Pakistan',
   socials: {
     linkedin: 'https://www.linkedin.com/in/muhammad-shahbaz-171563400',
     facebook: 'https://www.facebook.com/share/1QcWxrrhpV/',

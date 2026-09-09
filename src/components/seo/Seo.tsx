@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
-
-const SITE = 'https://asdigitalsolution.online'
-const DEFAULT_TITLE = 'AS Digital Solutions | Websites, Business Software & Digital Products'
-const DEFAULT_DESC =
-  'AS Digital Solutions designs and builds modern websites, custom business software, desktop applications, and AI-powered tools for startups and growing companies.'
+import {
+  DEFAULT_DESC,
+  DEFAULT_KEYWORDS,
+  DEFAULT_TITLE,
+  SITE_URL,
+  localSeo,
+} from '../../config/seo'
 
 function setMeta(attr: 'name' | 'property', key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
@@ -47,6 +49,7 @@ export interface SeoProps {
   path?: string
   noindex?: boolean
   image?: string
+  keywords?: string
   jsonLd?: Record<string, unknown> | null
 }
 
@@ -56,7 +59,8 @@ export default function Seo({
   description = DEFAULT_DESC,
   path = '/',
   noindex = false,
-  image = `${SITE}/og-image.png`,
+  image = `${SITE_URL}/og-image.png`,
+  keywords = DEFAULT_KEYWORDS,
   jsonLd = null,
 }: SeoProps) {
   const jsonLdKey = jsonLd ? JSON.stringify(jsonLd) : ''
@@ -64,9 +68,14 @@ export default function Seo({
   useEffect(() => {
     const canonical = path.startsWith('http')
       ? path
-      : `${SITE}${path.startsWith('/') ? path : `/${path}`}`
+      : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`
     document.title = title
     setMeta('name', 'description', description)
+    setMeta('name', 'keywords', keywords)
+    setMeta('name', 'geo.region', 'PK-PB')
+    setMeta('name', 'geo.placename', localSeo.city)
+    setMeta('name', 'geo.position', `${localSeo.geo.latitude};${localSeo.geo.longitude}`)
+    setMeta('name', 'ICBM', `${localSeo.geo.latitude}, ${localSeo.geo.longitude}`)
     setMeta(
       'name',
       'robots',
@@ -77,13 +86,14 @@ export default function Seo({
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:url', canonical)
     setMeta('property', 'og:image', image)
+    setMeta('property', 'og:locale', 'en_PK')
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'twitter:image', image)
     setJsonLd('seo-jsonld-page', jsonLdKey ? (JSON.parse(jsonLdKey) as Record<string, unknown>) : null)
-  }, [title, description, path, noindex, image, jsonLdKey])
+  }, [title, description, path, noindex, image, keywords, jsonLdKey])
 
   return null
 }
 
-export { SITE, DEFAULT_TITLE, DEFAULT_DESC }
+export { SITE_URL as SITE, DEFAULT_TITLE, DEFAULT_DESC }

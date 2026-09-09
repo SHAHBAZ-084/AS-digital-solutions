@@ -526,7 +526,8 @@ export interface FooterPayload {
 }
 
 const defaultFooter: FooterPayload = {
-  blurb: 'Practical digital projects and business software built around real workflows.',
+  blurb:
+    'AS Digital Solutions in Chishtian builds practical websites and business software around real workflows for clients across Punjab and Pakistan.',
   copyright: 'All rights reserved.',
   privacy_label: 'Privacy Policy',
   terms_label: 'Terms',
@@ -545,16 +546,29 @@ const defaultFooter: FooterPayload = {
 db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('footer', ?)`).run(JSON.stringify(defaultFooter))
 
 {
-  const OLD_BLURB =
-    'AS Digital Solutions builds practical digital projects, business software, and long-term solutions designed around real workflows.'
+  const OLD_BLURBS = new Set([
+    'AS Digital Solutions builds practical digital projects, business software, and long-term solutions designed around real workflows.',
+    'Practical digital projects and business software built around real workflows.',
+  ])
   try {
     const current = JSON.parse(getSetting('footer', JSON.stringify(defaultFooter))) as FooterPayload
-    if (current?.blurb === OLD_BLURB) {
+    if (current?.blurb && OLD_BLURBS.has(current.blurb)) {
       setSetting('footer', JSON.stringify({ ...current, blurb: defaultFooter.blurb }))
     }
   } catch {
     // keep existing footer if JSON is invalid
   }
+}
+
+// Soft-migrate placeholder contact address to Chishtian for local SEO.
+try {
+  db.prepare(
+    `UPDATE contact_info
+     SET address = ?
+     WHERE id = 1 AND (address = '' OR address = 'Placeholder address')`,
+  ).run('Chishtian, Punjab, Pakistan')
+} catch {
+  // table may not exist yet on first boot ordering; seed handles insert
 }
 
 export function getFooter(): FooterPayload {

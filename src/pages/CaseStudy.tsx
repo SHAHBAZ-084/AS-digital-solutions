@@ -134,8 +134,12 @@ export default function CaseStudy() {
     show('technology') && project.technology.length > 0 ? project.technology : []
 
   const path = `/case-study/${project.slug}`
-  const seoTitle = `${project.name} Case Study | AS Digital Solutions`
-  const seoDesc = (project.description || project.overview || '').slice(0, 160)
+  const seoTitle = `${project.name} Case Study | AS Digital Solutions Chishtian`
+  const seoDesc = (
+    project.description ||
+    project.overview ||
+    `${project.name} case study by AS Digital Solutions in Chishtian, Punjab.`
+  ).slice(0, 160)
   const imageForOg = heroImage.startsWith('http')
     ? heroImage
     : heroImage.startsWith('/')
