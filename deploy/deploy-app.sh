@@ -53,8 +53,13 @@ pm2 startOrReload "${APP_DIR}/deploy/ecosystem.config.cjs" --update-env
 pm2 save
 
 if command -v nginx >/dev/null 2>&1; then
-  bash "${APP_DIR}/deploy/tune-nginx-perf.sh" || true
-  bash "${APP_DIR}/deploy/fix-seo-nginx.sh" || true
+  echo "==> nginx perf + SEO"
+  if ! bash "${APP_DIR}/deploy/tune-nginx-perf.sh"; then
+    echo "WARN: tune-nginx-perf.sh failed (non-fatal)"
+  fi
+  if ! bash "${APP_DIR}/deploy/fix-seo-nginx.sh"; then
+    echo "WARN: fix-seo-nginx.sh failed (non-fatal) — run manually: bash deploy/fix-seo-nginx.sh"
+  fi
   nginx -t && systemctl reload nginx || true
 fi
 

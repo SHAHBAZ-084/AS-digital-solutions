@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SEO: www → apex 301 + X-Robots-Tag noindex for /admin
+# Idempotent. Prefer snippet include so nginx -t failures are easy to revert.
 set -euo pipefail
 
 CONF=""
@@ -14,6 +15,11 @@ do
 done
 
 if [[ -z "$CONF" ]]; then
+  # Fall back: first enabled site mentioning the domain
+  CONF="$(grep -Rl "asdigitalsolution.online" /etc/nginx/sites-enabled /etc/nginx/conf.d 2>/dev/null | head -n1 || true)"
+fi
+
+if [[ -z "${CONF:-}" || ! -f "$CONF" ]]; then
   echo "nginx site file not found"
   ls -la /etc/nginx/sites-enabled /etc/nginx/conf.d 2>/dev/null || true
   exit 1
@@ -21,6 +27,15 @@ fi
 
 echo "Patching $CONF for SEO"
 export NGINX_CONF_PATH="$CONF"
+SNIPPET=/etc/nginx/snippets/as-digital-seo.conf
+mkdir -p /etc/nginx/snippets
+
+cat > "$SNIPPET" <<'EOF'
+# Managed by deploy/fix-seo-nginx.sh — www → apex + admin noindex
+if ($host = www.asdigitalsolution.online) {
+    return 301 https://asdigitalsolution.online$request_uri;
+}
+EOF
 
 python3 <<'PY'
 from pathlib import Path
@@ -31,26 +46,24 @@ p = Path(os.environ["NGINX_CONF_PATH"])
 conf = p.read_text()
 changed = False
 
-www_marker = "AS_SEO_WWW_REDIRECT"
-if www_marker not in conf:
-    # Safe inside existing SSL server (keeps certbot certs intact)
-    snippet = f"""
-    # {www_marker}
-    if ($host = www.asdigitalsolution.online) {{
-        return 301 https://asdigitalsolution.online$request_uri;
-    }}
-"""
-    # Insert after first server_name line that mentions the domain
+include_line = "include /etc/nginx/snippets/as-digital-seo.conf;"
+if include_line not in conf:
     m = re.search(r"server_name\s+[^;]*asdigitalsolution\.online[^;]*;", conf)
     if m:
-        insert_at = m.end()
-        conf = conf[:insert_at] + "\n" + snippet + conf[insert_at:]
+        conf = conf[: m.end()] + "\n    " + include_line + conf[m.end() :]
         changed = True
-        print("added www → apex 301")
+        print("added SEO snippet include")
     else:
-        print("could not find server_name for domain")
+        # Insert after first server {
+        conf2, n = re.subn(r"(server\s*\{)", r"\1\n    " + include_line, conf, count=1)
+        if n:
+            conf = conf2
+            changed = True
+            print("added SEO snippet include after server {")
+        else:
+            raise SystemExit("could not find insertion point for SEO include")
 else:
-    print("www redirect already present")
+    print("SEO snippet include already present")
 
 admin_marker = "AS_SEO_ADMIN_NOINDEX"
 if admin_marker not in conf:
@@ -66,16 +79,30 @@ if admin_marker not in conf:
         changed = True
         print("added /admin X-Robots-Tag noindex")
     else:
-        print("could not find location / to insert admin block")
+        print("WARN: could not find location / to insert admin block")
 else:
     print("admin noindex already present")
+
+# Ensure www is listed in server_name so the host if can match (certbot often adds it)
+if "www.asdigitalsolution.online" not in conf and re.search(r"server_name\s+[^;]*asdigitalsolution\.online", conf):
+    conf2, n = re.subn(
+        r"(server_name\s+)([^;]*asdigitalsolution\.online[^;]*);",
+        r"\1\2 www.asdigitalsolution.online;",
+        conf,
+        count=1,
+    )
+    if n:
+        conf = conf2
+        changed = True
+        print("added www to server_name (required for redirect match)")
 
 if changed:
     p.write_text(conf)
     print("wrote", p)
 else:
-    print("no changes")
+    print("no conf text changes (snippet file refreshed)")
 PY
 
-nginx -t && systemctl reload nginx
-echo "SEO nginx OK"
+nginx -t
+systemctl reload nginx
+echo "SEO nginx OK — verify: curl -I https://www.asdigitalsolution.online/"
