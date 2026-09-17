@@ -8,6 +8,7 @@ import Seo from '../components/seo/Seo'
 import CTAButton from '../components/ui/CTAButton'
 import BlurText, { MotionSection } from '../components/bits/BlurText'
 import FloatingOrbs from '../components/bits/FloatingOrbs'
+import ServicesHero3D from '../components/bits/ServicesHero3D'
 import SpotlightCard from '../components/bits/SpotlightCard'
 import TiltedSurface from '../components/bits/TiltedSurface'
 import StaggerGrid from '../components/ui/StaggerGrid'
@@ -71,27 +72,43 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
 
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <MotionSection>
-          <Breadcrumbs items={crumbs} />
+          <Breadcrumbs
+            items={[
+              { name: 'Home', path: '/' },
+              { name: 'Services' },
+            ]}
+          />
         </MotionSection>
 
-        <div className="mt-6 max-w-3xl">
-          <motion.p
-            className="text-xs font-semibold uppercase tracking-[0.22em] text-accent"
-            initial={reduced ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: easeOutExpo }}
+        <div className="mt-6 grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.95fr)] lg:gap-8">
+          <div className="max-w-2xl">
+            <motion.p
+              className="text-xs font-semibold uppercase tracking-[0.22em] text-accent"
+              initial={reduced ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: easeOutExpo }}
+            >
+              {page.primaryKeyword}
+            </motion.p>
+            <BlurText
+              as="h1"
+              text={page.h1}
+              className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
+              delay={0.08}
+            />
+            <MotionSection delay={0.15}>
+              <p className="mt-5 text-base leading-relaxed text-text-muted sm:text-lg">{page.intro}</p>
+            </MotionSection>
+          </div>
+
+          <motion.div
+            className="relative"
+            initial={reduced ? false : { opacity: 0, scale: 0.92, x: 24 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: easeOutExpo }}
           >
-            {page.primaryKeyword}
-          </motion.p>
-          <BlurText
-            as="h1"
-            text={page.h1}
-            className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
-            delay={0.08}
-          />
-          <MotionSection delay={0.15}>
-            <p className="mt-5 text-base leading-relaxed text-text-muted sm:text-lg">{page.intro}</p>
-          </MotionSection>
+            <ServicesHero3D />
+          </motion.div>
         </div>
 
         <StaggerGrid className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
