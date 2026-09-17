@@ -53,7 +53,7 @@ export default function ProductCard({ project }: ProductCardProps) {
         </ImageReveal>
 
         <div className="flex flex-1 flex-col px-5 pt-5 pb-2 sm:px-6">
-          <p className="text-[11px] font-semibold tracking-[0.14em] text-accent uppercase">
+          <p className="text-[11px] font-semibold text-accent">
             <span>{project.type}</span>
             <span className="mx-1.5 text-accent/35">·</span>
             <span>{project.industry}</span>

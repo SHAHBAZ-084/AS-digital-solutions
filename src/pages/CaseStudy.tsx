@@ -73,7 +73,7 @@ export default function CaseStudy() {
         <EditableText
           contentKey="caseStudy.missing.eyebrow"
           as="p"
-          className="text-xs font-semibold uppercase tracking-[0.28em] text-accent"
+          className="text-sm font-medium text-accent"
         >
           Case Study
         </EditableText>
@@ -171,7 +171,7 @@ export default function CaseStudy() {
       <section className="mx-auto max-w-6xl px-4 pt-12 pb-10 sm:pt-16 sm:pb-14">
         <Link
           to="/#projects"
-          className="text-xs font-semibold tracking-[0.16em] text-accent uppercase transition hover:opacity-80"
+          className="text-sm font-medium text-accent transition hover:opacity-80"
         >
           ← Back to projects
         </Link>
@@ -181,11 +181,11 @@ export default function CaseStudy() {
             <EditableText
               contentKey="caseStudy.eyebrow"
               as="p"
-              className="text-xs font-semibold tracking-[0.28em] text-accent uppercase"
+              className="text-sm font-medium text-accent"
             >
               Case Study
             </EditableText>
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] tracking-[0.16em] text-secondary uppercase">
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-secondary">
               <EditableText contentKey={`${base}.type`}>{project.type}</EditableText>
               <span className="text-accent/30">·</span>
               <EditableText contentKey={`${base}.industry`}>{project.industry}</EditableText>

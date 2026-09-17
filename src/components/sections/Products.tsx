@@ -11,7 +11,7 @@ export default function Products() {
   const { products } = useSiteData()
 
   return (
-    <SectionShell id="projects" texture={projectsBg} textureOpacity={0.88} showEdge={false}>
+    <SectionShell id="projects" texture={projectsBg} textureOpacity={0.88} showEdge={false} tone="dark">
       <SectionHeading
         eyebrow="Projects"
         title="Selected Work"

@@ -6,13 +6,10 @@ import { breadcrumbsForPage } from '../lib/contentBreadcrumbs'
 import Breadcrumbs from '../components/seo/Breadcrumbs'
 import Seo from '../components/seo/Seo'
 import CTAButton from '../components/ui/CTAButton'
-import BlurText, { MotionSection } from '../components/bits/BlurText'
-import FloatingOrbs from '../components/bits/FloatingOrbs'
+import { MotionSection } from '../components/bits/BlurText'
 import ServicesHero3D from '../components/bits/ServicesHero3D'
-import SpotlightCard from '../components/bits/SpotlightCard'
-import TiltedSurface from '../components/bits/TiltedSurface'
-import StaggerGrid from '../components/ui/StaggerGrid'
 import Reveal from '../components/ui/Reveal'
+import StaggerGrid from '../components/ui/StaggerGrid'
 import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../config/site'
 import { useSiteData } from '../context/SiteDataContext'
 import { fadeUp, staggerContainer, easeOutExpo } from '../lib/motion'
@@ -52,6 +49,9 @@ function ServiceGlyph({ index }: { index: number }) {
   )
 }
 
+const cardHover =
+  'border border-line bg-cotton transition-[border-color,transform] duration-150 hover:border-canal hover:-translate-y-px'
+
 export default function ServicesHub({ page }: { page: SeoContentPage }) {
   const { contact } = useSiteData()
   const reduced = useReducedMotion()
@@ -68,7 +68,6 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
         path={page.path}
         jsonLd={jsonLd}
       />
-      <FloatingOrbs />
 
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <MotionSection>
@@ -83,29 +82,28 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
         <div className="mt-8 grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,420px)] lg:gap-4 xl:gap-10">
           <div className="max-w-xl lg:max-w-2xl">
             <motion.p
-              className="text-xs font-semibold uppercase tracking-[0.22em] text-accent"
+              className="text-sm font-medium text-accent"
               initial={reduced ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: easeOutExpo }}
             >
               Our services
             </motion.p>
-            <BlurText
-              as="h1"
-              text={page.h1}
-              className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl lg:text-[2.65rem] lg:leading-[1.12]"
-              delay={0.08}
-            />
-            <MotionSection delay={0.15}>
-              <p className="mt-5 text-base leading-relaxed text-text-muted sm:text-lg">{page.intro}</p>
+            <h1 className="font-display mt-3 text-3xl text-navy sm:text-4xl lg:text-[2.65rem]">
+              {page.h1}
+            </h1>
+            <MotionSection delay={0.1}>
+              <p className="prose-measure mt-5 text-base leading-relaxed text-text-muted sm:text-lg">
+                {page.intro}
+              </p>
             </MotionSection>
           </div>
 
           <motion.div
             className="relative -mx-2 sm:mx-0"
-            initial={reduced ? false : { opacity: 0, scale: 0.94, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.15, ease: easeOutExpo }}
+            initial={reduced ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.12, ease: easeOutExpo }}
           >
             <ServicesHero3D />
           </motion.div>
@@ -114,28 +112,16 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
         <StaggerGrid className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
           {links.map((link, index) => (
             <Reveal key={link.href} staggerChild className="h-full">
-              <TiltedSurface className="h-full" rotateAmplitude={10} scaleOnHover={1.025}>
-                <SpotlightCard className="h-full border border-border bg-bg-secondary/70 transition-[border-color,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_50px_-28px_rgba(10,14,26,0.35)]">
-                  <Link
-                    to={link.href}
-                    className="group flex h-full flex-col p-5 sm:p-6"
-                    style={{ transform: 'translateZ(24px)' }}
-                  >
-                    <span className="flex h-11 w-11 items-center justify-center bg-navy text-white transition group-hover:bg-accent">
-                      <ServiceGlyph index={index} />
-                    </span>
-                    <span className="mt-4 text-base font-bold tracking-tight text-navy group-hover:text-accent">
-                      {link.label}
-                    </span>
-                    <span className="mt-2 flex-1 text-sm leading-relaxed text-text-muted">
-                      {SERVICE_BLURBS[link.href] ?? 'Explore deliverables, process, and fit.'}
-                    </span>
-                    <span className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
-                      View service →
-                    </span>
-                  </Link>
-                </SpotlightCard>
-              </TiltedSurface>
+              <Link to={link.href} className={`group flex h-full flex-col p-5 sm:p-6 ${cardHover}`}>
+                <span className="flex h-11 w-11 items-center justify-center bg-navy text-white transition group-hover:bg-canal">
+                  <ServiceGlyph index={index} />
+                </span>
+                <span className="mt-4 text-base font-semibold text-navy">{link.label}</span>
+                <span className="mt-2 flex-1 text-sm leading-relaxed text-text-muted">
+                  {SERVICE_BLURBS[link.href] ?? 'Explore deliverables, process, and fit.'}
+                </span>
+                <span className="mt-4 text-sm font-medium text-accent">View service</span>
+              </Link>
             </Reveal>
           ))}
         </StaggerGrid>
@@ -144,8 +130,8 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           if (section.type === 'paragraphs') {
             return (
               <MotionSection key={section.heading} delay={0.05 * sIdx} className="mt-16 max-w-3xl">
-                <h2 className="text-xl font-bold tracking-tight text-navy sm:text-2xl">{section.heading}</h2>
-                <div className="mt-2 h-1 w-10 bg-navy" />
+                <h2 className="font-display text-xl text-navy sm:text-2xl">{section.heading}</h2>
+                <div className="mt-2 h-px w-12 bg-line" />
                 <div className="mt-5 space-y-4 text-[0.95rem] leading-relaxed text-text-muted">
                   {section.paragraphs.map((p) => (
                     <p key={p.slice(0, 40)}>{p}</p>
@@ -157,25 +143,20 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           if (section.type === 'cta') {
             return (
               <MotionSection key={section.heading} className="mt-16">
-                <TiltedSurface rotateAmplitude={6} scaleOnHover={1.01}>
-                  <SpotlightCard
-                    className="border border-border bg-navy px-6 py-8 text-white sm:px-10"
-                    spotlightColor="rgba(30, 127, 232, 0.35)"
-                  >
-                    <h2 className="text-xl font-bold sm:text-2xl">{section.heading}</h2>
-                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
-                      {section.body}
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <CTAButton href={wa} variant="whatsapp" label="WhatsApp" external />
-                      <CTAButton
-                        href={`tel:+92${siteConfig.phone.replace(/\D/g, '').replace(/^0/, '')}`}
-                        label={`Call ${siteConfig.phone}`}
-                      />
-                      <CTAButton href="/contact" variant="secondary" label="Project brief" />
-                    </div>
-                  </SpotlightCard>
-                </TiltedSurface>
+                <div className="border border-line bg-navy px-6 py-8 text-white sm:px-10">
+                  <h2 className="font-display text-xl sm:text-2xl">{section.heading}</h2>
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+                    {section.body}
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <CTAButton href={wa} variant="whatsapp" label="WhatsApp" external />
+                    <CTAButton
+                      href={`tel:+92${siteConfig.phone.replace(/\D/g, '').replace(/^0/, '')}`}
+                      label={`Call ${siteConfig.phone}`}
+                    />
+                    <CTAButton href="/contact" variant="secondary" label="Project brief" />
+                  </div>
+                </div>
               </MotionSection>
             )
           }
@@ -183,8 +164,8 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
         })}
 
         {page.related.length > 0 ? (
-          <MotionSection className="mt-16 border-t border-border pt-10">
-            <h2 className="text-lg font-bold text-navy">Keep exploring</h2>
+          <MotionSection className="mt-16 border-t border-line pt-10">
+            <h2 className="text-lg font-semibold text-navy">Keep exploring</h2>
             <motion.ul
               className="mt-4 grid gap-2 sm:grid-cols-2"
               variants={reduced ? undefined : staggerContainer}

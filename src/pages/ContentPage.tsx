@@ -8,13 +8,14 @@ import Breadcrumbs from '../components/seo/Breadcrumbs'
 import Seo from '../components/seo/Seo'
 import CTAButton from '../components/ui/CTAButton'
 import Reveal from '../components/ui/Reveal'
-import BlurText, { MotionSection } from '../components/bits/BlurText'
-import SpotlightCard from '../components/bits/SpotlightCard'
-import TiltedSurface from '../components/bits/TiltedSurface'
+import { MotionSection } from '../components/bits/BlurText'
 import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../config/site'
 import { useSiteData } from '../context/SiteDataContext'
 import { easeOutExpo } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+
+const cardHover =
+  'border border-line bg-bg-secondary/60 transition-[border-color,transform] duration-150 hover:border-canal hover:-translate-y-px'
 
 function SectionBlock({
   heading,
@@ -27,14 +28,8 @@ function SectionBlock({
 }) {
   return (
     <MotionSection delay={delay} className="mt-12">
-      <h2 className="text-section text-xl font-bold tracking-tight sm:text-2xl">{heading}</h2>
-      <motion.div
-        className="mt-2 h-1 w-10 origin-left bg-navy"
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, ease: easeOutExpo, delay: delay + 0.05 }}
-      />
+      <h2 className="font-display text-section text-xl sm:text-2xl">{heading}</h2>
+      <div className="mt-2 h-px w-12 bg-line" />
       <div className="mt-5 space-y-4 text-[0.95rem] leading-relaxed text-text-muted">{children}</div>
     </MotionSection>
   )
@@ -55,47 +50,36 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
         path={page.path}
         jsonLd={jsonLd}
       />
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(30,127,232,0.1),transparent_60%)]"
-        aria-hidden="true"
-      />
       <div className="relative mx-auto max-w-3xl px-4 py-16 sm:py-20">
         <Reveal>
           <Breadcrumbs items={crumbs} />
         </Reveal>
         <motion.p
-          className="text-xs font-semibold uppercase tracking-[0.22em] text-accent"
+          className="text-sm font-medium text-accent"
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: easeOutExpo }}
         >
           {page.primaryKeyword}
         </motion.p>
-        <BlurText
-          as="h1"
-          text={page.h1}
-          className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl"
-          delay={0.06}
-        />
-        <MotionSection delay={0.12}>
-          <p className="mt-5 text-base leading-relaxed text-text-muted sm:text-lg">{page.intro}</p>
+        <h1 className="font-display mt-3 text-3xl text-navy sm:text-4xl">{page.h1}</h1>
+        <MotionSection delay={0.08}>
+          <p className="prose-measure mt-5 text-base leading-relaxed text-text-muted sm:text-lg">
+            {page.intro}
+          </p>
         </MotionSection>
 
         {page.hubLinks && page.hubLinks.length > 0 ? (
           <nav className="mt-10" aria-label="Page links">
             <ul className="grid gap-3 sm:grid-cols-2">
               {page.hubLinks.map((link, i) => (
-                <Reveal key={link.href} delayMs={i * 45}>
-                  <TiltedSurface rotateAmplitude={8} scaleOnHover={1.02}>
-                    <SpotlightCard className="border border-border bg-bg-secondary/60">
-                      <Link
-                        to={link.href}
-                        className="block px-4 py-3 text-sm font-semibold text-navy transition hover:text-accent"
-                      >
-                        {link.label}
-                      </Link>
-                    </SpotlightCard>
-                  </TiltedSurface>
+                <Reveal key={link.href} delayMs={i * 40}>
+                  <Link
+                    to={link.href}
+                    className={`block px-4 py-3 text-sm font-semibold text-navy ${cardHover}`}
+                  >
+                    {link.label}
+                  </Link>
                 </Reveal>
               ))}
             </ul>
@@ -118,16 +102,8 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
               <SectionBlock key={section.heading} heading={section.heading} delay={delay}>
                 {section.intro ? <p>{section.intro}</p> : null}
                 <ul className="list-disc space-y-2 pl-5">
-                  {section.items.map((item, i) => (
-                    <motion.li
-                      key={item.slice(0, 48)}
-                      initial={reduced ? false : { opacity: 0, x: -8 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.04, duration: 0.35, ease: easeOutExpo }}
-                    >
-                      {item}
-                    </motion.li>
+                  {section.items.map((item) => (
+                    <li key={item.slice(0, 48)}>{item}</li>
                   ))}
                 </ul>
               </SectionBlock>
@@ -138,22 +114,15 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
               <SectionBlock key={section.heading} heading={section.heading} delay={delay}>
                 <ol className="space-y-4">
                   {section.steps.map((step, i) => (
-                    <motion.li
-                      key={step.title}
-                      className="flex gap-3"
-                      initial={reduced ? false : { opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.06, duration: 0.4, ease: easeOutExpo }}
-                    >
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-navy text-xs font-bold text-white">
+                    <li key={step.title} className="flex gap-3">
+                      <span className="num flex h-7 w-7 shrink-0 items-center justify-center bg-navy text-xs font-bold text-white">
                         {i + 1}
                       </span>
                       <div>
                         <p className="font-semibold text-navy">{step.title}</p>
                         <p className="mt-1">{step.body}</p>
                       </div>
-                    </motion.li>
+                    </li>
                   ))}
                 </ol>
               </SectionBlock>
@@ -166,16 +135,12 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
                   <p key={p.slice(0, 48)}>{p}</p>
                 ))}
                 <ul className="mt-2 space-y-3">
-                  {section.ranges.map((range, i) => (
-                    <Reveal key={range.label} delayMs={i * 50}>
-                      <TiltedSurface rotateAmplitude={5} scaleOnHover={1.015}>
-                        <SpotlightCard className="border border-border bg-bg-secondary/50 px-4 py-3">
-                          <p className="font-semibold text-navy">{range.label}</p>
-                          <p className="mt-1 text-accent">{range.range}</p>
-                          {range.note ? <p className="mt-1 text-sm">{range.note}</p> : null}
-                        </SpotlightCard>
-                      </TiltedSurface>
-                    </Reveal>
+                  {section.ranges.map((range) => (
+                    <li key={range.label} className={`px-4 py-3 ${cardHover}`}>
+                      <p className="font-semibold text-navy">{range.label}</p>
+                      <p className="num mt-1 text-brass">{range.range}</p>
+                      {range.note ? <p className="mt-1 text-sm">{range.note}</p> : null}
+                    </li>
                   ))}
                 </ul>
               </SectionBlock>
@@ -199,16 +164,14 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
         {page.faqs.length > 0 ? (
           <MotionSection className="mt-12" delay={0.05}>
             <section id="faq">
-              <h2 className="text-section text-xl font-bold tracking-tight sm:text-2xl">FAQs</h2>
-              <div className="mt-2 h-1 w-10 bg-navy" />
+              <h2 className="font-display text-section text-xl sm:text-2xl">FAQs</h2>
+              <div className="mt-2 h-px w-12 bg-line" />
               <div className="mt-6 space-y-5">
-                {page.faqs.map((faq, i) => (
-                  <Reveal key={faq.question} delayMs={i * 40}>
-                    <div>
-                      <h3 className="text-base font-semibold text-navy">{faq.question}</h3>
-                      <p className="mt-2 text-[0.95rem] leading-relaxed text-text-muted">{faq.answer}</p>
-                    </div>
-                  </Reveal>
+                {page.faqs.map((faq) => (
+                  <div key={faq.question}>
+                    <h3 className="text-base font-semibold text-navy">{faq.question}</h3>
+                    <p className="mt-2 text-[0.95rem] leading-relaxed text-text-muted">{faq.answer}</p>
+                  </div>
                 ))}
               </div>
             </section>
@@ -216,8 +179,8 @@ export default function ContentPageView({ page }: { page: SeoContentPage }) {
         ) : null}
 
         {page.related.length > 0 ? (
-          <MotionSection className="mt-14 border-t border-border pt-8">
-            <h2 className="text-lg font-bold text-navy">Keep exploring</h2>
+          <MotionSection className="mt-14 border-t border-line pt-8">
+            <h2 className="text-lg font-semibold text-navy">Keep exploring</h2>
             <ul className="mt-4 space-y-2">
               {page.related.map((link) => (
                 <li key={link.href}>

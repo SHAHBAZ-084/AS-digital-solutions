@@ -23,7 +23,7 @@ export default function CaseStudyCard({ project }: CaseStudyCardProps) {
         />
       </div>
       <div className="pt-4">
-        <p className="text-xs font-semibold tracking-wide text-accent uppercase">{project.type}</p>
+        <p className="text-xs font-medium text-accent">{project.type}</p>
         <h3 className="mt-1 text-lg font-bold text-navy">{project.name}</h3>
       </div>
     </article>

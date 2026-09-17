@@ -45,7 +45,7 @@ export default function Team() {
               <p className="mt-1 text-sm font-medium text-accent">{member.role}</p>
               <p className="text-section-muted mt-3 text-sm leading-relaxed">{member.bio}</p>
               {skills.length > 0 ? (
-                <ul className="mt-4 list-disc space-y-1.5 pl-4 text-xs font-medium tracking-wide text-secondary uppercase">
+                <ul className="mt-4 list-disc space-y-1.5 pl-4 text-xs font-medium text-secondary">
                   {skills.map((skill, skillIndex) => (
                     <li key={`${member.id}-${skillIndex}-${skill}`}>{skill}</li>
                   ))}

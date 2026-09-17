@@ -5,7 +5,7 @@ import SectionShell from '../ui/SectionShell'
 
 function CircleIcon({ children }: { children: ReactNode }) {
   return (
-    <AnimatedIcon className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-[0_8px_24px_rgba(30,127,232,0.28)] ring-4 ring-accent/15 transition-transform duration-300 group-hover:scale-105 sm:h-[4.5rem] sm:w-[4.5rem]">
+    <AnimatedIcon className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-[0_8px_24px_color-mix(in_srgb,var(--canal)_35%,transparent)] ring-4 ring-accent/15 transition-transform duration-300 group-hover:scale-105 sm:h-[4.5rem] sm:w-[4.5rem]">
       {children}
     </AnimatedIcon>
   )
@@ -75,7 +75,7 @@ export default function TrustStrip() {
               <EditableText
                 contentKey={`trust.${id}`}
                 as="p"
-                className="text-section mt-4 text-[11px] leading-snug font-semibold tracking-[0.12em] uppercase sm:text-xs"
+                className="text-section mt-4 text-sm leading-snug font-medium sm:text-sm"
               >
                 {label}
               </EditableText>

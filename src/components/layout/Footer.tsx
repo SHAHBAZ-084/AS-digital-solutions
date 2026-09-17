@@ -100,7 +100,7 @@ export default function Footer() {
 
             return (
               <div key={column.id}>
-                <h3 className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">
+                <h3 className="text-sm font-semibold text-accent">
                   {column.title}
                 </h3>
                 <ul className="mt-3 space-y-2 text-sm text-white/65">

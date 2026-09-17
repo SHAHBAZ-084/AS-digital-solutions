@@ -109,7 +109,7 @@ export default function Navbar() {
             {link.kind === 'path' ? (
               <Link
                 to={link.href}
-                className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
+                className="block px-3 py-3 text-sm text-white/85 transition hover:bg-white/5 hover:text-accent"
                 onClick={closeMenu}
               >
                 <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
@@ -117,7 +117,7 @@ export default function Navbar() {
             ) : (
               <a
                 href={resolveHref(link)}
-                className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
+                className="block px-3 py-3 text-sm text-white/85 transition hover:bg-white/5 hover:text-accent"
                 onClick={(event) => handleMobileNavClick(event, link)}
               >
                 <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
@@ -154,14 +154,14 @@ export default function Navbar() {
               {link.kind === 'path' ? (
                 <Link
                   to={link.href}
-                  className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
+                  className="inline-block text-sm transition-colors hover:text-accent"
                 >
                   <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
                 </Link>
               ) : (
                 <a
                   href={resolveHref(link)}
-                  className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
+                  className="inline-block text-sm transition-colors hover:text-accent"
                 >
                   <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
                 </a>

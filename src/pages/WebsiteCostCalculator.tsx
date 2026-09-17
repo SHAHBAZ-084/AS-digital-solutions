@@ -3,8 +3,7 @@ import { motion } from 'framer-motion'
 import Seo from '../components/seo/Seo'
 import Breadcrumbs from '../components/seo/Breadcrumbs'
 import CTAButton from '../components/ui/CTAButton'
-import BlurText, { MotionSection } from '../components/bits/BlurText'
-import SpotlightCard from '../components/bits/SpotlightCard'
+import { MotionSection } from '../components/bits/BlurText'
 import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../config/site'
 import { useSiteData } from '../context/SiteDataContext'
 import { buildPageJsonLd } from '../content/schema'
@@ -69,22 +68,18 @@ export default function WebsiteCostCalculator() {
           ]}
         />
       </MotionSection>
-      <BlurText
-        as="h1"
-        text={page.h1}
-        className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl"
-      />
-      <MotionSection delay={0.1}>
-        <p className="mt-5 text-base leading-relaxed text-text-muted">{page.intro}</p>
+      <h1 className="font-display mt-3 text-3xl text-navy sm:text-4xl">{page.h1}</h1>
+      <MotionSection delay={0.08}>
+        <p className="prose-measure mt-5 text-base leading-relaxed text-text-muted">{page.intro}</p>
       </MotionSection>
 
-      <MotionSection delay={0.14}>
-        <SpotlightCard className="mt-10 border border-border bg-bg-secondary/40 p-6">
+      <MotionSection delay={0.12}>
+        <div className="mt-10 border border-line bg-bg-secondary/40 p-6">
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <label className="block text-sm font-semibold text-navy">
               Website type
               <select
-                className="mt-2 w-full border border-border bg-white px-3 py-2 text-sm font-normal"
+                className="mt-2 w-full border border-line bg-cotton px-3 py-2 text-sm font-normal"
                 value={kind}
                 onChange={(e) => setKind(e.target.value as typeof kind)}
               >
@@ -96,7 +91,7 @@ export default function WebsiteCostCalculator() {
             </label>
 
             <label className="block text-sm font-semibold text-navy">
-              Approximate page count: {pages}
+              Approximate page count: <span className="num">{pages}</span>
               <input
                 type="range"
                 min={1}
@@ -122,20 +117,17 @@ export default function WebsiteCostCalculator() {
 
             <motion.div
               key={`${estimate.low}-${estimate.high}`}
-              className="border border-accent/30 bg-white px-4 py-4"
+              className="border border-line bg-cotton px-4 py-4"
               initial={{ opacity: 0.5, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: easeOutExpo }}
             >
-              <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-                Rough estimate (PKR)
-              </p>
-              <p className="mt-2 text-2xl font-extrabold text-navy">
+              <p className="text-sm font-medium text-accent">Rough estimate (PKR)</p>
+              <p className="num mt-2 text-2xl font-bold text-brass">
                 {estimate.low.toLocaleString()} – {estimate.high.toLocaleString()}
               </p>
               <p className="mt-2 text-sm text-text-muted">
-                Indicative only — not a fixed package. Final pricing follows discovery. Street-level
-                address and formal packages: REPLACE_ after you confirm.
+                Indicative only — not a fixed package. Final pricing follows discovery.
               </p>
             </motion.div>
 
@@ -148,14 +140,14 @@ export default function WebsiteCostCalculator() {
               />
             </div>
           </form>
-        </SpotlightCard>
+        </div>
       </MotionSection>
 
       {page.sections.map((section) => {
         if (section.type !== 'paragraphs') return null
         return (
           <MotionSection key={section.heading} className="mt-12">
-            <h2 className="text-xl font-bold text-navy">{section.heading}</h2>
+            <h2 className="font-display text-xl text-navy">{section.heading}</h2>
             <div className="mt-4 space-y-3 text-text-muted">
               {section.paragraphs.map((p) => (
                 <p key={p.slice(0, 40)}>{p}</p>

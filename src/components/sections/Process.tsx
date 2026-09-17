@@ -9,9 +9,9 @@ export default function Process() {
   const count = Math.max(steps.length, 1)
 
   return (
-    <section id="process" className="section-light relative overflow-hidden">
+    <section id="process" className="section-light relative overflow-hidden bg-bg-primary">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-gradient-to-r from-white from-0% via-[#f5f8fc] via-[40%] to-[#e8eef8] to-100%" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cotton via-[#e8eae3] to-[#dde0d6]" />
       </div>
 
       <SectionToneContext.Provider value="light">
@@ -38,8 +38,8 @@ export default function Process() {
               />
               <div className="absolute inset-[32%] flex items-center justify-center rounded-full bg-accent/10 text-center ring-1 ring-accent/20">
                 <div>
-                  <p className="text-[11px] font-semibold tracking-[0.22em] text-accent uppercase">Process</p>
-                  <p className="text-section mt-1 text-sm font-bold sm:text-base">{count} steps</p>
+                  <p className="text-sm font-medium text-accent">Process</p>
+                  <p className="num text-section mt-1 text-sm font-bold sm:text-base">{count} steps</p>
                 </div>
               </div>
 
