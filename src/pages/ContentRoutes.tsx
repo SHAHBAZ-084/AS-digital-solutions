@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { getPageByPath } from '../content/registry'
 import ContentPageView from './ContentPage'
+import ServicesHub from './ServicesHub'
 import Seo from '../components/seo/Seo'
 
 function MissingPage({ path }: { path: string }) {
@@ -16,6 +17,7 @@ function MissingPage({ path }: { path: string }) {
 export function StaticContentRoute({ path }: { path: string }) {
   const page = getPageByPath(path)
   if (!page) return <MissingPage path={path} />
+  if (path === '/services') return <ServicesHub page={page} />
   return <ContentPageView page={page} />
 }
 
