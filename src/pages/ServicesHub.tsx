@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import type { SeoContentPage } from '../content/types'
@@ -7,13 +8,14 @@ import Breadcrumbs from '../components/seo/Breadcrumbs'
 import Seo from '../components/seo/Seo'
 import CTAButton from '../components/ui/CTAButton'
 import { MotionSection } from '../components/bits/BlurText'
-import ServicesHero3D from '../components/bits/ServicesHero3D'
 import Reveal from '../components/ui/Reveal'
 import StaggerGrid from '../components/ui/StaggerGrid'
 import { getWhatsAppUrl, siteConfig, toWhatsAppDigits } from '../config/site'
 import { useSiteData } from '../context/SiteDataContext'
 import { fadeUp, staggerContainer, easeOutExpo } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+
+const ServicesHero3D = lazy(() => import('../components/bits/ServicesHero3D'))
 
 const SERVICE_BLURBS: Record<string, string> = {
   '/services/web-development': 'Fast sites that convert on Pakistani mobile networks.',
@@ -49,8 +51,35 @@ function ServiceGlyph({ index }: { index: number }) {
   )
 }
 
-const cardHover =
-  'border border-line bg-cotton transition-[border-color,transform] duration-150 hover:border-canal hover:-translate-y-px'
+/** CLS-safe shell matching ServicesHero3D viewport box. */
+function ServicesHeroFallback() {
+  return (
+    <div
+      className="relative mx-auto flex h-[320px] w-full max-w-[400px] items-center justify-center sm:h-[380px] lg:h-[420px]"
+      aria-hidden="true"
+    >
+      <div className="h-44 w-44 rounded-full bg-[radial-gradient(circle_at_32%_28%,color-mix(in_srgb,var(--canal)_55%,transparent)_0%,var(--canal)_42%,var(--ink)_78%)] opacity-50" />
+    </div>
+  )
+}
+
+type CardTone = 'featured' | 'ruled' | 'plain'
+
+function cardToneFor(index: number, total: number): CardTone {
+  if (index === 0) return 'featured'
+  if (index === total - 1 || index % 3 === 2) return 'ruled'
+  return 'plain'
+}
+
+function serviceCardClass(tone: CardTone) {
+  if (tone === 'featured') {
+    return 'border border-ink bg-ink text-cotton transition-colors duration-150 hover:bg-[#1a2740]'
+  }
+  if (tone === 'ruled') {
+    return 'border-y border-line bg-transparent transition-[border-color,background-color] duration-150 hover:border-canal hover:bg-[color-mix(in_srgb,var(--canal)_6%,transparent)]'
+  }
+  return 'border border-line bg-cotton transition-[border-color] duration-150 hover:border-canal'
+}
 
 export default function ServicesHub({ page }: { page: SeoContentPage }) {
   const { contact } = useSiteData()
@@ -69,6 +98,11 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
         jsonLd={jsonLd}
       />
 
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(ellipse_at_85%_10%,color-mix(in_srgb,var(--canal)_14%,transparent),transparent_55%),linear-gradient(180deg,var(--cotton)_0%,transparent_100%)]"
+        aria-hidden="true"
+      />
+
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <MotionSection>
           <Breadcrumbs
@@ -79,8 +113,8 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           />
         </MotionSection>
 
-        <div className="mt-8 grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,420px)] lg:gap-4 xl:gap-10">
-          <div className="max-w-xl lg:max-w-2xl">
+        <div className="mt-8 grid items-center gap-8 lg:grid-cols-12 lg:gap-6">
+          <div className="lg:col-span-6 xl:col-span-7">
             <motion.p
               className="text-sm font-medium text-accent"
               initial={reduced ? false : { opacity: 0, y: 8 }}
@@ -89,9 +123,10 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
             >
               Our services
             </motion.p>
-            <h1 className="font-display mt-3 text-3xl text-navy sm:text-4xl lg:text-[2.65rem]">
+            <h1 className="font-display text-section mt-3 max-w-xl text-3xl tracking-[-0.02em] sm:text-4xl lg:text-[2.65rem]">
               {page.h1}
             </h1>
+            <div className="mt-4 h-px w-12 bg-line" />
             <MotionSection delay={0.1}>
               <p className="prose-measure mt-5 text-base leading-relaxed text-text-muted sm:text-lg">
                 {page.intro}
@@ -100,37 +135,68 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           </div>
 
           <motion.div
-            className="relative -mx-2 sm:mx-0"
+            className="relative lg:col-span-6 xl:col-span-5"
             initial={reduced ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12, ease: easeOutExpo }}
           >
-            <ServicesHero3D />
+            <Suspense fallback={<ServicesHeroFallback />}>
+              <ServicesHero3D />
+            </Suspense>
           </motion.div>
         </div>
 
-        <StaggerGrid className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-          {links.map((link, index) => (
-            <Reveal key={link.href} staggerChild className="h-full">
-              <Link to={link.href} className={`group flex h-full flex-col p-5 sm:p-6 ${cardHover}`}>
-                <span className="flex h-11 w-11 items-center justify-center bg-navy text-white transition group-hover:bg-canal">
-                  <ServiceGlyph index={index} />
-                </span>
-                <span className="mt-4 text-base font-semibold text-navy">{link.label}</span>
-                <span className="mt-2 flex-1 text-sm leading-relaxed text-text-muted">
-                  {SERVICE_BLURBS[link.href] ?? 'Explore deliverables, process, and fit.'}
-                </span>
-                <span className="mt-4 text-sm font-medium text-accent">View service</span>
-              </Link>
-            </Reveal>
-          ))}
+        <StaggerGrid className="mt-14 grid grid-cols-1 gap-0 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+          {links.map((link, index) => {
+            const tone = cardToneFor(index, links.length)
+            const featured = tone === 'featured'
+            return (
+              <Reveal
+                key={link.href}
+                staggerChild
+                className={`h-full ${featured ? 'sm:col-span-2 lg:col-span-2' : ''}`}
+              >
+                <Link
+                  to={link.href}
+                  className={`group flex h-full flex-col ${featured ? 'p-6 sm:p-8' : 'p-5 sm:p-6'} ${serviceCardClass(tone)}`}
+                >
+                  <span
+                    className={`flex h-11 w-11 items-center justify-center transition ${
+                      featured
+                        ? 'bg-canal text-white'
+                        : tone === 'ruled'
+                          ? 'border border-line text-ink group-hover:border-canal group-hover:text-canal'
+                          : 'bg-ink text-white group-hover:bg-canal'
+                    }`}
+                  >
+                    <ServiceGlyph index={index} />
+                  </span>
+                  <span
+                    className={`mt-4 font-semibold ${featured ? 'text-xl text-cotton sm:text-2xl' : 'text-base text-ink'}`}
+                  >
+                    {link.label}
+                  </span>
+                  <span
+                    className={`mt-2 flex-1 text-sm leading-relaxed ${featured ? 'max-w-md text-cotton/70' : 'text-text-muted'}`}
+                  >
+                    {SERVICE_BLURBS[link.href] ?? 'Explore deliverables, process, and fit.'}
+                  </span>
+                  <span
+                    className={`mt-5 text-sm font-medium ${featured ? 'text-canal' : 'text-accent'}`}
+                  >
+                    View service
+                  </span>
+                </Link>
+              </Reveal>
+            )
+          })}
         </StaggerGrid>
 
         {page.sections.map((section, sIdx) => {
           if (section.type === 'paragraphs') {
             return (
               <MotionSection key={section.heading} delay={0.05 * sIdx} className="mt-16 max-w-3xl">
-                <h2 className="font-display text-xl text-navy sm:text-2xl">{section.heading}</h2>
+                <h2 className="font-display text-xl text-ink sm:text-2xl">{section.heading}</h2>
                 <div className="mt-2 h-px w-12 bg-line" />
                 <div className="mt-5 space-y-4 text-[0.95rem] leading-relaxed text-text-muted">
                   {section.paragraphs.map((p) => (
@@ -143,9 +209,9 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           if (section.type === 'cta') {
             return (
               <MotionSection key={section.heading} className="mt-16">
-                <div className="border border-line bg-navy px-6 py-8 text-white sm:px-10">
+                <div className="border border-ink bg-ink px-6 py-8 text-cotton sm:px-10">
                   <h2 className="font-display text-xl sm:text-2xl">{section.heading}</h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-cotton/70 sm:text-base">
                     {section.body}
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
@@ -165,7 +231,7 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
 
         {page.related.length > 0 ? (
           <MotionSection className="mt-16 border-t border-line pt-10">
-            <h2 className="text-lg font-semibold text-navy">Keep exploring</h2>
+            <h2 className="text-lg font-semibold text-ink">Keep exploring</h2>
             <motion.ul
               className="mt-4 grid gap-2 sm:grid-cols-2"
               variants={reduced ? undefined : staggerContainer}

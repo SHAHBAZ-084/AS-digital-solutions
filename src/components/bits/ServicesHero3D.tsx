@@ -4,7 +4,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 /**
  * Services-only 3D visual — canal teal, CSS 3D + Framer Motion.
- * Phase 4 will lazy-load this; Phase 2 rethemes to workshop palette.
+ * Lazy-loaded from ServicesHub so home LCP stays free of this chunk.
  */
 export default function ServicesHero3D() {
   const reduced = useReducedMotion()
