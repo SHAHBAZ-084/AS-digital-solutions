@@ -5,24 +5,24 @@
   Source of truth: /docs/DESIGN_BRIEF.md Part 2.
 */
 :root {
-  /* Core palette */
-  --ink: #12203a;
-  --cotton: #f1f2ed;
-  --canal: #0e7c86;
-  --canal-lo: #0a5a61;
+  /* Core palette — navy + brand blue (restored from teal workshop trial) */
+  --ink: #0a0e1a;
+  --cotton: #ffffff;
+  --canal: #1e7fe8;
+  --canal-lo: #1669c4;
   --brass: #c08a2e;
-  --slate: #5a6675;
-  --line: #d4d8d0;
+  --slate: rgba(10, 14, 26, 0.68);
+  --line: rgba(10, 14, 26, 0.12);
 
   /* Semantic aliases used by existing Tailwind classes */
   --color-bg-primary: var(--cotton);
-  --color-bg-secondary: #e8eae3;
+  --color-bg-secondary: #f4f8fe;
   --color-navy: var(--ink);
-  --color-navy-card: #1a2740;
+  --color-navy-card: #121826;
   --color-accent: var(--canal);
-  --color-accent-tint: color-mix(in srgb, var(--canal) 12%, transparent);
+  --color-accent-tint: color-mix(in srgb, var(--canal) 10%, transparent);
   --color-whatsapp: #25d366;
-  --color-secondary: color-mix(in srgb, var(--ink) 72%, transparent);
+  --color-secondary: color-mix(in srgb, var(--ink) 70%, transparent);
   --color-text: var(--ink);
   --color-text-muted: var(--slate);
   --color-border: var(--line);
@@ -31,7 +31,7 @@
   --color-ink: var(--ink);
   --color-cotton: var(--cotton);
   --color-canal: var(--canal);
-  --color-slate: var(--slate);
+  --color-slate: #5a6675;
   --color-line: var(--line);
 
   /* Type scale — 1.25 minor third, 16px base */
@@ -52,24 +52,24 @@
 }
 
 @theme {
-  --color-bg-primary: #f1f2ed;
-  --color-bg-secondary: #e8eae3;
-  --color-navy: #12203a;
-  --color-navy-card: #1a2740;
-  --color-accent: #0e7c86;
-  --color-accent-tint: color-mix(in srgb, #0e7c86 12%, transparent);
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f8fe;
+  --color-navy: #0a0e1a;
+  --color-navy-card: #121826;
+  --color-accent: #1e7fe8;
+  --color-accent-tint: color-mix(in srgb, #1e7fe8 10%, transparent);
   --color-whatsapp: #25d366;
-  --color-secondary: color-mix(in srgb, #12203a 72%, transparent);
-  --color-text: #12203a;
-  --color-text-muted: #5a6675;
-  --color-border: #d4d8d0;
+  --color-secondary: color-mix(in srgb, #0a0e1a 70%, transparent);
+  --color-text: #0a0e1a;
+  --color-text-muted: rgba(10, 14, 26, 0.68);
+  --color-border: rgba(10, 14, 26, 0.12);
   --color-brass: #c08a2e;
-  --color-canal-lo: #0a5a61;
-  --color-ink: #12203a;
-  --color-cotton: #f1f2ed;
-  --color-canal: #0e7c86;
+  --color-canal-lo: #1669c4;
+  --color-ink: #0a0e1a;
+  --color-cotton: #ffffff;
+  --color-canal: #1e7fe8;
   --color-slate: #5a6675;
-  --color-line: #d4d8d0;
+  --color-line: rgba(10, 14, 26, 0.12);
 
   --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
@@ -135,7 +135,7 @@ body {
 .section-dark {
   --section-text: #ffffff;
   --section-text-muted: rgba(255, 255, 255, 0.72);
-  --section-eyebrow: #7ec8cf;
+  --section-eyebrow: #5ba3f0;
   color: var(--section-text);
   background-color: var(--ink);
 }
@@ -158,9 +158,9 @@ body {
   height: 1.35rem;
   background: linear-gradient(
     90deg,
-    rgba(241, 242, 237, 0) 0%,
-    color-mix(in srgb, var(--canal) 22%, transparent) 50%,
-    rgba(241, 242, 237, 0) 100%
+    rgba(255, 255, 255, 0) 0%,
+    color-mix(in srgb, var(--canal) 18%, transparent) 50%,
+    rgba(255, 255, 255, 0) 100%
   );
 }
 

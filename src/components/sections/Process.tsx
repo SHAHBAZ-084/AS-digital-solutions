@@ -11,7 +11,7 @@ export default function Process() {
   return (
     <section id="process" className="section-light relative overflow-hidden bg-bg-primary">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-gradient-to-r from-cotton via-[#e8eae3] to-[#dde0d6]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-[#f4f8fe] to-[#e8eef6]" />
       </div>
 
       <SectionToneContext.Provider value="light">

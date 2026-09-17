@@ -3,7 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 /**
- * Services-only 3D visual — canal teal, CSS 3D + Framer Motion.
+ * Services-only 3D visual — brand blue, CSS 3D + Framer Motion.
  * Lazy-loaded from ServicesHub so home LCP stays free of this chunk.
  */
 export default function ServicesHero3D() {
@@ -34,7 +34,7 @@ export default function ServicesHero3D() {
         className="relative mx-auto flex h-[260px] w-full max-w-[320px] items-center justify-center"
         aria-hidden="true"
       >
-        <div className="h-44 w-44 rounded-full bg-[radial-gradient(circle_at_32%_28%,#3aa8b0_0%,#0e7c86_40%,#12203a_78%)] shadow-[0_40px_80px_-30px_color-mix(in_srgb,var(--canal)_50%,transparent)]" />
+        <div className="h-44 w-44 rounded-full bg-[radial-gradient(circle_at_32%_28%,#6eb4f5_0%,#1e7fe8_40%,#0a0e1a_78%)] shadow-[0_40px_80px_-30px_color-mix(in_srgb,var(--canal)_50%,transparent)]" />
       </div>
     )
   }
@@ -95,7 +95,7 @@ export default function ServicesHero3D() {
               className="absolute inset-0 rounded-full shadow-[inset_-18px_-24px_40px_rgba(18,32,58,0.45),inset_12px_14px_28px_rgba(255,255,255,0.18),0_30px_60px_-20px_color-mix(in_srgb,var(--canal)_45%,transparent)]"
               style={{
                 background:
-                  'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5) 0%, rgba(62,168,176,0.55) 18%, rgba(14,124,134,0.9) 42%, rgba(18,32,58,0.95) 78%)',
+                  'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5) 0%, rgba(110,180,245,0.55) 18%, rgba(30,127,232,0.9) 42%, rgba(10,14,26,0.95) 78%)',
               }}
             />
             <div className="absolute top-[14%] left-[18%] h-[28%] w-[34%] rounded-full bg-white/35 blur-[2px]" />
