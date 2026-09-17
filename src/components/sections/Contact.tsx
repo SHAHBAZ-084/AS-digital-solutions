@@ -34,7 +34,7 @@ function FieldLabel({ contentKey, children }: { contentKey: string; children: st
     <EditableText
       contentKey={contentKey}
       as="label"
-      className="text-section mb-1 block text-sm font-medium"
+      className="text-section mb-1 block text-[11px] font-semibold tracking-[0.14em] uppercase"
     >
       {children}
     </EditableText>
@@ -42,7 +42,7 @@ function FieldLabel({ contentKey, children }: { contentKey: string; children: st
 }
 
 function fieldClassName() {
-  return 'w-full border border-line bg-cotton px-3.5 py-2.5 text-sm text-text outline-none transition placeholder:text-secondary focus:border-canal focus:ring-2 focus:ring-canal/20'
+  return 'w-full rounded-xl border border-[rgba(10,14,26,0.12)] bg-white px-3.5 py-2.5 text-sm text-text outline-none transition placeholder:text-secondary focus:border-accent/55 focus:ring-2 focus:ring-accent/15'
 }
 
 export default function Contact() {
@@ -85,10 +85,10 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section-dark relative overflow-hidden">
-      <SectionToneContext.Provider value="dark">
+    <section id="contact" className="section-light relative overflow-hidden">
+      <SectionToneContext.Provider value="light">
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:py-14">
-          <div className="grid gap-0 overflow-hidden border border-white/10 lg:grid-cols-2">
+          <div className="grid gap-0 overflow-hidden lg:grid-cols-2 lg:rounded-3xl">
             <Reveal className="relative min-h-[28rem] overflow-hidden lg:min-h-[36rem]">
               <img
                 src={contactHumanAi}
@@ -100,7 +100,7 @@ export default function Contact() {
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
               <div
-                className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/25"
+                className="absolute inset-0 bg-gradient-to-t from-[#04101f] via-[#04101f]/75 to-[#04101f]/20"
                 aria-hidden="true"
               />
 
@@ -108,18 +108,18 @@ export default function Contact() {
                 <EditableText
                   contentKey="contact.eyebrow"
                   as="p"
-                  className="text-sm font-medium text-[#7ec8cf]"
+                  className="text-[11px] font-semibold tracking-[0.24em] text-sky-300 uppercase"
                 >
                   Contact
                 </EditableText>
                 <EditableText
                   contentKey="contact.title"
                   as="h2"
-                  className="font-display mt-3 max-w-md text-2xl text-white sm:text-[1.85rem]"
+                  className="mt-3 max-w-md text-2xl leading-tight font-extrabold tracking-tight text-white sm:text-[1.85rem]"
                 >
                   Let&apos;s Build Something
                 </EditableText>
-                <div className="mt-3 h-px w-14 bg-[#7ec8cf]" />
+                <div className="mt-3 h-1 w-14 bg-sky-300" />
                 <EditableText
                   contentKey="contact.subtitle"
                   as="p"
@@ -131,19 +131,19 @@ export default function Contact() {
 
                 <div className="mt-7 space-y-3 text-sm text-white/90">
                   <p>
-                    <span className="font-semibold text-[#7ec8cf]">Email</span>
-                    <span className="mx-2 text-[#7ec8cf]/40">·</span>
+                    <span className="font-semibold text-sky-300">Email</span>
+                    <span className="mx-2 text-sky-300/40">·</span>
                     {contact.email}
                   </p>
                   <p>
-                    <span className="font-semibold text-[#7ec8cf]">Phone</span>
-                    <span className="mx-2 text-[#7ec8cf]/40">·</span>
+                    <span className="font-semibold text-sky-300">Phone</span>
+                    <span className="mx-2 text-sky-300/40">·</span>
                     {contact.phone}
                   </p>
                   {contact.address?.trim() ? (
                     <p>
-                      <span className="font-semibold text-[#7ec8cf]">Location</span>
-                      <span className="mx-2 text-[#7ec8cf]/40">·</span>
+                      <span className="font-semibold text-sky-300">Location</span>
+                      <span className="mx-2 text-sky-300/40">·</span>
                       {contact.address}
                     </p>
                   ) : null}
@@ -160,14 +160,15 @@ export default function Contact() {
               </div>
             </Reveal>
 
-            <Reveal delayMs={80} className="bg-cotton p-7 text-ink sm:p-9 lg:p-10">
-              <SectionToneContext.Provider value="light">
+            <Reveal delayMs={80} className="bg-white p-7 sm:p-9 lg:p-10">
               <form
                 onSubmit={(event) => {
                   void handleSubmit(event)
                 }}
               >
-                <p className="text-sm font-medium text-accent">Project brief</p>
+                <p className="text-[11px] font-semibold tracking-[0.2em] text-accent uppercase">
+                  Project brief
+                </p>
                 <p className="text-section mt-1 text-lg font-bold">Tell us what you need</p>
 
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -293,7 +294,6 @@ export default function Contact() {
                   </EditableText>
                 </button>
               </form>
-              </SectionToneContext.Provider>
             </Reveal>
           </div>
         </div>

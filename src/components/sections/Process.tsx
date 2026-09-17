@@ -9,9 +9,9 @@ export default function Process() {
   const count = Math.max(steps.length, 1)
 
   return (
-    <section id="process" className="section-light relative overflow-hidden bg-bg-primary">
+    <section id="process" className="section-light relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-[#f4f8fe] to-[#e8eef6]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white from-0% via-[#f5f8fc] via-[40%] to-[#e8eef8] to-100%" />
       </div>
 
       <SectionToneContext.Provider value="light">
@@ -38,8 +38,8 @@ export default function Process() {
               />
               <div className="absolute inset-[32%] flex items-center justify-center rounded-full bg-accent/10 text-center ring-1 ring-accent/20">
                 <div>
-                  <p className="text-sm font-medium text-accent">Process</p>
-                  <p className="num text-section mt-1 text-sm font-bold sm:text-base">{count} steps</p>
+                  <p className="text-[11px] font-semibold tracking-[0.22em] text-accent uppercase">Process</p>
+                  <p className="text-section mt-1 text-sm font-bold sm:text-base">{count} steps</p>
                 </div>
               </div>
 
@@ -57,11 +57,8 @@ export default function Process() {
                       style={{
                         left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)', }}
                     >
-                      <div className="border border-line bg-cotton px-3 py-2 text-center shadow-[0_8px_22px_rgba(18,32,58,0.08)] sm:px-3.5">
-                        <p className="num text-[10px] font-semibold text-canal sm:text-[11px]">
-                          {String(index + 1).padStart(2, '0')}
-                        </p>
-                        <p className="text-section mt-0.5 text-xs font-semibold whitespace-nowrap sm:text-sm">
+                      <div className="rounded-full bg-white px-3.5 py-2.5 text-center shadow-[0_8px_22px_rgba(10,14,26,0.1)] ring-1 ring-accent/20 sm:px-4">
+                        <p className="text-section text-xs font-semibold whitespace-nowrap sm:text-sm">
                           {step.title}
                         </p>
                       </div>

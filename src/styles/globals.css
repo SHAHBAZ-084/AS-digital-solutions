@@ -46,7 +46,7 @@
   --text-4xl: 3.8125rem; /* 61 */
 
   --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 
   --nav-height: 4.25rem;
 }
@@ -71,7 +71,7 @@
   --color-slate: #5a6675;
   --color-line: rgba(10, 14, 26, 0.12);
 
-  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
 
   --text-xs: 0.75rem;
@@ -127,17 +127,16 @@ body {
 }
 
 .section-light {
-  --section-text: var(--ink);
-  --section-text-muted: var(--slate);
-  --section-eyebrow: var(--canal);
+  --section-text: #0a0e1a;
+  --section-text-muted: rgba(10, 14, 26, 0.68);
+  --section-eyebrow: #1e7fe8;
 }
 
 .section-dark {
   --section-text: #ffffff;
   --section-text-muted: rgba(255, 255, 255, 0.72);
-  --section-eyebrow: #5ba3f0;
+  --section-eyebrow: #1e7fe8;
   color: var(--section-text);
-  background-color: var(--ink);
 }
 
 .text-section {

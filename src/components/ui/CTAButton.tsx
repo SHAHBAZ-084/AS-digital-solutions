@@ -12,13 +12,13 @@ interface CTAButtonProps {
 
 const variantClass = {
   primary:
-    'bg-accent text-white shadow-[0_10px_30px_-12px_color-mix(in_srgb,var(--canal)_55%,transparent)] hover:bg-canal-lo',
+    'bg-accent text-white shadow-[0_10px_30px_-12px_rgba(30,127,232,0.8)] hover:opacity-95',
   secondary:
-    'border border-line bg-cotton text-text hover:border-canal hover:bg-[color-mix(in_srgb,var(--canal)_8%,transparent)]',
+    'border border-[rgba(10,14,26,0.12)] bg-white text-text hover:border-accent/60 hover:bg-[rgba(30,127,232,0.08)]',
   whatsapp:
     'bg-whatsapp text-white shadow-[0_10px_30px_-12px_rgba(37,211,102,0.45)] hover:opacity-95',
   email:
-    'bg-accent text-white shadow-[0_10px_30px_-12px_color-mix(in_srgb,var(--canal)_55%,transparent)] hover:bg-canal-lo',
+    'bg-accent text-white shadow-[0_10px_30px_-12px_rgba(30,127,232,0.8)] hover:opacity-95',
 } as const
 
 /** CSS-only CTA (no framer-motion on critical path). */
@@ -34,7 +34,7 @@ export default function CTAButton({
   const leadingIcon =
     icon ?? (variant === 'whatsapp' ? <WhatsAppIcon className="h-4 w-4" /> : null)
 
-  const className = `btn-shine inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold tracking-wide transition ${variantClass[variant]}`
+  const className = `btn-shine inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide transition ${variantClass[variant]}`
   const externalProps = external ? { target: '_blank' as const, rel: 'noopener noreferrer' } : {}
 
   return (

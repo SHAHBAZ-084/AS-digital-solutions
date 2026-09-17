@@ -1,13 +1,29 @@
-/** Public URL: preloaded in index.html for LCP (stable path, not hashed). */
+import type { MouseEvent } from 'react'
+
+/** No-op tilt bind: keeps Hero API stable without framer-motion on critical path. */
+export function useHeroParallaxBind() {
+  return {
+    reduced: true,
+    springX: null,
+    springY: null,
+    bindSection: {
+      onMouseMove: (_event: MouseEvent<HTMLElement>) => {},
+      onMouseLeave: () => {},
+    },
+  }
+}
+
 interface HeroParallaxBgProps {
   src: string
   width?: number
   height?: number
+  springX?: unknown
+  springY?: unknown
+  reduced?: boolean
 }
 
 /**
- * Full-bleed building / skyline LCP image (no framer-motion).
- * Width/height reserve space for CLS.
+ * Static LCP skyline (no framer-motion). Width/height reserve space for CLS.
  */
 export default function HeroParallaxBg({
   src,

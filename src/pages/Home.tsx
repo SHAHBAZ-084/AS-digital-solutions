@@ -6,7 +6,6 @@ import TrustStrip from '../components/sections/TrustStrip'
 const Services = lazy(() => import('../components/sections/Services'))
 const BusinessSoftware = lazy(() => import('../components/sections/BusinessSoftware'))
 const Products = lazy(() => import('../components/sections/Products'))
-const PricingStrip = lazy(() => import('../components/sections/PricingStrip'))
 const Industries = lazy(() => import('../components/sections/Industries'))
 const WhyUs = lazy(() => import('../components/sections/WhyUs'))
 const Technology = lazy(() => import('../components/sections/Technology'))
@@ -46,7 +45,6 @@ export default function Home() {
         <Services />
         <BusinessSoftware />
         <Products />
-        <PricingStrip />
         <Industries />
         <WhyUs />
         <Technology />

@@ -34,7 +34,7 @@ export default function Industries() {
                   <Reveal key={industry} delayMs={index * 30}>
                     <li className="flex items-center gap-3 text-sm font-medium text-navy sm:text-base">
                       <span
-                        className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_0_4px_color-mix(in_srgb,var(--canal)_14%,transparent)]"
+                        className="h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_0_4px_rgba(30,127,232,0.12)]"
                         aria-hidden="true"
                       />
                       <EditableText contentKey={`industries.${index}`}>{industry}</EditableText>
