@@ -80,20 +80,20 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           />
         </MotionSection>
 
-        <div className="mt-6 grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.95fr)] lg:gap-8">
-          <div className="max-w-2xl">
+        <div className="mt-8 grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,420px)] lg:gap-4 xl:gap-10">
+          <div className="max-w-xl lg:max-w-2xl">
             <motion.p
               className="text-xs font-semibold uppercase tracking-[0.22em] text-accent"
               initial={reduced ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: easeOutExpo }}
             >
-              {page.primaryKeyword}
+              Our services
             </motion.p>
             <BlurText
               as="h1"
               text={page.h1}
-              className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
+              className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl lg:text-[2.65rem] lg:leading-[1.12]"
               delay={0.08}
             />
             <MotionSection delay={0.15}>
@@ -102,10 +102,10 @@ export default function ServicesHub({ page }: { page: SeoContentPage }) {
           </div>
 
           <motion.div
-            className="relative"
-            initial={reduced ? false : { opacity: 0, scale: 0.92, x: 24 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: easeOutExpo }}
+            className="relative -mx-2 sm:mx-0"
+            initial={reduced ? false : { opacity: 0, scale: 0.94, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.15, ease: easeOutExpo }}
           >
             <ServicesHero3D />
           </motion.div>
