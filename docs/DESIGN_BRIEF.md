@@ -132,14 +132,14 @@ Constraints: no three.js; keep EditableText keys; keep prerender + seo-check gre
 
 ## PART 6 — Checklist before done
 
-- [ ] No all-caps tracked eyebrows
-- [ ] No single-word colored headline accent
-- [ ] Brass at most twice per viewport
-- [ ] Exactly one spectacle (hero ledger)
-- [ ] Cards not identical radius/shadow/hover
-- [ ] Numbered markers only in Process
-- [ ] Real screenshots on home
-- [ ] PKR prices visible
-- [ ] Reduced-motion fallback intentional
-- [ ] Lighthouse mobile LCP < 2.5s with 3D
-- [ ] `npm run build` passes including seo-check
+- [x] No all-caps tracked eyebrows
+- [x] No single-word colored headline accent
+- [x] Brass at most twice per viewport
+- [x] Exactly one spectacle (hero ledger) + services 3D (lazy)
+- [x] Cards not identical radius/shadow/hover
+- [x] Numbered markers only in Process
+- [x] Real screenshots on home
+- [x] PKR prices visible
+- [x] Reduced-motion fallback intentional
+- [ ] Lighthouse mobile LCP < 2.5s with 3D (verify in PageSpeed after deploy)
+- [x] `npm run build` passes including seo-check

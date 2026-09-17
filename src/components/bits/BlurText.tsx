@@ -32,11 +32,11 @@ export default function BlurText({
         <motion.span
           key={`${word}-${i}`}
           className="mr-[0.28em] inline-block"
-          initial={{ opacity: 0, filter: 'blur(8px)', y: 12 }}
-          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{
-            duration: 0.55,
-            delay: delay + i * 0.045,
+            duration: 0.45,
+            delay: delay + i * 0.04,
             ease: easeOutExpo,
           }}
         >

@@ -57,8 +57,11 @@ export default function Process() {
                       style={{
                         left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)', }}
                     >
-                      <div className="rounded-full bg-white px-3.5 py-2.5 text-center shadow-[0_8px_22px_rgba(10,14,26,0.1)] ring-1 ring-accent/20 sm:px-4">
-                        <p className="text-section text-xs font-semibold whitespace-nowrap sm:text-sm">
+                      <div className="border border-line bg-cotton px-3 py-2 text-center shadow-[0_8px_22px_rgba(18,32,58,0.08)] sm:px-3.5">
+                        <p className="num text-[10px] font-semibold text-canal sm:text-[11px]">
+                          {String(index + 1).padStart(2, '0')}
+                        </p>
+                        <p className="text-section mt-0.5 text-xs font-semibold whitespace-nowrap sm:text-sm">
                           {step.title}
                         </p>
                       </div>

@@ -1,14 +1,17 @@
 import type { SectionTone } from '../context/SectionToneContext'
 
-export function cardSurfaceClass(_tone?: SectionTone) {
-  void _tone
-  return 'overflow-hidden rounded-2xl border-2 border-navy bg-white shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(30,127,232,0.18)]'
+/** Light sections: ruled panel. Dark: ink plate. No identical soft SaaS lift. */
+export function cardSurfaceClass(tone?: SectionTone) {
+  if (tone === 'dark') {
+    return 'overflow-hidden border border-white/12 bg-ink/50 transition-[border-color] duration-200 hover:border-canal/45'
+  }
+  return 'overflow-hidden border border-line bg-cotton transition-[border-color] duration-200 hover:border-canal'
 }
 
 export function chipClass(_tone?: SectionTone) {
   void _tone
-  return 'rounded-full bg-navy px-3 py-1 text-xs font-medium text-white'
+  return 'bg-ink px-3 py-1 text-xs font-medium text-white'
 }
 
 export const navyBadgeClass =
-  'inline-flex items-center rounded-full bg-navy px-3 py-1 text-xs font-semibold tracking-wide text-white'
+  'inline-flex items-center bg-ink px-3 py-1 text-xs font-semibold tracking-wide text-white'

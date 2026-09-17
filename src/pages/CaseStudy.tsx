@@ -403,7 +403,7 @@ export default function CaseStudy() {
             <CTAButton label="Start Your Project" href="/#contact" labelKey="hero.cta.primary" />
             <Link
               to="/#projects"
-              className="inline-flex items-center rounded-full border border-[rgba(10,14,26,0.12)] bg-white px-5 py-2.5 text-sm font-semibold text-text transition hover:border-accent/40 hover:bg-[rgba(30,127,232,0.08)]"
+              className="inline-flex items-center border border-line bg-cotton px-5 py-2.5 text-sm font-semibold text-text transition hover:border-canal hover:bg-[color-mix(in_srgb,var(--canal)_8%,transparent)]"
             >
               <EditableText contentKey="caseStudy.backProjects">More projects</EditableText>
             </Link>
