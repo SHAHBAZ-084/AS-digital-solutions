@@ -8,12 +8,47 @@ export const defaultFooter: FooterContent = {
   terms_label: 'Terms',
   columns: [
     {
-      id: 'services', title: 'Services', links: [
-        { id: 'web', label: 'Web Development', href: '#services' }, { id: 'business', label: 'Business Software', href: '#business-software' }, { id: 'ai', label: 'AI & ML Solutions', href: '#services' }, { id: 'consultancy', label: 'Consultancy', href: '#contact' }, ], }, {
-      id: 'projects', title: 'Projects', links: [
-        { id: 'portfolio', label: 'Portfolio', href: '#projects' }, { id: 'case-study', label: 'Case Study', href: '/case-study/crown-ev-center' }, ], }, {
-      id: 'company', title: 'Company', links: [
-        { id: 'why-us', label: 'Why Us', href: '#why-us' }, { id: 'process', label: 'Process', href: '#process' }, { id: 'team', label: 'Team', href: '#team' }, ], }, {
-      id: 'contact', title: 'Contact', links: [
-        { id: 'faq', label: 'FAQ', href: '#faq' }, { id: 'form', label: 'Contact Form', href: '#contact' }, ], }, ],
+      id: 'services',
+      title: 'Services',
+      links: [
+        { id: 'web', label: 'Web Development', href: '/services/web-development' },
+        { id: 'pos', label: 'POS Software Development', href: '/services/pos-software' },
+        { id: 'custom', label: 'Custom Business Software', href: '/services/custom-software' },
+        { id: 'desktop', label: 'Desktop Apps', href: '/services/desktop-apps' },
+        { id: 'all', label: 'All Services', href: '/services' },
+      ],
+    },
+    {
+      id: 'locations',
+      title: 'Locations',
+      links: [
+        { id: 'chi', label: 'Web Development Chishtian', href: '/locations/chishtian' },
+        { id: 'bwn', label: 'Software Company Bahawalnagar', href: '/locations/bahawalnagar' },
+        { id: 'bwp', label: 'Web Development Bahawalpur', href: '/locations/bahawalpur' },
+        { id: 'mux', label: 'Web Development Multan', href: '/locations/multan' },
+        { id: 'all-loc', label: 'All Locations', href: '/locations' },
+      ],
+    },
+    {
+      id: 'company',
+      title: 'Company',
+      links: [
+        { id: 'about', label: 'About', href: '/about' },
+        { id: 'portfolio', label: 'Portfolio', href: '/portfolio' },
+        { id: 'blog', label: 'Blog', href: '/blog' },
+        { id: 'pricing', label: 'Pricing', href: '/pricing' },
+        { id: 'case', label: 'Crown EV Case Study', href: '/case-study/crown-ev-center' },
+      ],
+    },
+    {
+      id: 'contact',
+      title: 'Contact',
+      links: [
+        { id: 'contact-page', label: 'Contact Page', href: '/contact' },
+        { id: 'form', label: 'Project Brief Form', href: '/#contact' },
+        { id: 'calc', label: 'Website Cost Calculator', href: '/tools/website-cost-calculator' },
+        { id: 'faq', label: 'Homepage FAQ', href: '/#faq' },
+      ],
+    },
+  ],
 }

@@ -12,14 +12,14 @@ export const localSeo = {
   areaServed: ['Chishtian', 'Bahawalnagar', 'Bahawalpur', 'Punjab', 'Pakistan'],
 } as const
 
-export const DEFAULT_TITLE =
-  'AS Digital Solutions Chishtian | Web Development & Business Software'
+export const DEFAULT_TITLE = 'Web Development Chishtian | AS Digital Solutions'
 
 export const DEFAULT_DESC =
   'AS Digital Solutions in Chishtian, Punjab builds modern websites, custom business software, desktop apps, and AI tools for local and remote clients across Pakistan.'
 
-export const DEFAULT_KEYWORDS =
-  'AS Digital Solutions, AS Digital Solutions Chishtian, web development Chishtian, business software Chishtian, software company Chishtian, custom software Punjab, desktop apps Pakistan, digital solutions Chishtian'
+/** @deprecated keywords meta is not emitted; kept only for any legacy imports */
+export const DEFAULT_KEYWORDS = ''
+
 
 export const ORGANIZATION_ALT_NAMES = [
   'AS Digital Solutions Chishtian',

@@ -6,10 +6,10 @@ export const siteConfig = {
   eyebrow: 'Smart code. Modern design. Real results.',
   /** Empty in dev (Vite proxies /api) and production (nginx reverse-proxies /api). */
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
-  /** Display format; replace with the live number when ready */
-  whatsappNumber: '+92-XXX-XXXXXXX',
+  /** Display format */
+  whatsappNumber: '03220726006',
   /** Digits only for wa.me links; keep in sync with whatsappNumber */
-  whatsappDigits: '92XXXXXXXXXX',
+  whatsappDigits: '923220726006',
   email: 'contactasdigitalsolutions@gmail.com',
   phone: '03220726006',
   address: 'Chishtian, Punjab, Pakistan',

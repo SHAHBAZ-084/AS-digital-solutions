@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import {
   DEFAULT_DESC,
-  DEFAULT_KEYWORDS,
   DEFAULT_TITLE,
   SITE_URL,
   localSeo,
@@ -15,6 +14,10 @@ function setMeta(attr: 'name' | 'property', key: string, content: string) {
     document.head.appendChild(el)
   }
   el.setAttribute('content', content)
+}
+
+function removeMeta(attr: 'name' | 'property', key: string) {
+  document.head.querySelector(`meta[${attr}="${key}"]`)?.remove()
 }
 
 function setCanonical(href: string) {
@@ -49,7 +52,6 @@ export interface SeoProps {
   path?: string
   noindex?: boolean
   image?: string
-  keywords?: string
   jsonLd?: Record<string, unknown> | null
 }
 
@@ -60,7 +62,6 @@ export default function Seo({
   path = '/',
   noindex = false,
   image = `${SITE_URL}/og-image.png`,
-  keywords = DEFAULT_KEYWORDS,
   jsonLd = null,
 }: SeoProps) {
   const jsonLdKey = jsonLd ? JSON.stringify(jsonLd) : ''
@@ -71,7 +72,7 @@ export default function Seo({
       : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`
     document.title = title
     setMeta('name', 'description', description)
-    setMeta('name', 'keywords', keywords)
+    removeMeta('name', 'keywords')
     setMeta('name', 'geo.region', 'PK-PB')
     setMeta('name', 'geo.placename', localSeo.city)
     setMeta('name', 'geo.position', `${localSeo.geo.latitude};${localSeo.geo.longitude}`)
@@ -91,7 +92,7 @@ export default function Seo({
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'twitter:image', image)
     setJsonLd('seo-jsonld-page', jsonLdKey ? (JSON.parse(jsonLdKey) as Record<string, unknown>) : null)
-  }, [title, description, path, noindex, image, keywords, jsonLdKey])
+  }, [title, description, path, noindex, image, jsonLdKey])
 
   return null
 }

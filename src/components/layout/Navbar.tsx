@@ -5,13 +5,14 @@ import { siteConfig } from '../../config/site'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import EditableText from '../ui/EditableText'
 
-const navLinks = [
-  { id: 'home', label: 'Home', href: '#hero' },
-  { id: 'services', label: 'Services', href: '#services' },
-  { id: 'projects', label: 'Projects', href: '#projects' },
-  { id: 'process', label: 'Process', href: '#process' },
-  { id: 'contact', label: 'Contact', href: '#contact' },
+const navLinks: { id: string; label: string; href: string; kind: 'hash' | 'path' }[] = [
+  { id: 'home', label: 'Home', href: '#hero', kind: 'hash' },
+  { id: 'services', label: 'Services', href: '/services', kind: 'path' },
+  { id: 'projects', label: 'Projects', href: '/portfolio', kind: 'path' },
+  { id: 'blog', label: 'Blog', href: '/blog', kind: 'path' },
+  { id: 'contact', label: 'Contact', href: '/contact', kind: 'path' },
 ]
+
 
 const MENU_EXIT_MS = 220
 
@@ -54,7 +55,10 @@ export default function Navbar() {
     }
   }, [])
 
-  const resolveHref = (hash: string) => (pathname === '/' ? hash : `/${hash}`)
+  const resolveHref = (link: (typeof navLinks)[number]) => {
+    if (link.kind === 'path') return link.href
+    return pathname === '/' ? link.href : `/${link.href}`
+  }
 
   const runPendingScroll = () => {
     const hash = pendingHash.current
@@ -67,9 +71,17 @@ export default function Navbar() {
     })
   }
 
-  const handleMobileNavClick = (event: MouseEvent<HTMLAnchorElement>, hash: string) => {
+  const handleMobileNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    link: (typeof navLinks)[number],
+  ) => {
+    if (link.kind === 'path') {
+      closeMenu()
+      return
+    }
+
     event.preventDefault()
-    pendingHash.current = hash
+    pendingHash.current = link.href
 
     if (exitTimer.current !== null) {
       window.clearTimeout(exitTimer.current)
@@ -79,7 +91,7 @@ export default function Navbar() {
     setMenuOpen(false)
 
     if (pathname !== '/') {
-      navigate(`/${hash}`)
+      navigate(`/${link.href}`)
       exitTimer.current = window.setTimeout(runPendingScroll, reduced ? 50 : MENU_EXIT_MS)
       return
     }
@@ -94,13 +106,23 @@ export default function Navbar() {
       <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4">
         {navLinks.map((link) => (
           <li key={link.href}>
-            <a
-              href={resolveHref(link.href)}
-              className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
-              onClick={(event) => handleMobileNavClick(event, link.href)}
-            >
-              <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
-            </a>
+            {link.kind === 'path' ? (
+              <Link
+                to={link.href}
+                className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
+                onClick={closeMenu}
+              >
+                <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
+              </Link>
+            ) : (
+              <a
+                href={resolveHref(link)}
+                className="block rounded-lg px-3 py-3 text-sm uppercase tracking-[0.14em] text-white/85 transition hover:bg-white/5 hover:text-accent"
+                onClick={(event) => handleMobileNavClick(event, link)}
+              >
+                <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
+              </a>
+            )}
           </li>
         ))}
       </ul>
@@ -129,12 +151,21 @@ export default function Navbar() {
         <ul className="hidden items-center gap-7 text-[13px] font-medium tracking-wide text-white lg:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
-                href={resolveHref(link.href)}
-                className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
-              >
-                <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
-              </a>
+              {link.kind === 'path' ? (
+                <Link
+                  to={link.href}
+                  className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
+                >
+                  <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
+                </Link>
+              ) : (
+                <a
+                  href={resolveHref(link)}
+                  className="inline-block uppercase tracking-[0.14em] transition-colors hover:text-accent hover:-translate-y-px"
+                >
+                  <EditableText contentKey={`nav.${link.id}`}>{link.label}</EditableText>
+                </a>
+              )}
             </li>
           ))}
         </ul>
